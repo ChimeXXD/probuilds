@@ -126,7 +126,7 @@ test.describe("tab pill", () => {
     expect(near(await pillBox(fill), await chip(2).boundingBox())).toBe(true);
   });
 
-  test("typing a search changes the grid without animating it (nothing moves on keyboard input)", async ({ page }) => {
+  test("typing a search never plays the chips' Smooth tab on the grid (its cards move on their own: motion-lists.spec.ts)", async ({ page }) => {
     await page.goto("/faces");
     await page.getByTestId("search-input").fill("ronaldo");
     expect(await page.getByTestId("face-grid").evaluate((el) => el.getAnimations().length)).toBe(0);

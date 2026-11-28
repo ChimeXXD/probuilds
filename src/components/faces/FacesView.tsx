@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useFlip } from "@/components/ui/useFlip";
 import { useSmoothTab } from "@/components/ui/useSmoothTab";
 import { Icon } from "@/components/shell/Icon";
 import { ButtonLabel, buttonClass } from "@/components/ui/Button";
@@ -39,17 +40,26 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
   // 1-based place in the full list, so a test ID names the same face under every filter.
   const place = new Map(cards.map((c, i) => [c.id, i + 1]));
   const { grid, leave, before: leaving } = useSmoothTab<HTMLUListElement>(filter);
-  const pick = (value: FaceFilter) => {
+  // Typing a search moves the results instead of snapping them (D-121 (2), Chime's ask for search though it is
+  // keyboard input): cards that stay glide to their new places, the ones that drop out fade where they were, new ones
+  // fade in, and the request panel under the grid glides with them (useFlip). Short and quiet: --dur-base at most.
+  const { list: flipList, layer: flipLayer, before: flipBefore } = useFlip<HTMLDivElement>();
+  const search = (q: string) => {
+    flipBefore();
+    setQuery(q);
+  };
+  const pick = (value: FaceFilter, byKey: boolean) => {
     if (value === filter) return;
     const at = (v: FaceFilter) => FACE_FILTERS.findIndex((f) => f.value === v);
-    leaving(at(value) > at(filter) ? 1 : -1);
+    // From the keyboard (a click with detail 0) the grid changes at once (D-120 (2)).
+    if (!byKey) leaving(at(value) > at(filter) ? 1 : -1);
     setFilter(value);
   };
   // TODO(Chime): nothing tells a screen reader that the results changed after a search or a chip. A polite live
   // region needs wording (for example how many faces show) that no design or decision gives yet.
 
   return (
-    <main className="flex flex-col gap-5 px-5 pt-4 pb-8 tablet:gap-6 tablet:px-10 tablet:pt-6 tablet:pb-16 desktop:mx-auto desktop:w-full desktop:max-w-(--layout-content-max) desktop:px-0">
+    <main className="relative flex flex-col gap-5 px-5 pt-4 pb-8 tablet:gap-6 tablet:px-10 tablet:pt-6 tablet:pb-16 desktop:mx-auto desktop:w-full desktop:max-w-(--layout-content-max) desktop:px-0">
       <header className="flex flex-col gap-2">
         <h1 className="type-h1 text-text-primary">Faces</h1>
         <p className="type-body text-text-secondary tablet:max-w-[600px]">
@@ -58,7 +68,7 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
         {cards.some((c) => c.sample) && <p className="type-caption text-text-muted tablet:max-w-[600px]">{DEMO_NOTE}</p>}
       </header>
       <div className="flex flex-col gap-5 tablet:flex-row-reverse tablet:items-center tablet:gap-6">
-        <FaceSearch value={query} onChange={setQuery} />
+        <FaceSearch value={query} onChange={search} />
         {/* A sideways-scrolling row also clips up and down: 4 px of padding (cancelled by -4 px margin) keeps each
             chip's 44 px tap area and its focus ring (2 px outline, 2 px offset); 6 px of scroll padding keeps the ring
             in view when focus scrolls a chip to the row's edge (4 px for the ring, 2 for rounding: chips are fractional
@@ -77,7 +87,7 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
                   count={counts[f.value]}
                   pressed={filter === f.value}
                   pill={pill}
-                  onPress={() => pick(f.value)}
+                  onPress={(e) => pick(f.value, e.detail === 0)}
                 />
               ))
             }
@@ -88,7 +98,7 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
         </div>
       </div>
       {shown.length > 0 ? (
-        <div className="flex flex-col gap-4 tablet:gap-6">
+        <div ref={flipList} className="flex flex-col gap-4 tablet:gap-6">
           {/* The old grid fades out in the layer over the new one (Smooth tab, useSmoothTab). */}
           <div className="relative">
             <div ref={leave} aria-hidden="true" inert className="pointer-events-none absolute inset-x-0 top-0 z-1" />
@@ -96,7 +106,7 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
               {shown.map((card) => (
                 <FaceCard key={card.id} card={card} place={place.get(card.id) ?? 0} />
               ))}
-              <li>
+              <li data-flip="missing-face">
                 {/* Figma "Suggest a face" (341:1316): the picture's size, a dashed border/strong outline, lime plus. */}
                 <Link
                   href={SUBMIT_HREF}
@@ -115,8 +125,11 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
           <RequestPanel />
         </div>
       ) : (
-        <NoFaces />
+        <NoFaces enter={query !== ""} />
       )}
+      {/* Cards a search drops fade out in this layer (useFlip); outside the grid, so they still fade when a search
+          leaves nothing and the grid gives way to the no-results card. */}
+      <div ref={flipLayer} aria-hidden="true" inert className="pointer-events-none absolute inset-0 z-1" />
     </main>
   );
 }
@@ -124,7 +137,7 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
 /** Figma "Request a face panel" (427:10078): stacked on phone; text and a 240 px button in one row from tablet up. */
 function RequestPanel() {
   return (
-    <section aria-labelledby="request-face-title" className="flex flex-col gap-3.5 rounded-lg bg-bg-surface p-5 tablet:flex-row tablet:items-center tablet:gap-6">
+    <section data-flip="request-panel" aria-labelledby="request-face-title" className="flex flex-col gap-3.5 rounded-lg bg-bg-surface p-5 tablet:flex-row tablet:items-center tablet:gap-6">
       <div className="flex flex-col gap-1 tablet:min-w-0 tablet:flex-1">
         <h2 id="request-face-title" className="type-h4 text-text-primary">
           Who should we make next?
@@ -139,9 +152,11 @@ function RequestPanel() {
 }
 
 /** Figma "Empty" (372:1935): the face icon, "No faces here yet" and Request a face (Medium), centred. */
-function NoFaces() {
+function NoFaces({ enter }: { enter: boolean }) {
+  // A search that leaves nothing fades the card in (--dur-base) instead of swapping it in at once.
+  const fade = enter ? "animate-[fade-in_var(--dur-base)_var(--ease-out)_both]" : "";
   return (
-    <div data-testid="faces-empty" className="flex flex-col items-center gap-2.5 rounded-lg bg-bg-surface px-6 py-10 text-center">
+    <div data-testid="faces-empty" className={`flex flex-col items-center gap-2.5 rounded-lg bg-bg-surface px-6 py-10 text-center ${fade}`}>
       <span className="flex text-text-muted">
         <Icon name="faces" size={40} />
       </span>

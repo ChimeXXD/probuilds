@@ -5,6 +5,7 @@ import { Icon } from "@/components/shell/Icon";
 import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 import type { Archetype } from "@/lib/content/types";
 import { apCounter, attributeError, bodyChanges, EDITOR_GROUPS, groupAverage, nextAttribute, stepLine, type SubmitDraft } from "@/lib/submit/editor";
+import { reducedMotion } from "@/lib/motion";
 import { AttributeRow } from "./AttributeRow";
 import { StepLine } from "./controls";
 import { Stars } from "./Stars";
@@ -39,9 +40,11 @@ export function StepAttributes({
   const body = bodyChanges(draft);
   const setValue = (name: string, value: number) =>
     onChange((d) => ({ ...d, attributes: d.attributes.map((a) => (a.name === name ? { ...a, value } : a)) }));
-  const jump = (code: string) => {
+  // A group chip scrolls its group into view smoothly (D-121 (2): the jump moves instead of snapping); from the
+  // keyboard (a click with detail 0) or under reduced motion it jumps at once.
+  const jump = (code: string, byKey: boolean) => {
     onActive(code);
-    document.getElementById(`group-${code}`)?.scrollIntoView({ block: "start" });
+    document.getElementById(`group-${code}`)?.scrollIntoView({ block: "start", behavior: byKey || reducedMotion() ? "instant" : "smooth" });
   };
 
   const header = (
@@ -72,7 +75,7 @@ export function StepAttributes({
             key={g.code}
             type="button"
             aria-current={g.code === active ? "true" : undefined}
-            onClick={() => jump(g.code)}
+            onClick={(e) => jump(g.code, e.detail === 0)}
             className={`type-caption flex h-11 min-w-0 flex-1 items-center justify-center rounded-full border ${STATE_TRANSITION} ${PRESS} ${g.code === active ? "border-accent-fill bg-bg-raised text-accent-text" : "border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
           >
             {g.code}

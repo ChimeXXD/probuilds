@@ -6,6 +6,7 @@ import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 import { PillRow } from "@/components/ui/PillRow";
 import { RollingNumber } from "@/components/ui/RollingNumber";
 import { SmallChip, SmallChipGhost } from "@/components/ui/SmallChip";
+import { useFlip } from "@/components/ui/useFlip";
 import { plural } from "@/lib/face-page";
 import { byKind, type FaceRequest, REQUEST_KINDS, type RequestKind, requestLine } from "@/lib/requests";
 import { BURST_DOTS, burst } from "./voteBurst";
@@ -32,8 +33,13 @@ export function RequestList({
   const empty = requests !== null && requests.length === 0;
   // The request last voted for from the keyboard: its count changes without rolling (nothing on keyboard input).
   const [byKey, setByKey] = useState<string | null>(null);
+  // The list changes in place (D-121 (2)): a kind chip glides the rows that stay to their new places, rows that leave
+  // fade where they were, new ones fade in (useFlip). From the keyboard it changes at once. A vote keeps the order
+  // (the rank comes with the request), so it moves no row.
+  const { list, layer, before } = useFlip<HTMLOListElement>();
   return (
-    <section aria-labelledby="most-requested" aria-busy={(requests === null && !failed) || undefined} className="flex flex-col">
+    <section aria-labelledby="most-requested" aria-busy={(requests === null && !failed) || undefined} className="relative flex flex-col">
+      <div ref={layer} aria-hidden="true" inert className="pointer-events-none absolute inset-0 z-1" />
       <div className="flex items-center gap-2">
         <h2 id="most-requested" className="type-h3 min-w-0 flex-1 text-text-primary">
           Most requested
@@ -56,7 +62,18 @@ export function RequestList({
               className="flex flex-wrap gap-1.5"
               chips={(pill) =>
                 REQUEST_KINDS.map((k) => (
-                  <SmallChip key={k.label} testId="request-kind" label={k.label} pressed={k.kind === kind} pill={pill} onPress={() => onKind(k.kind)} />
+                  <SmallChip
+                    key={k.label}
+                    testId="request-kind"
+                    label={k.label}
+                    pressed={k.kind === kind}
+                    pill={pill}
+                    onPress={(e) => {
+                      if (k.kind === kind) return;
+                      before({ still: e.detail === 0 });
+                      onKind(k.kind);
+                    }}
+                  />
                 ))
               }
               ghosts={REQUEST_KINDS.map((k) => (
@@ -64,11 +81,11 @@ export function RequestList({
               ))}
             />
           </div>
-          <ol className="flex flex-col pt-2">
+          <ol ref={list} className="flex flex-col pt-2">
             {byKind(requests ?? [], kind).map((r) => {
               const on = voted.has(r.id);
               return (
-                <li key={r.id} data-testid="face-request" className="flex h-[85px] items-center gap-3.5 border-b border-system-divider">
+                <li key={r.id} data-flip={r.id} data-testid="face-request" className="flex h-[85px] items-center gap-3.5 border-b border-system-divider">
                   <span className={`type-number-md w-5.5 shrink-0 ${r.beingMade ? "text-status-success" : "text-text-secondary"}`}>{r.rank}</span>
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <p className="type-label text-text-primary">{r.name}</p>

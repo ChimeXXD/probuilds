@@ -6,6 +6,7 @@ import { DraftTag } from "@/components/ui/DraftTag";
 import { FilterChip, FilterChipGhost } from "@/components/ui/FilterChip";
 import { COLOR_TRANSITION } from "@/components/ui/interaction";
 import { PillRow } from "@/components/ui/PillRow";
+import { useSmoothTab } from "@/components/ui/useSmoothTab";
 import {
   dayAndMonth,
   type Filter,
@@ -134,6 +135,16 @@ export function ChangelogView({
   currentSeason: number;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
+  // Switching the filter swaps the entries as the Faces chips swap the grid (Smooth tab, D-121 (2)): the old list fades
+  // out over the new one, which comes in 12 px from the side of the chip picked; reduced motion keeps the fades.
+  const { grid: list, leave, before } = useSmoothTab<HTMLDivElement>(filter);
+  const pick = (value: Filter, byKey: boolean) => {
+    if (value === filter) return;
+    const at = (v: Filter) => FILTERS.findIndex((f) => f.value === v);
+    // From the keyboard (a click with detail 0) the entries change at once (D-120 (2)).
+    if (!byKey) before(at(value) > at(filter) ? 1 : -1);
+    setFilter(value);
+  };
   const groups = visibleGroups(groupBySeason(items), filter);
   // The newest entry the filter leaves visible starts open.
   const newest = groups[0]?.entries[0]?.id;
@@ -180,7 +191,7 @@ export function ChangelogView({
                         label={f.label}
                         pressed={filter === f.value}
                         pill={pill}
-                        onPress={() => setFilter(f.value)}
+                        onPress={(e) => pick(f.value, e.detail === 0)}
                       />
                     ))
                   }
@@ -194,7 +205,9 @@ export function ChangelogView({
         )}
       </div>
       {items.length > 0 && (
-        <div className="mt-7 tablet:mt-8 desktop:mt-0 desktop:pt-2">
+        <div className="relative mt-7 tablet:mt-8 desktop:mt-0 desktop:pt-2">
+          <div ref={leave} aria-hidden="true" inert className="pointer-events-none absolute inset-x-0 top-0 z-1 desktop:top-2" />
+          <div ref={list}>
           {groups.map((g) => (
             <section key={g.season} className="pb-7">
               <div className="flex items-center gap-2.5">
@@ -217,6 +230,7 @@ export function ChangelogView({
               </div>
             </section>
           ))}
+          </div>
         </div>
       )}
     </div>

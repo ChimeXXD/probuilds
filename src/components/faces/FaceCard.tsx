@@ -13,7 +13,7 @@ import type { FaceCardView } from "@/lib/faces";
 // (transform, --dur-base), so the card reads as something to open without moving on the page; press 0.98.
 export function FaceCard({ card, place }: { card: FaceCardView; place: number }) {
   return (
-    <li>
+    <li data-flip={card.id}>
       <Link href={card.href} data-testid={`face-card-${place}`} className="group flex flex-col gap-2.5">
         <div
           data-testid="face-picture"

@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { PRESS, STATE_TRANSITION } from "./interaction";
 
 // Figma Chip (200:337), Size=medium: a real, clickable filter, 40 px tall with a 44 px tap area; selected is lime
@@ -11,6 +12,9 @@ const CHIP_ON = "border-transparent bg-accent-fill text-accent-on-fill light:rin
 // Hover (D-121 (1)): the surface's faint fill and the hovered border. Under the pill, the picked chip draws unpicked;
 // its hover sits under the pill's copy, unseen.
 const CHIP_OFF = "border-border-strong bg-bg-surface text-text-primary hover:border-input-border-hovered hover:bg-hover-fill";
+
+/** The chip's classes, for a chip that is a link (Submit's tabs): `on` draws the picked look. */
+export const chipClass = (on: boolean) => `${CHIP} ${on ? CHIP_ON : CHIP_OFF}`;
 
 export function FilterChip({
   testId,
@@ -26,7 +30,8 @@ export function FilterChip({
   pressed: boolean;
   /** The row's pill draws the selected look. */
   pill?: boolean;
-  onPress: () => void;
+  /** Gets the click, so a caller can tell a key press (detail 0) from a tap. */
+  onPress: (e: MouseEvent<HTMLButtonElement>) => void;
 }) {
   const on = pressed && !pill;
   return (
