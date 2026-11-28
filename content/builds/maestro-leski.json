@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "id": "maestro-leski",
+  "slug": "maestro-leski",
+  "status": "draft",
+  "_example": "READ FROM VIDEO, NOT CHECKED BY A PERSON. Raw values (Attribute Totals: OFF) read by Claude from Leski's video of 2026-10-29. Before publishing: Chime or Sharon checks every value (D-66), and the height (the game shows 6'0\"; Leski's caption says 180-183 cm; 183 is the conversion) and AcceleRATE (Leski's caption, not the game's text). Title and summary still needed.",
+  "title": "PLACEHOLDER",
+  "archetype": "maestro",
+  "positions": [
+    "CM"
+  ],
+  "summary": "PLACEHOLDER",
+  "badge": null,
+  "level": 55,
+  "picture": null,
+  "body": {
+    "heightCm": 183,
+    "weightKg": 65,
+    "accelerate": "controlled"
+  },
+  "attributes": [
+    {
+      "name": "Acceleration",
+      "value": 88
+    },
+    {
+      "name": "Sprint Speed",
+      "value": 84
+    },
+    {
+      "name": "Att. Position",
+      "value": 80
+    },
+    {
+      "name": "Finishing",
+      "value": 65
+    },
+    {
+      "name": "Shot Power",
+      "value": 70
+    },
+    {
+      "name": "Long Shots",
+      "value": 70
+    },
+    {
+      "name": "Volleys",
+      "value": 65
+    },
+    {
+      "name": "Penalties",
+      "value": 70
+    },
+    {
+      "name": "Vision",
+      "value": 84
+    },
+    {
+      "name": "Crossing",
+      "value": 75
+    },
+    {
+      "name": "FK Accuracy",
+      "value": 75
+    },
+    {
+      "name": "Short Passing",
+      "value": 84
+    },
+    {
+      "name": "Long Passing",
+      "value": 87
+    },
+    {
+      "name": "Curve",
+      "value": 80
+    },
+    {
+      "name": "Agility",
+      "value": 84
+    },
+    {
+      "name": "Balance",
+      "value": 84
+    },
+    {
+      "name": "Reactions",
+      "value": 86
+    },
+    {
+      "name": "Ball Control",
+      "value": 84
+    },
+    {
+      "name": "Dribbling",
+      "value": 84
+    },
+    {
+      "name": "Composure",
+      "value": 84
+    },
+    {
+      "name": "Interceptions",
+      "value": 80
+    },
+    {
+      "name": "Heading Accuracy",
+      "value": 50
+    },
+    {
+      "name": "Def. Awareness",
+      "value": 80
+    },
+    {
+      "name": "Standing Tackle",
+      "value": 80
+    },
+    {
+      "name": "Sliding Tackle",
+      "value": 50
+    },
+    {
+      "name": "Jumping",
+      "value": 60
+    },
+    {
+      "name": "Stamina",
+      "value": 80
+    },
+    {
+      "name": "Strength",
+      "value": 80
+    },
+    {
+      "name": "Aggression",
+      "value": 80
+    }
+  ],
+  "playStyles": {
+    "signature": [
+      "Pinged Pass",
+      "Long Ball Pass"
+    ],
+    "plus": [],
+    "regular": [
+      "Incisive Pass",
+      "Tiki Taka",
+      "Inventive",
+      "Quick Step"
+    ]
+  },
+  "specialization": null,
+  "skillMoves": 5,
+  "weakFoot": 4,
+  "spend": null,
+  "version": 1,
+  "versionTag": {
+    "game": "fc27",
+    "season": 2,
+    "verifiedOn": null,
+    "verifiedBy": null,
+    "platform": null
+  },
+  "credits": [
+    {
+      "role": "made-by",
+      "name": "Leski",
+      "url": "https://www.youtube.com/watch?v=CBO8pC-XWGQ",
+      "creatorId": null
+    },
+    {
+      "role": "reference",
+      "name": "Leski",
+      "url": "https://www.youtube.com/watch?v=CBO8pC-XWGQ",
+      "creatorId": null
+    }
+  ],
+  "sources": [
+    {
+      "title": "Leski, The MOST META Level 55 CM Build in FC 27 Clubs!",
+      "url": "https://www.youtube.com/watch?v=CBO8pC-XWGQ",
+      "accessed": "2026-11-25"
+    }
+  ],
+  "history": [
+    {
+      "version": 1,
+      "date": "2026-11-25",
+      "note": "Draft read from Leski's video."
+    }
+  ],
+  "createdAt": "2026-11-25",
+  "updatedAt": "2026-11-25"
+}

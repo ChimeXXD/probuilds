@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 // The archetype page (Figma 288:1031 / 290:796 / 290:1084, D-62): one static page per archetype. Preview only
-// (D-105): the builds are drafts. Emblems ship since D-106. Spark has one draft; Finisher has Figma's sample (D-107).
+// (D-105): the builds are drafts. Emblems ship since D-106. Spark has one draft; Finisher has Figma's sample (D-107)
+// and Leski's draft read from his video (D-123 (2)), which has no title yet and comes after the badged cards.
 test.skip(process.env.PROBUILDS_DRAFTS !== "1", "preview page");
 
 test("archetype: See Finisher builds opens the Finisher page, and the breadcrumb goes back to it", async ({ page }) => {
@@ -9,7 +10,7 @@ test("archetype: See Finisher builds opens the Finisher page, and the breadcrumb
   await page.getByRole("link", { name: "See Finisher builds" }).click();
   await expect(page).toHaveURL(/\/builds\/finisher$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Finisher");
-  await expect(page.getByText("Forward · 3 builds", { exact: true })).toBeVisible();
+  await expect(page.getByText("Forward · 4 builds", { exact: true })).toBeVisible();
   await expect(page.getByTestId("build-card-meta-finisher")).toBeVisible();
   await expect(page.getByRole("img", { name: "Finisher" })).toBeVisible();
   await expect(page.getByTestId("bottom-nav").getByRole("link", { name: "Builds" })).toHaveAttribute("aria-current", "page");
@@ -24,7 +25,7 @@ test("archetype: Finisher shows Figma's three sample cards in its order, marked 
   await page.goto("/builds/finisher");
   await expect(page.getByText("Sample values: not real builds yet", { exact: true })).toBeVisible();
   const titles = page.locator("[data-testid^=build-card-] h2");
-  await expect(titles).toHaveText(["Meta Finisher", "Tall Finisher", "Quick Finisher"]);
+  await expect(titles).toHaveText(["Meta Finisher", "Tall Finisher", "PLACEHOLDER", "Quick Finisher"]);
   const tall = page.getByTestId("build-card-tall-finisher");
   await expect(tall.locator("a").first()).toHaveAttribute("href", "/builds/finisher/tall-finisher");
   await expect(tall.getByText("Recommended", { exact: true })).toBeVisible();
@@ -33,42 +34,58 @@ test("archetype: Finisher shows Figma's three sample cards in its order, marked 
   const quick = page.getByTestId("build-card-quick-finisher");
   await expect(quick.getByText("Level 55 · 173 cm · 72 kg")).toBeVisible();
   await expect(quick.getByText("Rapid")).toBeVisible();
-  // The sample cards carry no Draft tag, version tag or credit; the note marks them (D-113).
-  const list = page.locator("main ul").first();
-  await expect(list.getByText("Draft", { exact: true })).toHaveCount(0);
-  await expect(list.getByText(/Not yet checked in game|Made by/)).toHaveCount(0);
+  // The sample cards carry no Draft tag, version tag or credit; the note marks them (D-113). Leski's draft has all three.
+  for (const id of ["meta", "tall", "quick"]) {
+    const sample = page.getByTestId(`build-card-${id}-finisher`);
+    await expect(sample.getByText("Draft", { exact: true })).toHaveCount(0);
+    await expect(sample.getByText(/Not yet checked in game|Made by/)).toHaveCount(0);
+  }
+  const leski = page.getByTestId("build-card-finisher-leski");
+  await expect(leski.getByText("Draft", { exact: true })).toBeVisible();
+  await expect(leski.getByText("FC 27 · Season 2 · Not yet checked in game")).toBeVisible();
   // On Figma's 393 px phone: one column, 12 px apart, as drawn (at 360 the body line may wrap, as it should).
   await page.setViewportSize({ width: 393, height: 852 });
   const meta = await page.getByTestId("build-card-meta-finisher").boundingBox();
   const tallBox = await tall.boundingBox();
   expect(meta && tallBox && Math.round(tallBox.y - (meta.y + meta.height))).toBe(12);
-  // Alone in its row, each card is as tall as its own header: 266 (Meta pick tag, 24 px), 268 (Recommended, 26 px with
-  // its border), 254 (no tag), as 288:1096, 288:1136 and 288:1174 draw them.
+  // Alone in its row, each card is as tall as its own header: Recommended (26 px with its border) 2 px taller than the
+  // Meta pick tag (24 px), no tag 12 px shorter, as 288:1096, 288:1136 and 288:1174 draw them (266, 268, 254). Leski's
+  // card has a footer, so every card keeps a footer row (14 px more each than Figma's three alone).
   const quickBox = await quick.boundingBox();
-  expect([meta, tallBox, quickBox].map((b) => b && Math.round(b.height))).toEqual([266, 268, 254]);
+  const heights = [meta, tallBox, quickBox].map((b) => Math.round(b?.height ?? 0));
+  expect(heights.map((h) => h - (heights[0] ?? 0))).toEqual([0, 2, -12]);
 });
 
-test("archetype on desktop: the three Finisher cards share one 268 px row, headers and all (D-62 (3))", async ({ page }) => {
+test("archetype on desktop: three cards a row, each row one height, headers and all (D-62 (3))", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/builds/finisher");
-  const boxes = await Promise.all(["meta", "tall", "quick"].map((id) => page.getByTestId(`build-card-${id}-finisher`).boundingBox()));
-  expect(boxes.map((b) => b && [Math.round(b.x), Math.round(b.width), Math.round(b.height)])).toEqual([
-    [120, 384, 268],
-    [528, 384, 268],
-    [936, 384, 268],
+  const ids = ["meta-finisher", "tall-finisher", "finisher-leski", "quick-finisher"];
+  const boxes = await Promise.all(ids.map((id) => page.getByTestId(`build-card-${id}`).boundingBox()));
+  const [first] = boxes;
+  expect(boxes.map((b) => b && [Math.round(b.x), Math.round(b.width)])).toEqual([
+    [120, 384],
+    [528, 384],
+    [936, 384],
+    [120, 384],
   ]);
-  await expect(page.getByTestId("submit-tile")).toBeHidden();
+  // The first row shares one height; Quick Finisher starts the second, beside the Submit tile across the two empty cells.
+  expect(boxes.slice(0, 3).every((b) => b && first && Math.round(b.y) === Math.round(first.y) && Math.round(b.height) === Math.round(first.height))).toBe(true);
+  const quick = boxes[3];
+  const tile = await page.getByTestId("submit-tile").boundingBox();
+  expect(quick && tile && [Math.round(tile.x), Math.round(tile.y - quick.y), Math.round(tile.height - quick.height)]).toEqual([528, 0, 0]);
 });
 
-test("archetype on tablet: Quick Finisher and the Submit tile make the second row, 254 px (290:796)", async ({ page }) => {
+test("archetype on tablet: two cards a row, 24 px apart; four cards fill the rows, so no Submit tile (290:796)", async ({ page }) => {
   await page.setViewportSize({ width: 834, height: 1100 });
   await page.goto("/builds/finisher");
+  const leski = await page.getByTestId("build-card-finisher-leski").boundingBox();
   const quick = await page.getByTestId("build-card-quick-finisher").boundingBox();
-  const tile = await page.getByTestId("submit-tile").boundingBox();
   const tall = await page.getByTestId("build-card-tall-finisher").boundingBox();
-  expect(quick && [Math.round(quick.x), Math.round(quick.width), Math.round(quick.height)]).toEqual([40, 365, 254]);
-  expect(tile && [Math.round(tile.x), Math.round(tile.height)]).toEqual([429, 254]);
+  expect(leski && [Math.round(leski.x), Math.round(leski.width)]).toEqual([40, 365]);
+  expect(quick && [Math.round(quick.x), Math.round(quick.width)]).toEqual([429, 365]);
+  expect(leski && quick && [Math.round(quick.y - leski.y), Math.round(quick.height - leski.height)]).toEqual([0, 0]);
   expect(tall && quick && Math.round(quick.y - (tall.y + tall.height))).toBe(24);
+  await expect(page.getByTestId("submit-tile")).toBeHidden();
 });
 
 test("archetype: the draft build's card shows its values as written, its version tag and credit", async ({ page }) => {

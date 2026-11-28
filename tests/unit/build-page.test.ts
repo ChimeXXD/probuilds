@@ -51,6 +51,8 @@ const recorded = (over: Partial<LoadedBuild> = {}): LoadedBuild => ({
 describe("build page data", () => {
   it("gives every shown build its page under its archetype", () => {
     expect(pageBuilds(content.builds)).toEqual([
+      { archetype: "finisher", build: "finisher-leski" },
+      { archetype: "maestro", build: "maestro-leski" },
       { archetype: "finisher", build: "meta-finisher" },
       { archetype: "finisher", build: "quick-finisher" },
       { archetype: "spark", build: "spark-2008-winger" },

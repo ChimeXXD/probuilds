@@ -37,7 +37,7 @@ export function homeView(content: Content, pictureExists: (file: string) => bool
     // The line's Meta pick, else its recommended or first build, else the archetype itself (D-75 (4)).
     const own = content.builds.filter((b) => b.archetype.id === id);
     const build = own.find((b) => b.badge === "meta") ?? own.find((b) => b.badge === "recommended") ?? own[0];
-    return [build ? buildPreviewView(build, { sample: build.status === "draft", tag: true }) : archetypePreviewView(archetype)];
+    return [build ? buildPreviewView(build, { sample: Boolean(build.sample), tag: true }) : archetypePreviewView(archetype)];
   });
   const changes = content.changelog.slice(0, CHANGES_SHOWN).map((e) => ({ id: e.id, line: `${formatDay(e.date)} · ${CHANGE_KIND[e.kind]}`, title: e.title }));
   if (!weekFace || faces.length < FACES_SHOWN || builds.length < TEAM_LINES.length || changes.length === 0) return null;

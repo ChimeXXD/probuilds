@@ -91,7 +91,13 @@ test("finished: Face done, then the matching build card (D-79)", async ({ page }
 
 test("a bumped version clears the ticks and says so (Figma 372:2108)", async ({ page }) => {
   await page.goto(URL);
-  await page.evaluate(() => localStorage.setItem("face:cristiano-ronaldo-2008:v0", JSON.stringify({ step: 9 })));
+  // Seeded before the reloaded page's scripts run: set after the first load, the first page's own read (which runs
+  // once it hydrates) could clear the old key before the reload looks for it.
+  await page.addInitScript(() => {
+    if (sessionStorage.getItem("seeded")) return;
+    sessionStorage.setItem("seeded", "1");
+    localStorage.setItem("face:cristiano-ronaldo-2008:v0", JSON.stringify({ step: 9 }));
+  });
   await page.reload();
   await expect(page.getByTestId("face-reset")).toHaveText("This face was updated. Your ticks start fresh.");
   await expect(page.getByTestId("face-progress")).toContainText("Step 1 of 18 · Preset");

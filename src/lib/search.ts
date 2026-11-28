@@ -24,7 +24,7 @@ export function searchIndex(content: Content, pictureExists: (file: string) => b
   return {
     faces: faceCards(content.faces, pictureExists),
     builds: content.builds.map((build) => ({
-      ...buildPreviewView(build, { sample: build.status === "draft" }),
+      ...buildPreviewView(build, { sample: Boolean(build.sample) }),
       text: fold(`${build.title} ${build.archetype.name}`),
       positionWords: build.positions.map(fold),
       faceIds: content.faces.filter((f) => f.pairedBuild.id === build.id).map((f) => f.id),

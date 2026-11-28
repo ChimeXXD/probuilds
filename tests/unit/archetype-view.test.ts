@@ -69,14 +69,20 @@ describe("ArchetypeBuildsView", () => {
   });
 
   it("draws Figma's sample cards with the sample note once, no Draft tag, version tag or credit (288:1031, D-113)", () => {
-    expect(finisher).toContain("Forward · 3 builds");
+    // Figma's three samples and Leski's draft (D-123 (2)).
+    expect(finisher).toContain("Forward · 4 builds");
     expect(finisher.split("Sample values: not real builds yet")).toHaveLength(2);
     expect(finisher).toMatch(/<h2[^>]*><span[^>]*>Tall Finisher<\/span><\/h2>/);
-    expect(finisher).not.toContain(">Draft<");
-    expect(finisher).not.toContain("Not yet checked in game");
-    expect(finisher).not.toContain("Made by");
-    // Three rows a card when no card has a footer; the tile matches them.
-    expect(finisher).toMatch(/<li class="row-span-3 hidden tablet:flex desktop:hidden">/);
+    for (const id of ["meta-finisher", "tall-finisher", "quick-finisher"]) {
+      const card = new RegExp(`data-testid="build-card-${id}".*?</li>`).exec(finisher)?.[0] ?? "";
+      expect(card).toContain("<h2");
+      expect(card).not.toContain(">Draft<");
+      expect(card).not.toContain("Not yet checked in game");
+      expect(card).not.toContain("Made by");
+    }
+    // Leski's draft card has a footer (version tag and credit), so every card takes four rows and the tile matches them;
+    // four cards fill the tablet's two columns, so the tile shows on desktop only.
+    expect(finisher).toMatch(/<li class="row-span-4 hidden tablet:hidden desktop:flex desktop:col-span-2">/);
     expect(spark).not.toContain("Sample values");
   });
 

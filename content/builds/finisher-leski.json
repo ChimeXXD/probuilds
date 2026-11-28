@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "id": "finisher-leski",
+  "slug": "finisher-leski",
+  "status": "draft",
+  "_example": "READ FROM VIDEO, NOT CHECKED BY A PERSON. Raw values (Attribute Totals: OFF) read by Claude from Leski's video of 2026-11-07. Before publishing: Chime or Sharon checks every value (D-66), and the height (saved as 6'1\" on the Body tab, then 6'0\" in the editor, no save seen; Leski's caption says 182-185 cm; 185 is the conversion), AcceleRATE (Leski's caption, not the game's text) and the pink marker on Rapid. Title and summary still needed.",
+  "title": "PLACEHOLDER",
+  "archetype": "finisher",
+  "positions": [
+    "ST"
+  ],
+  "summary": "PLACEHOLDER",
+  "badge": null,
+  "level": 55,
+  "picture": null,
+  "body": {
+    "heightCm": 185,
+    "weightKg": 70,
+    "accelerate": "controlled"
+  },
+  "attributes": [
+    {
+      "name": "Acceleration",
+      "value": 92
+    },
+    {
+      "name": "Sprint Speed",
+      "value": 92
+    },
+    {
+      "name": "Att. Position",
+      "value": 80
+    },
+    {
+      "name": "Finishing",
+      "value": 84
+    },
+    {
+      "name": "Shot Power",
+      "value": 89
+    },
+    {
+      "name": "Long Shots",
+      "value": 60
+    },
+    {
+      "name": "Volleys",
+      "value": 82
+    },
+    {
+      "name": "Penalties",
+      "value": 75
+    },
+    {
+      "name": "Vision",
+      "value": 65
+    },
+    {
+      "name": "Crossing",
+      "value": 55
+    },
+    {
+      "name": "FK Accuracy",
+      "value": 65
+    },
+    {
+      "name": "Short Passing",
+      "value": 75
+    },
+    {
+      "name": "Long Passing",
+      "value": 50
+    },
+    {
+      "name": "Curve",
+      "value": 80
+    },
+    {
+      "name": "Agility",
+      "value": 84
+    },
+    {
+      "name": "Balance",
+      "value": 84
+    },
+    {
+      "name": "Reactions",
+      "value": 89
+    },
+    {
+      "name": "Ball Control",
+      "value": 84
+    },
+    {
+      "name": "Dribbling",
+      "value": 84
+    },
+    {
+      "name": "Composure",
+      "value": 88
+    },
+    {
+      "name": "Interceptions",
+      "value": 60
+    },
+    {
+      "name": "Heading Accuracy",
+      "value": 75
+    },
+    {
+      "name": "Def. Awareness",
+      "value": 55
+    },
+    {
+      "name": "Standing Tackle",
+      "value": 50
+    },
+    {
+      "name": "Sliding Tackle",
+      "value": 40
+    },
+    {
+      "name": "Jumping",
+      "value": 65
+    },
+    {
+      "name": "Stamina",
+      "value": 80
+    },
+    {
+      "name": "Strength",
+      "value": 80
+    },
+    {
+      "name": "Aggression",
+      "value": 65
+    }
+  ],
+  "playStyles": {
+    "signature": [
+      "Low Driven Shot",
+      "First Touch"
+    ],
+    "plus": [],
+    "regular": [
+      "Quick Step",
+      "Gamechanger",
+      "Tiki Taka",
+      "Rapid"
+    ]
+  },
+  "specialization": null,
+  "skillMoves": 5,
+  "weakFoot": 5,
+  "spend": null,
+  "version": 1,
+  "versionTag": {
+    "game": "fc27",
+    "season": 2,
+    "verifiedOn": null,
+    "verifiedBy": null,
+    "platform": null
+  },
+  "credits": [
+    {
+      "role": "made-by",
+      "name": "Leski",
+      "url": "https://www.youtube.com/watch?v=dnz3MWQwp3o",
+      "creatorId": null
+    },
+    {
+      "role": "reference",
+      "name": "Leski",
+      "url": "https://www.youtube.com/watch?v=dnz3MWQwp3o",
+      "creatorId": null
+    }
+  ],
+  "sources": [
+    {
+      "title": "Leski, This Level 55 Striker Build is GOATED in FC 27 Clubs!",
+      "url": "https://www.youtube.com/watch?v=dnz3MWQwp3o",
+      "accessed": "2026-11-25"
+    }
+  ],
+  "history": [
+    {
+      "version": 1,
+      "date": "2026-11-25",
+      "note": "Draft read from Leski's video."
+    }
+  ],
+  "createdAt": "2026-11-25",
+  "updatedAt": "2026-11-25"
+}

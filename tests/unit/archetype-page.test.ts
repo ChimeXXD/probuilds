@@ -32,8 +32,10 @@ const recorded = (over: Partial<LoadedBuild> = {}): LoadedBuild => ({
 describe("archetype page data", () => {
   it("keeps an archetype's builds only, Meta pick first, then Recommended, then the rest", () => {
     expect(archetypeBuilds(content.builds, "spark").map((b) => b.id)).toEqual(["spark-2008-winger"]);
-    // Figma's three sample builds, in the order the Archetype frames draw them (288:1031): Meta pick, Recommended, none.
-    expect(archetypeBuilds(content.builds, "finisher").map((b) => b.id)).toEqual(["meta-finisher", "tall-finisher", "quick-finisher"]);
+    // Figma's three sample builds, in the order the Archetype frames draw them (288:1031): Meta pick, Recommended, none;
+    // Leski's draft (D-123 (2)), with no badge, sits among the rest in content order.
+    expect(archetypeBuilds(content.builds, "finisher").map((b) => b.id)).toEqual(["meta-finisher", "tall-finisher", "finisher-leski", "quick-finisher"]);
+    expect(archetypeBuilds(content.builds, "maestro").map((b) => b.id)).toEqual(["maestro-leski"]);
     expect(archetypeBuilds(content.builds, "target")).toEqual([]);
     const a = recorded({ id: "a", badge: null });
     const b = recorded({ id: "b", badge: "recommended" });
@@ -100,7 +102,8 @@ describe("archetype page data", () => {
   });
 
   it("words Figma's sample cards as the frames draw them, marked as samples (D-107, D-113)", () => {
-    const [meta, tall, quick] = archetypeBuilds(content.builds, "finisher").map((b) => buildCardView(b));
+    const cards = archetypeBuilds(content.builds, "finisher").map((b) => buildCardView(b));
+    const [meta, tall, quick] = ["meta-finisher", "tall-finisher", "quick-finisher"].map((id) => cards.find((c) => c.id === id));
     expect(SAMPLE_CARDS_NOTE).toBe("Sample values: not real builds yet");
     expect(meta).toMatchObject({ title: "Meta Finisher", badge: "Meta pick", sample: true, positions: ["ST", "CF"], body: "Level 55 · 185 cm · 80 kg" });
     expect(tall).toMatchObject({ title: "Tall Finisher", badge: "Recommended", sample: true, positions: ["ST"], body: "Level 55 · 193 cm · 88 kg" });
