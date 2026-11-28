@@ -2,6 +2,15 @@
 
 Newest first. Each entry: what changed, what was checked, what wasn't verified, what's next.
 
+## Chime's review fixes (D-121, D-122), Sat 28 Nov 2026
+
+- **Chime (video review):** no hover states anywhere; a white line on the emblem rail; arrows and rail should move the cards like a drag; tapping the card should open the builds; drop the Mastery and AP cost tiles; the See builds button looked off; every PlayStyle should explain itself (like FUT.GG); nothing instant; Submit should hold Request a face too; height in feet first.
+- **Lane 1, Builds and PlayStyles** (84d53a7…5068312): one whole ring at rest (pixel test), the throw-and-settle spring for arrows, side taps and rail picks, the card opens its builds, specializations replace the tiles, lime See builds with an arrow, a PlayStyle sheet or dialog on every badge with EA's own FC 27 words for all 36 PlayStyles and PlayStyle+ (content/playstyles.json, EA sources only), hover states on the Builds pages.
+- **Coordinator** (e268968, 860d3ba): Low Driven Shot's sheet quotes EA's 29 Jul Gameplay Deep Dive against the 25 Sep article (a `caveat` field); the sources line reads "Chime, in game"; D-121 and D-122.
+- **Lane 2, site-wide and Submit** (3a78596…b0d8560): pointer-only hover and press on every clickable thing (hover-fill tokens, shared interaction classes), page changes slide 40 px from their side (View Transitions), lists glide instead of snapping (Faces search, Changelog filters, Request kinds, attribute-group jumps), Submit's two tabs with Request at /submit/request (/faces/request redirects), height in feet first, one "What these do" per PlayStyle category.
+- **Checks:** 460 unit; preview e2e 534 passed, 6 skipped on the merged tree; live gate on every commit. Home 233.8 KB of 235 (1.2 KB left), JS 151.9 of 165.
+- **Not verified:** Chime's iPhone and iPad. **Open:** O-21 hover strength (2 % / 1 % now), feet-only range ends, the share card's height unit, reduced-motion page fade vs none, padding under the Submit tabs, the top bar overflowing at 320 px (pre-existing), Figma mirroring of all of D-115 to D-122.
+
 ## The 30 bookmarked animations built (Sat 28 Nov 2026)
 
 - **Chime:** "let's build all the animation that's on the PDF"; "make sure to use Emil's skill in every context"; paused overnight, then "start".

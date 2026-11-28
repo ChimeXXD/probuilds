@@ -1,5 +1,11 @@
 # Handoff: read this first when you pick the project back up
 
+## Latest: Sat 28 Nov 2026 (later). Chime's review fixes merged (D-121, D-122)
+
+Everything from Chime's video review is on main and the preview (see PROGRESS). Budget is tight: Home is 233.8 of 235 KB; check `npm run budget` before adding anything to every page.
+**Open for Chime:** hover strength 2 % / 1 % (O-21); feet-only height range ends; share card height in cm or feet; reduced-motion page fade or none (DESIGN.md says none); Submit flows' top padding under the tabs; fix the 320 px top-bar overflow (pre-existing); plus the earlier motion questions below.
+**Next:** iPhone/iPad pass (L-01); mirror D-115 to D-122 into Figma; emil-design-eng, mobile-native and break-ui passes; remove merged worktrees under .claude/worktrees/ with Chime's OK.
+
 ## Latest: Sat 28 Nov 2026. All 30 bookmarked animations built and merged
 
 All three lanes merged into main (see PROGRESS and D-120); the coordinator fixed the shared pill (no keyboard slide, no diagonal across wrapped lines) and Submit's chip width. Preview: push main to `preview` after each merge.
