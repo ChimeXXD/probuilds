@@ -5,6 +5,7 @@ import { at, Check, isObj, STATUSES, type Obj, type Problem } from "./check.ts";
 import { checkAttributes, checkSample, checkSpend } from "./validate-build-parts.ts";
 import { checkSampleRecipe } from "./validate-face-recipe.ts";
 import { ACCELERATE_RATES, PART_TABS, POSITIONS } from "./types.ts";
+import { checkPlayStyleNames, PLAYSTYLES_FILE, validatePlayStylesFile } from "./playstyles.ts";
 import { validateArchetypeFile, validateChangelog, validateCreators } from "./validate-other.ts";
 
 export type { Problem } from "./check.ts";
@@ -295,15 +296,17 @@ export function validateAll(files: { path: string; data: unknown }[]): Problem[]
     specializations: specializationNames(archetypes),
   };
 
-  return files.flatMap(({ path, data }) => {
+  const each = files.flatMap(({ path, data }) => {
     const base = path.split("/").pop()?.replace(/\.json$/, "");
     const named = (problems: Problem[]) =>
       isObj(data) && data.id !== base ? [...problems, { file: path, path: "id", message: `must match the file name "${base}"` }] : problems;
     if (path === "archetypes/fc27.json") return validateArchetypeFile(path, data);
     if (path === "creators.json") return validateCreators(path, data);
+    if (path === PLAYSTYLES_FILE) return validatePlayStylesFile(path, data);
     if (path.startsWith("faces/")) return named(validateFace(path, data, ctx));
     if (path.startsWith("builds/")) return named(validateBuild(path, data, ctx));
     if (path.startsWith("changelog/")) return named(validateChangelog(path, data, ctx));
     return [{ file: path, path: "", message: "not a known content file (FORMAT.md)" }];
   });
+  return [...each, ...checkPlayStyleNames(files)];
 }

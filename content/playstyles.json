@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "game": "fc27",
+  "updated": "2026-11-28",
+  "note": "What each PlayStyle and PlayStyle+ does, quoted word for word from EA (D-121 (4)), each with the EA page it was read from on 28 Nov 2026. A null description means EA’s wording has not been found; the site says to check it in game. Never another site’s text (rule 9).",
+  "sources": [
+    {
+      "id": "ea-what-are-playstyles",
+      "title": "EA, PlayStyles: Everything You Need to Know (FC 27, 25 Sep 2026)",
+      "url": "https://www.ea.com/games/ea-sports-fc/fc-27/news/what-are-playstyles",
+      "accessed": "2026-11-28"
+    },
+    {
+      "id": "ea-ratings-power-shot",
+      "title": "EA, FC 27 Power Shot Player Ratings",
+      "url": "https://www.ea.com/games/ea-sports-fc/ratings/abilities-ratings/power-shot/play-style/trait1_4",
+      "accessed": "2026-11-28"
+    },
+    {
+      "id": "ea-ratings-power-shot-plus",
+      "title": "EA, FC 27 Power Shot+ Player Ratings",
+      "url": "https://www.ea.com/games/ea-sports-fc/ratings/abilities-ratings/power-shot/play-style-plus/icontrait1_4",
+      "accessed": "2026-11-28"
+    }
+  ],
+  "playStyles": [
+    {
+      "name": "1v1 Close Down",
+      "playStyle": {
+        "text": "Unique reflex/anticipation save animations, increase in rush speed and improved read of close shot trajectories.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Unique reflex/anticipation save animations, even greater increases in rush speed and improved reads of close shot trajectories.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": "EA FC 27 Player Ratings calls this PlayStyle Rush Out (trait2_8)."
+    },
+    {
+      "name": "Acrobatic",
+      "playStyle": {
+        "text": "Performs volleys with improved accuracy and has access to acrobatic volley animations.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs volleys with significant accuracy and has access to unique acrobatic volley animations.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Aerial Fortress",
+      "playStyle": {
+        "text": "Performs higher jumps and has increased physical presence before and during defensive aerial duels.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs even higher jumps and has greatly increased physical presence before and during defensive aerial duels.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Anticipate",
+      "playStyle": {
+        "text": "Improved chances of standing tackle success and grants the ability to stop the ball directly at their feet when performing a standing tackle.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Significantly improved chances of standing tackle success and grants the ability to stop the ball directly at their feet when performing a standing tackle.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Block",
+      "playStyle": {
+        "text": "Increased reach when performing blocks and improved ability to make a successful block.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Even greater reach when performing blocks and improved ability to make a successful block.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Bruiser",
+      "playStyle": {
+        "text": "Greater strength when performing physical tackles.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Even greater strength when performing physical tackles.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": "Title Update v1.3.0 (25 Nov 2026) keeps shoulder challenges and PlayStyles such as Bruiser focused on side-by-side contests."
+    },
+    {
+      "name": "Chip Shot",
+      "playStyle": {
+        "text": "Performs chip shots faster and with greater accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs chip shots more quickly with exceptional accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Cross Claimer",
+      "playStyle": {
+        "text": "Unique punching animations, increased hand strength and ball out speed from punches, prioritization of punch animations in contested ball scenarios, and increased speed for coming out for crosses.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Unique punching animations and even greater increases in ball out speed and hand strength.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Dead Ball",
+      "playStyle": {
+        "text": "Set pieces are delivered with increased speed, curve, and accuracy. Ball trajectory preview line is longer.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Set pieces are delivered with exceptional speed, curve, and accuracy. Ball trajectory preview line is at maximum length.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Deflector",
+      "playStyle": {
+        "text": "Unique animations when deflecting the ball. Increased power to parry shots into safer areas.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Unique animations when deflecting the ball. Maximum power to parry shots into safer areas.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Enforcer",
+      "playStyle": {
+        "text": "Performs dribble Shoulder Challenges and Shielding with increased effectiveness.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs dribble shoulder challenges and shielding with greatly increased effectiveness.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Far Reach",
+      "playStyle": {
+        "text": "Unique long diving distance jump animations and increased chances of saving long distance shots.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Unique long diving distance jump animations and even greater increase in the chances of saving long distance shots.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Far Throw",
+      "playStyle": {
+        "text": "Unique GK throw animations and increased GK throw max distance.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Unique GK throw animations and even greater increase in GK throw max distance.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Finesse Shot",
+      "playStyle": {
+        "text": "Performs finesse shots faster with additional curve and improved accuracy",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs finesse shots significantly faster with maximum curve and exceptional accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "First Touch",
+      "playStyle": {
+        "text": "Has reduced error when trapping the ball and is able to transition to dribbling faster with greater control.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Has minimal error when trapping the ball and is able to transition to dribbling much faster with greater control.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Footwork",
+      "playStyle": {
+        "text": "Exclusive foot save animations and increased performance against low trajectory shots.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Exclusive foot save animations and even better performance against low trajectory shots.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Gamechanger",
+      "playStyle": {
+        "text": "Fancy and Trivela shots are performed with improved accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Fancy and Trivela shots are performed with greatly improved accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Incisive Pass",
+      "playStyle": {
+        "text": "Through Passes are more accurate, Swerve Passes are delivered with more curve, and Precision Passes travel faster to the destination.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Through Passes are far more accurate, Swerve Passes are delivered with maximum curve, and Precision Passes travel at top speed to the destination.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Intercept",
+      "playStyle": {
+        "text": "Increased reach and improved chances of retaining possession of the ball when performing interceptions.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Even greater reach and improved chances of retaining possession of the ball when performing interceptions.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Inventive",
+      "playStyle": {
+        "text": "Fancy and Trivela passes are performed with improved accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Fancy and Trivela passes are performed with greatly improved accuracy.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Jockey",
+      "playStyle": {
+        "text": "Increased max speed of Sprint Jockey and improved transition speed from jockey to sprint.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Increased max speed of Sprint Jockey and greatly improves transition speed from jockey to sprint.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Long Ball Pass",
+      "playStyle": {
+        "text": "Lob and Lofted Through Passes are more accurate, travel faster, and are more difficult to intercept.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Lob and Lofted Through Passes are even more accurate, travel faster than ever, and are far more difficult to intercept.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Long Throw",
+      "playStyle": {
+        "text": "Performs throw-ins with increased power to cover a greater distance.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs throw-ins with more power to cover maximum distance.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Low Driven Shot",
+      "playStyle": {
+        "text": "Enhances a Player's ability to execute low driven shots with increased accuracy, faster ball travel, and quicker shot execution.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Enhances a Player's ability to perform low driven shots with significantly enhanced accuracy, even faster ball travel, and quicker shot execution.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": "EA disagrees with itself: the FC 27 Gameplay Deep Dive (29 Jul 2026) says it removed the shot speed boost on low driven shots; this later article (25 Sep) still says faster ball travel. Check in game."
+    },
+    {
+      "name": "Pinged Pass",
+      "playStyle": {
+        "text": "Passes travel faster along the ground without impacting the trapping difficulty of the receiver.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Passes travel much faster along the ground without impacting the trapping difficulty of the receiver.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Power Shot",
+      "playStyle": {
+        "text": "Faster power shots with increased speed",
+        "sourceId": "ea-ratings-power-shot"
+      },
+      "plus": {
+        "text": "Much faster power shots with significant speed increase",
+        "sourceId": "ea-ratings-power-shot-plus"
+      },
+      "notes": "Missing from EA’s PlayStyles article; text from EA’s FC 27 Player Ratings pages."
+    },
+    {
+      "name": "Precision Header",
+      "playStyle": {
+        "text": "Performs headers with increased accuracy and power.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Performs headers with greatly increased accuracy and power.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Press Proven",
+      "playStyle": {
+        "text": "Keeps close control of the ball while dribbling at jog speed and can shield the ball more effectively from stronger opponents.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Keeps exceptionally close control of the ball while dribbling at jog speed. Can shield the ball much more effectively from stronger opponents.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Quick Step",
+      "playStyle": {
+        "text": "Accelerates faster during Explosive Sprint.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Accelerates significantly faster during Explosive Sprint.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Rapid",
+      "playStyle": {
+        "text": "Reaches a higher sprint speed while dribbling and has reduced chance of an error when sprinting or performing knock-ons.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Reaches even higher sprint speed while dribbling and has greatly reduced chance of an error when sprinting or performing knock-ons.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Relentless",
+      "playStyle": {
+        "text": "Reduces fatigue loss during play and increases fatigue recovery during halftime.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Greatly reduces the long-term fatigue effects on attributes, reaction time, and defensive awareness. Reduces fatigue loss during play and significantly increases fatigue recovery during halftime.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Slide Tackle",
+      "playStyle": {
+        "text": "Grants the ability to stop the ball directly at their feet when performing a slide tackle.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Greatly improved slide tackle coverage. Also grants the ability to stop the ball directly at their feet when performing a slide tackle.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Technical",
+      "playStyle": {
+        "text": "Reaches a higher speed when performing Controlled Sprint and performs wide turns while dribbling with more precision.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Reaches even higher speed when performing Controlled Sprint and performs wide turns while dribbling with greater precision.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Tiki Taka",
+      "playStyle": {
+        "text": "Executes difficult first-time Ground Passes with high accuracy, using backheels when contextually appropriate. Short distance Ground Passes are highly accurate.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Executes difficult first-time Ground Passes with even greater accuracy, using backheels when contextually appropriate. Short distance Ground Passes are exceptionally accurate.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Trickster",
+      "playStyle": {
+        "text": "Grants the ability to perform unique flick Skill Moves.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "Grants the ability to perform more unique ground and flick Skill Moves. Is significantly more agile when strafe dribbling.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    },
+    {
+      "name": "Whipped Pass",
+      "playStyle": {
+        "text": "All crosses are highly accurate, travel faster, and with more curve.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "plus": {
+        "text": "All crosses are highly accurate, travel faster, and with more curve. Performs driven crosses with exceptional power.",
+        "sourceId": "ea-what-are-playstyles"
+      },
+      "notes": null
+    }
+  ]
+}

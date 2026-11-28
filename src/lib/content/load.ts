@@ -5,6 +5,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import type { Problem } from "./check.ts";
+import { type PlayStyleInfo, playStyleInfos, PLAYSTYLES_FILE, type PlayStylesFile } from "./playstyles.ts";
 import type { Archetype, ArchetypeFile, Build, ChangelogEntry, Credit, Creator, CreatorsFile, Embed, Face, Status } from "./types.ts";
 import { validateAll } from "./validate.ts";
 
@@ -26,6 +27,8 @@ export type LoadedChangelogEntry = Omit<ChangelogEntry, "affects"> & { affects: 
 export interface Content {
   archetypeFile: ArchetypeFile;
   creators: Creator[];
+  /** What each PlayStyle does, in EA's words (content/playstyles.json); empty when the file is absent (fixtures). */
+  playStyles: PlayStyleInfo[];
   builds: LoadedBuild[]; // by id
   faces: LoadedFace[]; // by id
   changelog: LoadedChangelogEntry[]; // newest first
@@ -77,6 +80,7 @@ export function loadContent(root: string, { includeDrafts = false }: LoadOptions
   const find = (path: string) => files.find((f) => f.path === path)?.data;
   const archetypeFile = find("archetypes/fc27.json") as ArchetypeFile | undefined;
   const creatorsFile = find("creators.json") as CreatorsFile | undefined;
+  const playStylesFile = find(PLAYSTYLES_FILE) as PlayStylesFile | undefined;
   if (!archetypeFile) problems.push({ file: "archetypes/fc27.json", path: "", message: "is missing" });
   if (!creatorsFile) problems.push({ file: "creators.json", path: "", message: "is missing" });
   if (!archetypeFile || !creatorsFile) throw new ContentError(problems);
@@ -167,6 +171,7 @@ export function loadContent(root: string, { includeDrafts = false }: LoadOptions
   return {
     archetypeFile,
     creators: creatorsFile.creators,
+    playStyles: playStylesFile ? playStyleInfos(playStylesFile) : [],
     builds: byId(loadedBuilds),
     faces: byId(loadedFaces),
     changelog: loadedChangelog,

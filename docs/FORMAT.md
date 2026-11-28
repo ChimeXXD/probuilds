@@ -221,3 +221,30 @@ One file per game. Unverified fields are `null`, never guessed.
 ```
 
 - `permission`: `"not-asked"`, `"asked"`, `"yes"`, `"no"`. A full slider list from a creator is published only with `"yes"` (D-08).
+
+## PlayStyles (`content/playstyles.json`)
+
+What each PlayStyle and PlayStyle+ does, for the info sheet every badge opens (D-121 (4)). Unlike changelog lines, these are EA's own published words, quoted exactly and credited to the EA page they were read from; never another site's text (rule 9).
+
+```json
+{
+  "schemaVersion": 1,
+  "game": "fc27",
+  "updated": "2026-11-28",
+  "note": "…",
+  "sources": [ { "id": "ea-what-are-playstyles", "title": "EA, PlayStyles: Everything You Need to Know (FC 27, 25 Sep 2026)", "url": "https://www.ea.com/…", "accessed": "2026-11-28" } ],
+  "playStyles": [
+    {
+      "name": "Chip Shot",
+      "playStyle": { "text": "Performs chip shots faster and with greater accuracy.", "sourceId": "ea-what-are-playstyles" },
+      "plus": { "text": "Performs chip shots more quickly with exceptional accuracy.", "sourceId": "ea-what-are-playstyles" },
+      "notes": null
+    }
+  ]
+}
+```
+
+- `name` is the PlayStyle's name as the rest of content writes it; each name appears once. Every name an archetype, a specialization or a build uses must have an entry, or the build fails.
+- `playStyle` and `plus` are `{ text, sourceId }`, or `null` when EA's wording hasn't been found: the site then shows "To check in game".
+- `sourceId` points into the file's `sources`, which are EA pages only (ea.com, help.ea.com).
+- `notes` (string or `null`) is for whoever edits the file, such as EA contradicting itself; it is never shown.
