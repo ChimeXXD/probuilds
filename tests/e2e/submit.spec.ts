@@ -19,11 +19,16 @@ test("start: Figma's sample, the level fills in its AP, and the nav gives way to
   await page.getByRole("button", { name: "Level up" }).click();
   await expect(page.getByTestId("submit-ap")).toHaveText("1,106 AP to spendLevel 46 adds 25 more");
   const body = page.getByTestId("submit-body");
-  await expect(body).toContainText("185 cm6'1\"");
-  await expect(body).toContainText("165 cmFinisher range190 cm");
+  // Height reads feet first, cm small (D-121 (6)); weight stays kg first.
+  await expect(page.getByTestId("height-value")).toHaveText("6'1\"");
+  await expect(page.getByRole("slider", { name: "Height" })).toHaveAttribute("aria-valuetext", "6'1\", 185 cm");
+  await expect(body).toContainText("6'1\"185 cm");
+  await expect(body).toContainText("5'5\"Finisher range6'3\"");
+  await expect(body).toContainText("80 kg176 lb");
   await expect(page.getByTestId("body-changes")).toContainText("Acceleration−2Agility−2Strength+2");
   // Figma's body changes are its sample's: another height has no figures yet.
   await page.getByRole("button", { name: "Height up" }).click();
+  await expect(body).toContainText("6'1\"186 cm");
   await expect(page.getByTestId("body-changes")).toHaveCount(0);
   await expect(page.getByTestId("bottom-nav")).toBeHidden();
   await expect(next(page)).toHaveText("Attributes");
@@ -35,7 +40,7 @@ test("start: another group and archetype bring their own positions and body rang
   await expect(page.getByTestId("archetype-tile")).toHaveText([/Progressor/, /Boss/, /Marauder/]);
   await page.getByTestId("archetype-tile").filter({ hasText: "Boss" }).click();
   await expect(page.getByTestId("submit-position")).toHaveText(["CB", "LB", "RB", "LWB", "RWB", "CDM"]);
-  await expect(page.getByTestId("submit-body")).toContainText("180 cmBoss range196 cm");
+  await expect(page.getByTestId("submit-body")).toContainText("5'11\"Boss range6'5\"");
   // A build keeps at least one position.
   await page.getByTestId("submit-position").filter({ hasText: "CB" }).click();
   await expect(page.getByTestId("submit-position").filter({ hasText: "CB" })).toHaveAttribute("aria-pressed", "true");

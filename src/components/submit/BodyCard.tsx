@@ -10,6 +10,9 @@ import { Slider } from "./Slider";
 // body (src/lib/submit/editor.ts): no other body's effects are known yet (RESEARCH §10.3).
 // Range slider (motion-bookmarks.pdf #15): held, the knob grows 1.1× with the value in a bubble on it, on the follow
 // spring; a tap on − / + slides the knob one step on the same spring; key presses and fast taps move it at once.
+// Height reads in feet and inches first, centimetres small beside it (D-121 (6): "change the prominent value for height
+// to feet"), on the value, the bubble and the range's ends; it still steps by 1 cm, as the game does. Weight stays kg
+// first, pounds small.
 export function BodyCard({ draft, archetypeName, onChange }: { draft: SubmitDraft; archetypeName: string; onChange: (next: Partial<SubmitDraft>) => void }) {
   const range = bodyRange(draft.archetype);
   const body = bodyChanges(draft);
@@ -18,8 +21,8 @@ export function BodyCard({ draft, archetypeName, onChange }: { draft: SubmitDraf
       <Measure
         label="Height"
         value={draft.heightCm}
-        unit="cm"
-        imperial={heightImperial(draft.heightCm)}
+        show={heightImperial}
+        small={(cm) => `${cm} cm`}
         range={range.height}
         archetypeName={archetypeName}
         onChange={(heightCm) => onChange({ heightCm })}
@@ -28,8 +31,8 @@ export function BodyCard({ draft, archetypeName, onChange }: { draft: SubmitDraf
       <Measure
         label="Weight"
         value={draft.weightKg}
-        unit="kg"
-        imperial={weightImperial(draft.weightKg)}
+        show={(kg) => `${kg} kg`}
+        small={weightImperial}
         range={range.weight}
         archetypeName={archetypeName}
         onChange={(weightKg) => onChange({ weightKg })}
@@ -60,16 +63,18 @@ export function BodyCard({ draft, archetypeName, onChange }: { draft: SubmitDraf
 function Measure({
   label,
   value,
-  unit,
-  imperial,
+  show,
+  small,
   range,
   archetypeName,
   onChange,
 }: {
   label: string;
   value: number;
-  unit: string;
-  imperial: string;
+  /** The value as the big number shows it (and the bubble and the range's ends). */
+  show: (value: number) => string;
+  /** The same value in the other unit, small beside it. */
+  small: (value: number) => string;
   range: { min: number; max: number };
   archetypeName: string;
   onChange: (value: number) => void;
@@ -86,8 +91,10 @@ function Measure({
         <div className="flex min-w-0 flex-1 flex-col">
           <p className="type-caption text-text-muted">{label}</p>
           <p className="flex items-baseline gap-2" aria-live="polite">
-            <span className="type-number-lg text-text-primary">{`${value} ${unit}`}</span>
-            <span className="type-caption text-text-muted">{imperial}</span>
+            <span data-testid={`${label.toLowerCase()}-value`} className="type-number-lg text-text-primary">
+              {show(value)}
+            </span>
+            <span className="type-caption text-text-muted">{small(value)}</span>
           </p>
         </div>
         <RoundButton sign="minus" label={`${label} down`} size={44} disabled={value <= range.min} onPress={(e) => set(value - 1, e.timeStamp, e.detail === 0)} />
@@ -103,12 +110,13 @@ function Measure({
         mark
         motion="follow"
         still={still}
-        bubble={`${value} ${unit}`}
+        bubble={show(value)}
+        valueText={`${show(value)}, ${small(value)}`}
       />
       <div className="type-caption grid grid-cols-[1fr_auto_1fr] text-text-muted">
-        <span>{`${range.min} ${unit}`}</span>
+        <span>{show(range.min)}</span>
         <span>{`${archetypeName} range`}</span>
-        <span className="text-right">{`${range.max} ${unit}`}</span>
+        <span className="text-right">{show(range.max)}</span>
       </div>
     </div>
   );

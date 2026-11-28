@@ -83,7 +83,7 @@ export function bodyRange(archetype: string) {
   return { height: { min: hMin, max: hMax }, weight: { min: wMin, max: wMax } };
 }
 
-/** 185 → `6'1"`, 80 → "176 lb": unit conversions beside the metric value (Figma 436:8531). */
+/** 185 → `6'1"`, 80 → "176 lb": height's main value (D-121 (6)) and weight's small one (Figma 436:8531). */
 export function heightImperial(cm: number) {
   const inches = Math.round(cm / 2.54);
   return `${Math.floor(inches / 12)}'${inches % 12}"`;

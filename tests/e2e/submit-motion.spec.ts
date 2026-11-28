@@ -237,7 +237,7 @@ test("range slider: holding the height knob grows it and shows the value on it; 
   await expect(dot).toHaveCSS("scale", "1.1");
   await expect(bubble).toHaveCSS("opacity", "1");
   await page.mouse.move(box.x + 10 + (box.width - 20) * (15 / 25), y, { steps: 5 });
-  await expect(bubble).toHaveText(/^1\d\d cm$/);
+  await expect(bubble).toHaveText(/^\d'\d{1,2}"$/); // feet first (D-121 (6))
   expect(await knob(page, "Height").evaluate((el) => getComputedStyle(el).transitionTimingFunction.slice(0, 7))).toBe("linear(");
   await page.mouse.up();
   await expect(dot).toHaveCSS("scale", "none");

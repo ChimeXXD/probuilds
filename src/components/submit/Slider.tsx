@@ -31,6 +31,7 @@ export function Slider({
   still = true,
   ticks = false,
   bubble,
+  valueText,
 }: {
   label: string;
   min: number;
@@ -43,6 +44,8 @@ export function Slider({
   still?: boolean;
   ticks?: boolean;
   bubble?: string;
+  /** What a screen reader says for the value (aria-valuetext), when the bare number is not what the screen shows. */
+  valueText?: string;
 }) {
   const p = Math.min(Math.max(value - min, 0), max - min) / (max - min);
   // Whether a pointer is pressing the slider (React state only on press and release, never per move).
@@ -84,6 +87,7 @@ export function Slider({
       <input
         type="range"
         aria-label={label}
+        aria-valuetext={valueText}
         min={min}
         max={max}
         value={Math.min(value, max)}
