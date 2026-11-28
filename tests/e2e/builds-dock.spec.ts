@@ -99,7 +99,7 @@ async function pixels(page: import("@playwright/test").Page, png: Buffer) {
 }
 
 for (const width of [390, 1440]) {
-  test(`rubber dock at ${width}: at rest one whole ring sits round the picked emblem, with no seam (Chime, 29 Nov)`, async ({ page }) => {
+  test(`rubber dock at ${width}: at rest one whole ring sits round the picked emblem, with no seam (Chime, 28 Nov)`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/builds#boss");
     const dock = page.getByTestId("rubber-dock");

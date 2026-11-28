@@ -21,6 +21,12 @@
       "title": "EA, FC 27 Power Shot+ Player Ratings",
       "url": "https://www.ea.com/games/ea-sports-fc/ratings/abilities-ratings/power-shot/play-style-plus/icontrait1_4",
       "accessed": "2026-11-28"
+    },
+    {
+      "id": "ea-gameplay-deep-dive",
+      "title": "EA, Pitch Notes: FC 27 Gameplay Deep Dive (29 Jul 2026)",
+      "url": "https://www.ea.com/games/ea-sports-fc/fc-27/news/pitch-notes-fc27-gameplay-deep-dive",
+      "accessed": "2026-11-28"
     }
   ],
   "playStyles": [
@@ -310,7 +316,14 @@
         "text": "Enhances a Player's ability to perform low driven shots with significantly enhanced accuracy, even faster ball travel, and quicker shot execution.",
         "sourceId": "ea-what-are-playstyles"
       },
-      "notes": "EA disagrees with itself: the FC 27 Gameplay Deep Dive (29 Jul 2026) says it removed the shot speed boost on low driven shots; this later article (25 Sep) still says faster ball travel. Check in game."
+      "notes": "EA disagrees with itself (see caveat, shown in the sheet since 28 Nov, D-122). Check in game.",
+      "caveat": {
+        "text": "EA's Gameplay Deep Dive (29 Jul 2026) says it \"Removed the shot speed boost previously applied to low-driven shots\" and that \"The Playstyle and PlayStyle+ still add an accuracy boost\". EA's later PlayStyles article (25 Sep 2026) still says faster ball travel.",
+        "sourceIds": [
+          "ea-gameplay-deep-dive",
+          "ea-what-are-playstyles"
+        ]
+      }
     },
     {
       "name": "Pinged Pass",

@@ -4,6 +4,7 @@ import { createContext, type ReactNode, useCallback, useContext, useMemo, useRef
 import { Icon } from "@/components/shell/Icon";
 import { playStyleIcon, playStylePlusIcon } from "@/lib/builds";
 import type { PlayStyleInfo, Tier } from "@/lib/content/playstyles";
+import type { Source } from "@/lib/content/types";
 import { PlayStyleArt } from "./PlayStyleArt";
 
 // What a PlayStyle or PlayStyle+ does (D-121 (4), Chime: "clicking every playstyle should explain what the playstyle
@@ -48,7 +49,7 @@ export function PlayStyleInfoProvider({ infos, children }: { infos: PlayStyleInf
       <dialog
         ref={dialog}
         aria-labelledby="playstyle-info-title"
-        aria-describedby="playstyle-info-text"
+        aria-describedby={info?.caveat ? "playstyle-info-text playstyle-info-caveat" : "playstyle-info-text"}
         data-testid="playstyle-info"
         onClose={() => opener.current?.focus()}
         // A click on the backdrop lands on the dialog itself (its content fills it); that closes it.
@@ -86,15 +87,39 @@ export function PlayStyleInfoProvider({ infos, children }: { infos: PlayStyleInf
             {text && (
               <p className="type-caption text-text-muted">
                 {"Source: "}
-                <a href={text.source.url} target="_blank" rel="noopener noreferrer" className="text-text-secondary underline-offset-4 hover:underline">
-                  {text.source.title}
-                </a>
+                <SourceLink source={text.source} />
               </p>
+            )}
+            {/* EA's own pages disagreeing on this PlayStyle: what each says, with links (D-122). */}
+            {info?.caveat && (
+              <div className="flex flex-col gap-1 border-t border-border-subtle pt-3">
+                <p id="playstyle-info-caveat" className="type-caption text-text-secondary">
+                  {info.caveat.text}
+                </p>
+                <p className="type-caption text-text-muted">
+                  {info.caveat.sources.length > 1 ? "Sources: " : "Source: "}
+                  {info.caveat.sources.map((source, i) => (
+                    <span key={source.url}>
+                      {i > 0 && " · "}
+                      <SourceLink source={source} />
+                    </span>
+                  ))}
+                </p>
+              </div>
             )}
           </div>
         )}
       </dialog>
     </InfoContext.Provider>
+  );
+}
+
+/** An EA page cited in the sheet, opened in a new tab. */
+function SourceLink({ source }: { source: Source }) {
+  return (
+    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-text-secondary underline-offset-4 hover:underline">
+      {source.title}
+    </a>
   );
 }
 

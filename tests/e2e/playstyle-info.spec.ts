@@ -16,7 +16,10 @@ test("a signature PlayStyle on the Builds page opens a bottom sheet on phone wit
   await expect(dialog.getByRole("heading", { name: "Low Driven Shot" })).toBeVisible();
   await expect(dialog).toContainText("PlayStyle");
   await expect(dialog).toContainText("Enhances a Player's ability to execute low driven shots");
-  await expect(dialog.getByRole("link")).toHaveAttribute("href", "https://www.ea.com/games/ea-sports-fc/fc-27/news/what-are-playstyles");
+  await expect(dialog.getByRole("link", { name: /PlayStyles: Everything You Need to Know/ }).first()).toHaveAttribute("href", "https://www.ea.com/games/ea-sports-fc/fc-27/news/what-are-playstyles");
+  // EA contradicts itself on this one (Chime, 28 Nov: "it should carry it and just write what they said").
+  await expect(dialog).toContainText("Removed the shot speed boost previously applied to low-driven shots");
+  await expect(dialog.getByRole("link", { name: /Gameplay Deep Dive/ })).toHaveAttribute("href", "https://www.ea.com/games/ea-sports-fc/fc-27/news/pitch-notes-fc27-gameplay-deep-dive");
   // A bottom sheet: it sits on the bottom edge, full width.
   await page.waitForTimeout(400);
   const box = (await dialog.boundingBox())!;

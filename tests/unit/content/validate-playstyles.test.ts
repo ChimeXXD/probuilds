@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadContent } from "@/lib/content/load";
-import { infosFor, playStyleNamesUsed, validatePlayStylesFile } from "@/lib/content/playstyles";
+import { infosFor, playStyleInfos, playStyleNamesUsed, validatePlayStylesFile, type PlayStylesFile } from "@/lib/content/playstyles";
 import { validateAll } from "@/lib/content/validate";
 import { PLAYSTYLE_CATEGORIES } from "@/lib/submit/editor";
 
@@ -27,6 +27,19 @@ const good = () => ({
 const messages = (data: unknown) => validatePlayStylesFile("playstyles.json", data).map((p) => `${p.path}: ${p.message}`);
 
 describe("validatePlayStylesFile", () => {
+  it("passes a caveat shown in the sheet when it cites the file's EA sources, and fails one citing nothing or an unknown source", () => {
+    const ok = good() as ReturnType<typeof good> & { playStyles: Record<string, unknown>[] };
+    ok.playStyles[0]!.caveat = { text: "EA's later page says otherwise.", sourceIds: ["ea-what-are-playstyles"] };
+    expect(messages(ok)).toEqual([]);
+    const bad = good() as ReturnType<typeof good> & { playStyles: Record<string, unknown>[] };
+    bad.playStyles[0]!.caveat = { text: "x", sourceIds: [] };
+    bad.playStyles[1]!.caveat = { text: "y", sourceIds: ["fut-gg"] };
+    expect(messages(bad)).toEqual(["playStyles[0].caveat.sourceIds: must have at least 1", 'playStyles[1].caveat.sourceIds[0]: unknown source "fut-gg"']);
+    const twice = good() as ReturnType<typeof good> & { playStyles: Record<string, unknown>[] };
+    twice.playStyles[0]!.caveat = { text: "z", sourceIds: ["ea-what-are-playstyles", "ea-what-are-playstyles"] };
+    expect(messages(twice)).toEqual(["playStyles[0].caveat.sourceIds[1]: is used twice"]);
+  });
+
   it("passes a file with EA wording and with entries still to check in game (null)", () => {
     expect(messages(good())).toEqual([]);
   });
@@ -117,5 +130,14 @@ describe("infosFor", () => {
     expect(picked).toHaveLength(1);
     expect(picked[0]?.playStyle).not.toBeNull();
     expect(picked[0]?.plus).not.toBeNull();
+  });
+});
+
+describe("playStyleInfos caveats", () => {
+  it("carries a caveat with its sources resolved, and infosFor keeps it for the PlayStyle a page shows", () => {
+    const file = { ...good(), playStyles: [{ ...good().playStyles[0]!, caveat: { text: "EA disagrees.", sourceIds: ["ea-what-are-playstyles"] } }] } as unknown as PlayStylesFile;
+    const [info] = playStyleInfos(file);
+    expect(info!.caveat).toEqual({ text: "EA disagrees.", sources: [{ title: SOURCE.title, url: SOURCE.url, accessed: SOURCE.accessed }] });
+    expect(infosFor([info!], [{ name: "Chip Shot", tier: "plus" }])[0]!.caveat?.text).toBe("EA disagrees.");
   });
 });

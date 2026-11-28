@@ -17,6 +17,8 @@ export interface PlayStyleEntry {
   plus: PlayStyleText | null;
   /** For whoever edits the file (EA's own contradictions, other names); never shown. */
   notes: string | null;
+  /** Shown under the description: what EA's own pages say when they disagree, citing them (D-122). */
+  caveat?: { text: string; sourceIds: string[] } | null;
 }
 
 export interface PlayStylesFile {
@@ -33,6 +35,7 @@ export interface PlayStyleInfo {
   name: string;
   playStyle: { text: string; source: Source } | null;
   plus: { text: string; source: Source } | null;
+  caveat: { text: string; sources: Source[] } | null;
 }
 
 export const PLAYSTYLES_FILE = "playstyles.json";
@@ -80,6 +83,16 @@ export function validatePlayStylesFile(file: string, data: unknown): Problem[] {
         if (typeof d.sourceId !== "string" || !ids.has(d.sourceId)) c.add(`${p}.${tier}.sourceId`, `unknown source ${JSON.stringify(d.sourceId)}`);
       }
       c.str(`${p}.notes`, entry.notes, { nullable: true });
+      const caveat = entry.caveat;
+      if (caveat !== undefined && c.obj(`${p}.caveat`, caveat, { nullable: true })) {
+        c.str(`${p}.caveat.text`, caveat.text);
+        if (c.arr(`${p}.caveat.sourceIds`, caveat.sourceIds, { min: 1 }))
+          caveat.sourceIds.forEach((id, j, list) => {
+            const q = `${p}.caveat.sourceIds[${j}]`;
+            if (typeof id !== "string" || !ids.has(id)) c.add(q, `unknown source ${JSON.stringify(id)}`);
+            else if (list.indexOf(id) !== j) c.add(q, "is used twice");
+          });
+      }
     });
   }
   return c.problems;
@@ -128,7 +141,11 @@ export function playStyleInfos(file: PlayStylesFile): PlayStyleInfo[] {
     const source = d && byId.get(d.sourceId);
     return d && source ? { text: d.text, source } : null;
   };
-  return file.playStyles.map((e) => ({ name: e.name, playStyle: resolve(e.playStyle), plus: resolve(e.plus) }));
+  const caveat = (c: PlayStyleEntry["caveat"]) => {
+    const sources = (c?.sourceIds ?? []).flatMap((id) => byId.get(id) ?? []);
+    return c && sources.length ? { text: c.text, sources } : null;
+  };
+  return file.playStyles.map((e) => ({ name: e.name, playStyle: resolve(e.playStyle), plus: resolve(e.plus), caveat: caveat(e.caveat) }));
 }
 
 export type Tier = "playStyle" | "plus";
@@ -145,7 +162,7 @@ export function infosFor(all: PlayStyleInfo[], uses: { name: string; tier: Tier 
   return [...tiers].flatMap(([name, used]) => {
     const info = byName.get(name);
     if (!info) return [];
-    return [{ name, playStyle: used.has("playStyle") ? info.playStyle : null, plus: used.has("plus") ? info.plus : null }];
+    return [{ name, playStyle: used.has("playStyle") ? info.playStyle : null, plus: used.has("plus") ? info.plus : null, caveat: info.caveat }];
   });
 }
 

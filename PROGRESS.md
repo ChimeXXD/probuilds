@@ -2,7 +2,7 @@
 
 Newest first. Each entry: what changed, what was checked, what wasn't verified, what's next.
 
-## The 30 bookmarked animations built (Sat 28 – Sun 29 Nov 2026)
+## The 30 bookmarked animations built (Sat 28 Nov 2026)
 
 - **Chime:** "let's build all the animation that's on the PDF"; "make sure to use Emil's skill in every context"; paused overnight, then "start".
 - **Foundation** (1449ee2): spring tokens as CSS linear() easings (scripts/build-springs.mjs → motion.css, unit-tested), RollingNumber, shared keyframes; page budget 235 KB (D-119).

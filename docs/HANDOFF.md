@@ -1,6 +1,6 @@
 # Handoff: read this first when you pick the project back up
 
-## Latest: Sun 29 Nov 2026. All 30 bookmarked animations built and merged
+## Latest: Sat 28 Nov 2026. All 30 bookmarked animations built and merged
 
 All three lanes merged into main (see PROGRESS and D-120); the coordinator fixed the shared pill (no keyboard slide, no diagonal across wrapped lines) and Submit's chip width. Preview: push main to `preview` after each merge.
 **Open for Chime (questions from the three lanes):** copy-link check vs the sheet closing at once; Figma for the slider ticks, AP meter, tooltip pill, widened search field and results panel; AP meter red or amber when short; the swipe's in-plane tilt vs D-117 (1); PlayStyle tooltip text or none; expand-card timing and wrapped names; Stance cards sliding on a linked load; All steps rows staggering while the sheet enters; "3 of 12" section counts on samples; letter-limit thresholds and screen-reader wording (Request 80 with a ring from 40; build name 40 with a ring from the first letter); Submit step progress as a bar in Figma or the number roll; the 450 ms hold before "Sent for listing"; the level slider's specialization tick on Submit; Your card's tap button being pointer-only.

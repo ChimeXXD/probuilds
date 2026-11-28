@@ -248,3 +248,4 @@ What each PlayStyle and PlayStyle+ does, for the info sheet every badge opens (D
 - `playStyle` and `plus` are `{ text, sourceId }`, or `null` when EA's wording hasn't been found: the site then shows "To check in game".
 - `sourceId` points into the file's `sources`, which are EA pages only (ea.com, help.ea.com).
 - `notes` (string or `null`) is for whoever edits the file, such as EA contradicting itself; it is never shown.
+- `caveat` (optional, object or `null`) is shown under the description: `{ text, sourceIds }`, when EA's own pages disagree about a PlayStyle (Low Driven Shot), reporting what each says with at least one `sourceId` from `sources` (D-122).
