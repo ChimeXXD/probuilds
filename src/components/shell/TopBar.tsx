@@ -22,7 +22,7 @@ export function TopBar() {
   const pathname = usePathname();
   return (
     <header data-testid="top-bar" className="h-[60px] border-b border-system-divider bg-bg-page tablet:h-[72px]">
-      <div className="mx-auto flex h-full items-center gap-2 px-5 tablet:gap-3 tablet:px-10 min-[834px]:gap-4 desktop:max-w-(--layout-content-max) desktop:px-0">
+      <div className="mx-auto flex h-full items-center gap-2 px-5 max-[359px]:gap-1 tablet:gap-3 tablet:px-10 min-[834px]:gap-4 desktop:max-w-(--layout-content-max) desktop:px-0">
         <Link href="/" aria-label="ProBuilds home" className={`flex min-h-11 shrink-0 items-center hover:opacity-80 ${STATE_TRANSITION} ${PRESS}`}>
           <Logo size="header" />
         </Link>
@@ -44,12 +44,14 @@ export function TopBar() {
           })}
         </nav>
         {/* Figma 499:11455 / 499:11705 (D-114): phone sets the chip, the theme switch and search side by side; from
-            tablet the switch and search are a pair, 4 px apart, 16 px after the chip. */}
+            tablet the switch and search are a pair, 4 px apart, 16 px after the chip. Under 360 px (a 320 px phone) the
+            row was 7 px too wide and pushed search off the screen: the gap after the logo gives 4 px and the chip's sides
+            4 px each, so the gutters still line up with the page (D-125 (2)). */}
         <div className="ml-auto flex shrink-0 items-center tablet:ml-0 tablet:gap-4">
           <Link
             href="/changelog"
             data-testid="season-chip"
-            className={`type-caption tap-target shrink-0 rounded-full border border-border-strong px-3 py-1.5 text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary ${STATE_TRANSITION} ${PRESS}`}
+            className={`type-caption tap-target shrink-0 rounded-full border border-border-strong px-3 py-1.5 max-[359px]:px-2 text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary ${STATE_TRANSITION} ${PRESS}`}
           >
             <span className="max-[390px]:sr-only">{season.game} · </span>
             {season.season}

@@ -227,7 +227,7 @@ function SourceLine({ source }: { source: Source }) {
 /** An EA page cited in the sheet, opened in a new tab. */
 function SourceLink({ source }: { source: Source }) {
   return (
-    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-text-secondary underline-offset-4 hover:underline">
+    <a href={source.url} target="_blank" rel="noopener noreferrer" className="tap-target text-text-secondary underline-offset-4 hover:underline">
       {source.title}
     </a>
   );

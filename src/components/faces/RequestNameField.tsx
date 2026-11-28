@@ -36,7 +36,11 @@ export function RequestNameField({ value, suggestion, onChange }: { value: strin
   useLayoutEffect(hideIfScrolled);
 
   return (
-    <div className="relative flex h-13 items-center gap-2.5 rounded-md border border-input-border bg-input-bg px-4 hover:border-input-border-hovered focus-within:border-2 focus-within:border-input-border-focused focus-within:px-[15px]">
+    // The input is one 26 px line in the middle of the 52 px box: a tap anywhere on the box (the icon, the padding, the
+    // drawn placeholder) puts the caret in it, so the whole field is the target (D-125 (2)). Keys reach the input itself.
+    <div
+      onClick={(e) => e.target !== input.current && input.current?.focus()}
+      className="relative flex h-13 cursor-text items-center gap-2.5 rounded-md border border-input-border bg-input-bg px-4 hover:border-input-border-hovered focus-within:border-2 focus-within:border-input-border-focused focus-within:px-[15px]">
       <span className="flex shrink-0 text-text-muted">
         <Icon name="search" size={20} />
       </span>

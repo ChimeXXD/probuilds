@@ -1,0 +1,32 @@
+/* How the site behaves on the device under it: touch on phones (D-125 (2); the mobile-native skill's baseline).
+   Imported by globals.css. Colours are tokens only. */
+
+@layer base {
+  /* No grey flash over a tapped link or button on iOS and Android: every control has its own press state
+     (interaction.ts PRESS, the chips' and cards' scale). Inherited, so once on <html> covers the page. */
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* A tap is a click at once: no wait for a second tap that would zoom. Pinch zoom stays. A swipe surface's own
+     touch-action (pan-y on the Builds deck) still wins, since touch-action narrows down the tree. */
+  a[href],
+  button,
+  [role="button"],
+  summary,
+  label,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+
+  /* A long press on a control doesn't select its label. Text the reader may copy (body, names, the takedown
+     address) is not a control and stays selectable. */
+  button,
+  [role="button"],
+  summary {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

@@ -20,7 +20,7 @@ export function BuildAttributes({ groups, mastery }: { groups: AttributeGroupVie
           {mastery.source && (
             <p className="type-caption text-text-muted">
               {"Sources: "}
-              <a href={mastery.source.url} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
+              <a href={mastery.source.url} target="_blank" rel="noopener noreferrer" className="tap-target underline-offset-4 hover:underline">
                 {mastery.source.label}
               </a>
               {" (level 10); levels 30 and 55 seen in game footage, 22 Oct."}

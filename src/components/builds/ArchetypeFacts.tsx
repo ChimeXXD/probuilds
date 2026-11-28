@@ -80,7 +80,7 @@ export function WideFacts({ archetype }: { archetype: ArchetypeView }) {
           {archetype.sources.map((s, i) => (
             <span key={s.url}>
               {i > 0 && " · "}
-              <a href={s.url} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
+              <a href={s.url} target="_blank" rel="noopener noreferrer" className="tap-target underline-offset-4 hover:underline">
                 {s.label}
               </a>
             </span>

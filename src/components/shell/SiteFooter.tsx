@@ -13,7 +13,9 @@ export function SiteFooter() {
       <footer className="border-t border-system-divider bg-bg-page">
         <div className="mx-auto flex flex-col gap-4 p-5 tablet:px-10 tablet:py-12 desktop:max-w-(--layout-content-max) desktop:px-0">
           <Logo size="footer" />
-          <nav aria-label="Site" className="flex gap-6">
+          {/* Wraps on a 320 px phone, where the four links ran 17 px into the right gutter; rows 24 px apart keep the
+              44 px tap areas from overlapping (D-125 (2)). */}
+          <nav aria-label="Site" className="flex flex-wrap gap-x-6 gap-y-6">
             {FOOTER_LINKS.map((l) => (
               <Link key={l.href} href={l.href} className={`type-label tap-target text-text-secondary ${QUIET_LINK}`}>
                 {l.label}

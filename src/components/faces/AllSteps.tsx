@@ -60,7 +60,7 @@ export function AllSteps({ recipe, step, onPick }: { recipe: Recipe; step: numbe
         aria-labelledby="all-steps-title"
         onClose={() => trigger.current?.focus()}
         onClick={(e) => e.target === dialog.current && close()}
-        className="mt-auto mb-0 max-h-[85dvh] w-full max-w-none rounded-t-xl border-0 bg-bg-raised p-0 text-text-primary shadow-elevation-3 transition-[translate,scale,opacity] duration-250 ease-[cubic-bezier(0.32,0.72,0,1)] backdrop:bg-system-backdrop starting:open:translate-y-full tablet:m-auto tablet:w-[480px] tablet:max-w-[calc(100%-48px)] tablet:rounded-xl tablet:duration-(--dur-base) tablet:ease-(--ease-out) tablet:starting:open:translate-y-0 tablet:starting:open:scale-95 tablet:starting:open:opacity-0 motion-reduce:starting:open:translate-y-0 motion-reduce:starting:open:scale-100 motion-reduce:starting:open:opacity-0"
+        className="mt-auto mb-0 max-h-[85dvh] w-full max-w-none overscroll-contain rounded-t-xl border-0 bg-bg-raised p-0 text-text-primary shadow-elevation-3 transition-[translate,scale,opacity] duration-250 ease-[cubic-bezier(0.32,0.72,0,1)] backdrop:bg-system-backdrop starting:open:translate-y-full tablet:m-auto tablet:w-[480px] tablet:max-w-[calc(100%-48px)] tablet:rounded-xl tablet:duration-(--dur-base) tablet:ease-(--ease-out) tablet:starting:open:translate-y-0 tablet:starting:open:scale-95 tablet:starting:open:opacity-0 motion-reduce:starting:open:translate-y-0 motion-reduce:starting:open:scale-100 motion-reduce:starting:open:opacity-0"
       >
         <div className="flex flex-col gap-4 px-5 pt-5 pb-[calc(20px+env(safe-area-inset-bottom))] tablet:pb-5">
           <span aria-hidden="true" className="mx-auto h-1 w-10 rounded-[2px] bg-text-muted tablet:hidden" />

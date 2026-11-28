@@ -1,6 +1,7 @@
 @import "tailwindcss" source("../");
 @import "./tokens.css";
 @import "./motion.css";
+@import "./platform.css";
 
 /* Light mode, as the tokens decide it: only when the user's switch sets data-theme="light" on <html>; the device's
    setting is ignored (D-112). Used where a token can't switch on its own, such as the two-colour logo files:
