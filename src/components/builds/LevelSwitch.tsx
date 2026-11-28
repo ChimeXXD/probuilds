@@ -123,7 +123,7 @@ export function LevelSwitch({ levels }: { levels: LevelsView }) {
               onKeyDown={() => (held.current = false)}
               className="peer absolute inset-y-0 -left-3.5 z-10 h-full w-[calc(100%+28px)] cursor-pointer opacity-0"
             />
-            <span aria-hidden="true" className="absolute top-4.75 -right-3.5 -left-3.5 h-1.5 overflow-hidden rounded-[3px] bg-bg-surface">
+            <span aria-hidden="true" className="absolute top-4.75 -right-3.5 -left-3.5 h-1.5 overflow-hidden rounded-[3px] bg-bg-surface light:bg-border-subtle">
               {/* 14 px wider than the track, slid left so its end sits under the knob's centre (100cqw is the knob's
                   travel, the track less its 14 px ends): it moves with the knob, and is hidden under it at rest. */}
               <span
@@ -181,7 +181,8 @@ function Ticks({ max, special }: { max: number; special: number | null }) {
 
 /**
  * The Storage meter (motion-bookmarks.pdf #14): the level's AP as a 3 px bar in the gap under the AP line, spent (text/secondary) growing from the
- * left and what's left (lime, D-115's "AP left") from the right, on the track colour; status/danger when the build
+ * left and what's left (lime, D-115's "AP left") from the right, on the track colour; in light mode left is accent/text and
+ * spent border/strong (text/secondary beside accent/text was 1.03:1); status/danger when the build
  * needs more than the level gives. scaleX only, --dur-base --ease-out, no bounce (it is data); at once from the
  * keyboard and with reduced motion (the numbers crossfade).
  * TODO(Chime): not drawn in Figma; its height, place and colours are a proposal.
@@ -189,13 +190,13 @@ function Ticks({ max, special }: { max: number; special: number | null }) {
 function Meter({ share, still }: { share: ApShare; still: boolean }) {
   const move = `transition-transform duration-(--dur-base) ease-(--ease-out) motion-reduce:transition-none ${still ? "transition-none" : ""}`;
   return (
-    <span aria-hidden="true" data-testid="ap-meter" className="absolute inset-x-0 top-[calc(100%+2.5px)] block h-0.75 overflow-hidden rounded-[2px] bg-bg-surface">
+    <span aria-hidden="true" data-testid="ap-meter" className="absolute inset-x-0 top-[calc(100%+2.5px)] block h-0.75 overflow-hidden rounded-[2px] bg-bg-surface light:bg-border-subtle">
       <span
         data-part="spent"
-        className={`absolute inset-0 origin-left ${share.over ? "bg-status-danger" : "bg-text-secondary"} ${move}`}
+        className={`absolute inset-0 origin-left ${share.over ? "bg-status-danger" : "bg-text-secondary light:bg-border-strong"} ${move}`}
         style={{ transform: `scaleX(${share.spent})` }}
       />
-      <span data-part="left" className={`absolute inset-0 origin-right bg-accent-fill ${move}`} style={{ transform: `scaleX(${share.left})` }} />
+      <span data-part="left" className={`absolute inset-0 origin-right bg-accent-fill light:bg-accent-text ${move}`} style={{ transform: `scaleX(${share.left})` }} />
     </span>
   );
 }

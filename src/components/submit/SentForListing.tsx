@@ -40,7 +40,7 @@ export function SentForListing({ onShare, onAnother }: { onShare: (from: HTMLEle
           <li key={s.title} className="flex gap-3.5 border-b border-system-divider py-4 last:border-0">
             <span
               aria-hidden="true"
-              className={`type-label flex size-7 shrink-0 items-center justify-center rounded-full border-[1.5px] ${i === 0 ? "border-accent-fill text-accent-text" : "border-border-strong text-text-secondary"}`}
+              className={`type-label flex size-7 shrink-0 items-center justify-center rounded-full border-[1.5px] ${i === 0 ? "border-accent-fill text-accent-text light:border-accent-text" : "border-border-strong text-text-secondary"}`}
             >
               {i + 1}
             </span>

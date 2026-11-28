@@ -100,7 +100,7 @@ export function Slider({
         aria-hidden="true"
         className="absolute inset-x-0 top-2 h-1 overflow-hidden rounded-[2px] bg-border-strong transition-colors duration-(--dur-fast) ease-(--ease-out) can-hover:[.peer:hover~&]:bg-input-border-hovered"
       >
-        {fill && <span data-part="fill" className={`block h-full origin-left bg-accent-fill ${move}`} style={{ transform: `scaleX(${p})` }} />}
+        {fill && <span data-part="fill" className={`block h-full origin-left bg-accent-fill light:bg-accent-text ${move}`} style={{ transform: `scaleX(${p})` }} />}
       </span>
       {mark && <span aria-hidden="true" className="absolute top-1 left-1/2 h-3 w-0.5 -translate-x-1/2 bg-text-muted" />}
       {ticks && <Ticks min={min} max={max} />}

@@ -1,5 +1,5 @@
 {
-  "about": "Snapshot of the Figma Design System variables and styles (file hyFx4Audhn4F9KxL9bRCLD, read 25 Nov 2026). src/styles/tokens.css is generated from it by scripts/build-tokens.mjs; tests/unit/tokens.test.ts keeps them in step. Re-export from Figma when the design system changes. effects also holds component effects that have no style in Figma: bottom-nav is the Bottom nav component's own drop shadow (282:521, read 25 Nov). playstyle/badge was added on 28 Nov (Chime picked deep gold for light-mode PlayStyle badges, D-116) and is to be mirrored into Figma.",
+  "about": "Snapshot of the Figma Design System variables and styles (file hyFx4Audhn4F9KxL9bRCLD, read 25 Nov 2026). src/styles/tokens.css is generated from it by scripts/build-tokens.mjs; tests/unit/tokens.test.ts keeps them in step. Re-export from Figma when the design system changes. effects also holds component effects that have no style in Figma: bottom-nav is the Bottom nav component's own drop shadow (282:521, read 25 Nov). playstyle/badge was added on 28 Nov (Chime picked deep gold for light-mode PlayStyle badges, D-116) and is to be mirrored into Figma. input/border and input/border-hovered changed in light on 28 Nov (D-125 (4), light-mode sweep): #b7b4a9 was 2.1:1 on white and 1.9:1 on cream, under WCAG 1.4.11's 3:1 for a field's edge; now #8c8a82 (3.5:1 on white, 3.1:1 on cream) and #6f6d66 on hover; to be mirrored into Figma.",
   "theme": {
     "bg/page": {
       "dark": "#01261b",
@@ -127,11 +127,11 @@
     },
     "input/border": {
       "dark": "#426a5b",
-      "light": "#b7b4a9"
+      "light": "#8c8a82"
     },
     "input/border-hovered": {
       "dark": "#b7b4a9",
-      "light": "#7f7d75"
+      "light": "#6f6d66"
     },
     "input/border-focused": {
       "dark": "#d8ff4f",

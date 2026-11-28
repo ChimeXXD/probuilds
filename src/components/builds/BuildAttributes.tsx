@@ -47,7 +47,7 @@ export function BuildAttributes({ groups, mastery }: { groups: AttributeGroupVie
                     )}
                   </div>
                   <span className={`${NUMBER_SM} -mt-px text-text-primary`}>{a.value}</span>
-                  <span aria-hidden="true" className="absolute inset-x-0 bottom-0.5 h-0.75 overflow-hidden rounded-[2px] bg-bg-surface">
+                  <span aria-hidden="true" className="absolute inset-x-0 bottom-0.5 h-0.75 overflow-hidden rounded-[2px] bg-bg-surface light:bg-border-subtle">
                     <span className="block h-full rounded-[2px] bg-text-secondary" style={{ width: `${a.percent}%` }} />
                   </span>
                 </li>
@@ -70,8 +70,8 @@ function Gauge({ value }: { value: number | null }) {
   return (
     <span aria-hidden={value === null} className="relative block h-7.5 w-12 shrink-0">
       <svg width="48" height="30" viewBox="0 0 48 30" fill="none" aria-hidden="true" className="absolute inset-0">
-        <path d={arc} strokeWidth="4.8" strokeLinecap="round" className="stroke-bg-raised" />
-        {value !== null && <path d={arc} pathLength={100} strokeDasharray={`${value} 100`} strokeWidth="4.8" strokeLinecap="round" className="stroke-accent-fill" />}
+        <path d={arc} strokeWidth="4.8" strokeLinecap="round" className="stroke-bg-raised light:stroke-border-subtle" />
+        {value !== null && <path d={arc} pathLength={100} strokeDasharray={`${value} 100`} strokeWidth="4.8" strokeLinecap="round" className="stroke-accent-fill light:stroke-accent-text" />}
       </svg>
       <span className={`${NUMBER_SM} absolute inset-x-0 top-3.5 text-center text-text-primary tabular-nums`}>
         <RollingNumber value={value === null ? "–" : String(value)} />

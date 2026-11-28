@@ -55,8 +55,8 @@
   --color-accent-state-hovered: light-dark(#0b3d2e1f, #d8ff4f1f);
   --color-accent-state-pressed: light-dark(#0b3d2e3d, #d8ff4f3d);
   --color-input-bg: light-dark(#ffffff, #01261b);
-  --color-input-border: light-dark(#b7b4a9, #426a5b);
-  --color-input-border-hovered: light-dark(#7f7d75, #b7b4a9);
+  --color-input-border: light-dark(#8c8a82, #426a5b);
+  --color-input-border-hovered: light-dark(#6f6d66, #b7b4a9);
   --color-input-border-focused: light-dark(#2c5748, #d8ff4f);
   --color-system-divider: light-dark(#d1cec1, #194738);
   --color-system-backdrop: light-dark(#10111352, #101113a3);

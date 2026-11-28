@@ -150,13 +150,13 @@ function ArchetypeTile({ archetype, selected, enter, onPick }: { archetype: Arch
       aria-pressed={selected}
       onClick={onPick}
       style={enter === null ? undefined : ({ "--delay": `${enter}ms` } as CSSProperties)}
-      className={`flex flex-col items-start gap-2 rounded-lg p-4 text-left transition-[background-color,box-shadow,scale] duration-(--dur-fast) ease-(--ease-out) ${PRESS_CARD} ${selected ? "bg-action-selected ring-2 ring-accent-fill ring-inset" : "bg-bg-surface ring-1 ring-border-subtle ring-inset hover:bg-hover-fill hover:ring-border-strong"} ${enter === null ? "" : TILE_ENTER}`}
+      className={`flex flex-col items-start gap-2 rounded-lg p-4 text-left transition-[background-color,box-shadow,scale] duration-(--dur-fast) ease-(--ease-out) ${PRESS_CARD} ${selected ? "bg-action-selected ring-2 ring-accent-fill ring-inset light:ring-accent-text" : "bg-bg-surface ring-1 ring-border-subtle ring-inset hover:bg-hover-fill hover:ring-border-strong"} ${enter === null ? "" : TILE_ENTER}`}
     >
       <span className="flex size-10 items-center justify-center rounded-full bg-bg-page">
         <Emblem id={archetype.id} className="size-6.5" />
       </span>
       <span className="type-h4 text-text-primary">{archetype.name}</span>
-      <span className="type-caption flex flex-col text-text-muted">
+      <span className={`type-caption flex flex-col text-text-muted ${selected ? "light:text-text-secondary" : ""}`}>
         {archetype.signaturePlayStyles.map((s) => (
           <span key={s.name}>{s.name}</span>
         ))}

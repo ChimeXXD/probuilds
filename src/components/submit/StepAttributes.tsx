@@ -63,7 +63,7 @@ export function StepAttributes({
           <span aria-hidden="true" className="h-2 overflow-hidden rounded-xs bg-border-strong">
             <span
               data-testid="ap-meter-spent"
-              className={`block h-full origin-left transition-transform duration-(--dur-base) ease-(--ease-out) motion-reduce:transition-none ${ap.percent > 100 ? "bg-status-danger" : "bg-accent-fill"}`}
+              className={`block h-full origin-left transition-transform duration-(--dur-base) ease-(--ease-out) motion-reduce:transition-none ${ap.percent > 100 ? "bg-status-danger" : "bg-accent-fill light:bg-accent-text"}`}
               style={{ transform: `scaleX(${Math.min(ap.percent, 100) / 100})` }}
             />
           </span>
@@ -76,7 +76,7 @@ export function StepAttributes({
             type="button"
             aria-current={g.code === active ? "true" : undefined}
             onClick={(e) => jump(g.code, e.detail === 0)}
-            className={`type-caption flex h-11 min-w-0 flex-1 items-center justify-center rounded-full border ${STATE_TRANSITION} ${PRESS} ${g.code === active ? "border-accent-fill bg-bg-raised text-accent-text" : "border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
+            className={`type-caption flex h-11 min-w-0 flex-1 items-center justify-center rounded-full border ${STATE_TRANSITION} ${PRESS} ${g.code === active ? "border-accent-fill bg-bg-raised text-accent-text light:border-accent-text" : "border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
           >
             {g.code}
           </button>

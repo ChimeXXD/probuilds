@@ -57,7 +57,7 @@ function ValueRow({ value, place }: { value: RecipeValue; place: number }) {
           // FORMAT §Value: a knob's place along the track, drawn, never a game number (Design System Value chip 203:284).
           <span role="img" aria-label={`Knob at ${value.position}% of the track`} className="relative flex h-3.5 w-[126px] items-center">
             <span className="h-1.5 w-full rounded-full bg-action-selected" />
-            <span className="absolute size-3.5 -translate-x-1/2 rounded-full bg-accent-fill" style={{ left: `${value.position}%` }} />
+            <span className="absolute size-3.5 -translate-x-1/2 rounded-full bg-accent-fill light:bg-accent-text" style={{ left: `${value.position}%` }} />
           </span>
         )}
       </dd>

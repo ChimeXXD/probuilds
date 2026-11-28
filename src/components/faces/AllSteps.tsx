@@ -112,7 +112,7 @@ export function AllSteps({ recipe, step, onPick }: { recipe: Recipe; step: numbe
                       ticked.current = recipe.screens.map((s) => s.step).filter((s) => s >= step && s < to);
                       onPick(to);
                     }}
-                    className={`tap-target flex size-7 shrink-0 items-center justify-center rounded-full ${STATE_TRANSITION} ${PRESS} ${done ? "bg-accent-fill text-accent-on-fill hover:bg-accent-fill-hover" : "border-2 border-border-strong hover:border-input-border-hovered"}`}
+                    className={`tap-target flex size-7 shrink-0 items-center justify-center rounded-full ${STATE_TRANSITION} ${PRESS} ${done ? "bg-accent-fill text-accent-on-fill hover:bg-accent-fill-hover light:ring-1 light:ring-accent-on-fill light:ring-inset" : "border-2 border-input-border hover:border-input-border-hovered"}`}
                   >
                     {done && <Icon name="check" size={18} />}
                   </button>

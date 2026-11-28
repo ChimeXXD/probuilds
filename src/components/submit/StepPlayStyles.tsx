@@ -69,7 +69,7 @@ export function StepPlayStyles({
               aria-expanded={isOpen}
               aria-label={`PlayStyle+ slot ${slot + 1}: ${name}+`}
               onClick={() => onOpen(isOpen ? null : slot)}
-              className={`flex min-w-0 flex-1 flex-col items-stretch gap-2 rounded-[14px] bg-bg-surface p-3 text-left hover:bg-hover-fill ${STATE_TRANSITION} ${PRESS_CARD} ${isOpen ? "h-30 border-2 border-accent-fill" : "h-[118px] border border-border-strong hover:border-input-border-hovered"}`}
+              className={`flex min-w-0 flex-1 flex-col items-stretch gap-2 rounded-[14px] bg-bg-surface p-3 text-left hover:bg-hover-fill ${STATE_TRANSITION} ${PRESS_CARD} ${isOpen ? "h-30 border-2 border-accent-fill light:border-accent-text" : "h-[118px] border border-border-strong hover:border-input-border-hovered"}`}
             >
               <span className="flex h-9 items-center justify-between">
                 <PlusArt name={name} size="size-9" />
@@ -187,7 +187,7 @@ function Chip({ name, on, onPress }: { name: string; on: boolean; onPress: () =>
       onClick={onPress}
       className={`flex h-11 items-center gap-1.5 rounded-full pr-3 pl-2 ${STATE_TRANSITION} ${PRESS} ${on ? "border-[1.5px] border-text-primary bg-bg-raised text-text-primary" : "border border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
     >
-      {badge ? <PlayStyleArt src={badge} className={`size-6.5 ${on ? "" : "opacity-60"}`} /> : <span aria-hidden="true" className="size-6.5" />}
+      {badge ? <PlayStyleArt src={badge} className={`size-6.5 ${on ? "" : "opacity-60 light:opacity-100"}`} /> : <span aria-hidden="true" className="size-6.5" />}
       <span className="type-caption">{name}</span>
       {on && (
         <span className="flex text-accent-text">
