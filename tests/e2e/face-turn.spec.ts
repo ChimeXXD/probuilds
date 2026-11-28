@@ -57,6 +57,9 @@ test("a face with no turn frames has no turn credit", async ({ page }) => {
 test("Donald Trump's frames are kept but his face is not on the site (D-123)", async ({ page }) => {
   const res = await page.goto("/faces/donald-trump");
   expect(res?.status()).toBe(404);
+  // Kept out of public/ (D-124): not even a direct link serves them.
+  const frame = await page.request.get("/sample/faces/donald-trump/turn/01.webp");
+  expect(frame.status()).toBe(404);
 });
 
 test.describe("computer", () => {

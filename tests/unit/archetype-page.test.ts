@@ -65,6 +65,15 @@ describe("archetype page data", () => {
     expect(creditLine([])).toBeNull();
   });
 
+  it("credits a build read from a creator's video as the build page does: \"Read from <name>'s video\" (D-124)", () => {
+    expect(
+      creditLine([
+        { role: "made-by", name: "Leski", url: "https://youtube.com/x", creatorId: null, creator: null },
+        { role: "reference", name: "Leski", url: "https://youtube.com/x", creatorId: null, creator: null },
+      ]),
+    ).toBe("Read from Leski's video");
+  });
+
   it("names a PlayStyle+ badge only when its file exists", () => {
     expect(playStylePlusIcon("Low Driven Shot")).toBe("/art/playstyles-plus/low-driven-shot.webp");
     expect(playStylePlusIcon("1v1 Close Down")).toBe("/art/playstyles-plus/1v1-close-down.webp");

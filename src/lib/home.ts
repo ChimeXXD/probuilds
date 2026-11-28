@@ -34,9 +34,10 @@ export function homeView(content: Content, pictureExists: (file: string) => bool
   const builds = TEAM_LINES.flatMap((id) => {
     const archetype = content.archetypeFile.archetypes.find((a) => a.id === id);
     if (!archetype) return [];
-    // The line's Meta pick, else its recommended or first build, else the archetype itself (D-75 (4)).
+    // The line's Meta pick, else its Recommended build, else the archetype itself (D-124, amending D-75 (4)): Home
+    // never shows an unbadged build, so an untitled draft can't stand in for a line.
     const own = content.builds.filter((b) => b.archetype.id === id);
-    const build = own.find((b) => b.badge === "meta") ?? own.find((b) => b.badge === "recommended") ?? own[0];
+    const build = own.find((b) => b.badge === "meta") ?? own.find((b) => b.badge === "recommended");
     return [build ? buildPreviewView(build, { sample: Boolean(build.sample), tag: true }) : archetypePreviewView(archetype)];
   });
   const changes = content.changelog.slice(0, CHANGES_SHOWN).map((e) => ({ id: e.id, line: `${formatDay(e.date)} · ${CHANGE_KIND[e.kind]}`, title: e.title }));

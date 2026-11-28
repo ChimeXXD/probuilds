@@ -32,14 +32,12 @@ describe("homeView", () => {
   it("shows one meta build per line of the team: the recorded Meta Finisher, then Maestro and Boss from their archetypes (D-75 (4))", () => {
     expect(view?.builds.map((b) => [b.title, b.tag, b.line, b.href])).toEqual([
       ["Meta Finisher", "Meta pick", "Level 55 · 185 cm · 80 kg", "/builds/finisher/meta-finisher"],
-      // Maestro's only build is Leski's draft (D-123 (2)), so the line shows it (no badge, its title not written yet).
-      ["PLACEHOLDER", null, "Level 55 · 183 cm · 65 kg", "/builds/maestro/maestro-leski"],
+      // Maestro's only build is Leski's untitled draft: Home shows only a Meta pick or Recommended build, else the
+      // archetype (D-124), so the line keeps its archetype card.
+      ["Meta Maestro", "Meta pick", "Midfielder · not recorded yet", "/builds/maestro"],
       ["Meta Boss", "Meta pick", "Defender · not recorded yet", "/builds/boss"],
     ]);
     expect(view?.builds[0]?.keyStats.map((s) => s.value)).toEqual(["88", "80", "58", "84", "38", "66"]);
-    // A real draft (not one of Figma's samples) keeps its version tag and credit (rules 4 and 5).
-    expect(view?.builds[1]?.versionTag).toBe("FC 27 · Season 2 · Not yet checked in game");
-    expect(view?.builds[1]?.credit).not.toBeNull();
     expect(view?.builds[1]?.keyStats.every((s) => s.value === "—")).toBe(true);
     expect(view?.builds[1]?.playStylesPlus.map((p) => p.name)).toEqual(["Pinged Pass", "Long Ball Pass"]);
     expect(view?.builds[2]?.playStylesPlus.map((p) => p.name)).toEqual(["Bruiser", "Aerial Fortress"]);

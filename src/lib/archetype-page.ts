@@ -65,9 +65,12 @@ export function creditLine(credits: ResolvedCredit[], sample = false): string | 
   const made = names("made-by");
   if (!made) return null;
   if (sample) return `Made by ${made}`;
+  // A build read from a creator's video (D-66, D-123 (2)) is worded as its build page words it (D-110, D-124).
+  // Like the page, it names the first reference: one video, so never "Read from A and B's video".
+  const reference = credits.find((c) => c.role === "reference");
+  if (reference) return `Read from ${reference.name}'s video`;
   const tutorial = names("tutorial");
-  // TODO(Chime): no wording yet for "submitted-by" and "reference" credits on a card; they are left out. A build read
-  // from a streamer's video (D-66) credits them as "reference" and needs that wording before one is published.
+  // TODO(Chime): no wording yet for "submitted-by" credits on a card; they are left out.
   return tutorial ? `Made by ${made} in game · tutorial by ${tutorial}` : `Made by ${made} in game`;
 }
 

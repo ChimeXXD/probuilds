@@ -3,7 +3,7 @@
   "id": "neymar-jr-mohawk",
   "slug": "neymar-jr-mohawk",
   "status": "draft",
-  "_example": "Figma's sample face (D-107, D-108): title, kind, place and stand-in picture copied from the Faces library frames (333:1139). The picture is a frame from the credited creator's YouTube tutorial, shown on the preview only. Nothing of the recipe is recorded: every PLACEHOLDER is unknown, and no value here may be published.",
+  "_example": "Figma's sample face (D-107, D-108): title, kind and place copied from the Faces library frames (333:1139). The stand-in picture is frame 01 of the face's 360° turn (D-123, D-124 (2): the picture matches the turn's footage), from the credited creator's YouTube tutorial, shown on the preview only. Nothing of the recipe is recorded: every PLACEHOLDER is unknown, and no value here may be published.",
   "sample": {
     "place": 2,
     "faceOfTheWeek": true,
@@ -196,6 +196,11 @@
       "version": 1,
       "date": "2026-11-28",
       "note": "360° turn from CodeName Max's video, cut by Sharon from the tutorial and kept under sample/faces/ (D-123); preview only."
+    },
+    {
+      "version": 1,
+      "date": "2026-11-28",
+      "note": "The stand-in picture is now frame 01 of the turn, so the head doesn't change on the first drag (D-124 (2))."
     }
   ],
   "createdAt": "2026-11-26",
