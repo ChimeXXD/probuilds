@@ -39,6 +39,15 @@ for (const width of [390, 834, 1440]) {
   });
 }
 
+test("on desktop the three tiles keep their targets level when a name takes two lines (Sweeper Keeper+)", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/builds#sweeper-keeper");
+  const lists = page.getByTestId("specialization").filter({ visible: true }).getByRole("list");
+  const tops = await lists.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+  expect(tops).toHaveLength(3);
+  expect(new Set(tops).size).toBe(1);
+});
+
 test.describe("on a computer with a mouse", () => {
   test.use({ hasTouch: false, isMobile: false });
 

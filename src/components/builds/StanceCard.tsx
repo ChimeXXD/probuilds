@@ -66,10 +66,11 @@ export function StanceCard({ archetype, eager = false }: { archetype: ArchetypeV
             </span>
           </span>
         </div>
-        {/* The card's own 1 px edge, drawn over everything as Figma draws a frame's stroke. */}
+        {/* The card's own 1 px edge, drawn over everything as Figma draws a frame's stroke. On the front card it
+            brightens under a mouse: the card opens its builds (D-121 (1), (3)). */}
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 border border-border-strong"
+          className="pointer-events-none absolute inset-0 border border-border-strong transition-colors duration-(--dur-fast) ease-(--ease-out) group-hover/stance:border-input-border-hovered"
           style={{ borderRadius: cqw(16) }}
         />
       </div>

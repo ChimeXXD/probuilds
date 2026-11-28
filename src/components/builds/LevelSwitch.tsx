@@ -18,7 +18,11 @@ import { useChosenLevel } from "./ChosenLevel";
 // Stat card (motion-bookmarks.pdf #13): the AP numbers roll to their new values with the level (RollingNumber, tabular
 // figures so the line doesn't shift); only the ones that changed move. Storage meter (#14): a thin bar under the line,
 // spent from the left and left over from the right, each by scaleX.
-const STEP = "flex size-11 items-center justify-center font-text text-[22px] leading-[22px] font-bold text-text-primary";
+// Hover (D-121 (1)): the steppers take the page's faint hover fill, press 0.97; the knob turns accent/fill-hover
+// while a mouse is over the slider (gated like every hover, by hand, as it is an arbitrary peer variant).
+const STEP =
+  "flex size-11 items-center justify-center rounded-sm font-text text-[22px] leading-[22px] font-bold text-text-primary " +
+  "transition-[background-color,scale] duration-(--dur-fast) ease-(--ease-out) hover:bg-hover-fill-page active:scale-[0.97] motion-reduce:active:scale-100";
 
 export function LevelSwitch({ levels }: { levels: LevelsView }) {
   const [{ level, still }, setOwn] = useState({ level: levels.initial, still: false });
@@ -131,7 +135,7 @@ export function LevelSwitch({ levels }: { levels: LevelsView }) {
             <Ticks max={levels.max} special={levels.specializationAt} />
             {/* A zero-width carrier moved by the track's own width (cqw), so the knob never widens the page's scroll area. */}
             <span aria-hidden="true" data-testid="level-knob" className={`absolute top-2 left-0 h-7 w-0 ${glide}`} style={{ transform: `translateX(calc(${p} * 100cqw))` }}>
-              <span className="absolute top-0 -left-3.5 size-7 rounded-full bg-accent-fill shadow-[0_0_0_3px_var(--color-accent-on-fill)] [.peer:focus-visible~*_&]:outline-2 [.peer:focus-visible~*_&]:outline-offset-4 [.peer:focus-visible~*_&]:outline-focus-ring" />
+              <span className="absolute top-0 -left-3.5 size-7 rounded-full bg-accent-fill shadow-[0_0_0_3px_var(--color-accent-on-fill)] transition-colors duration-(--dur-fast) ease-(--ease-out) [@media(hover:hover)_and_(pointer:fine)]:[.peer:hover~*_&]:bg-accent-fill-hover [.peer:focus-visible~*_&]:outline-2 [.peer:focus-visible~*_&]:outline-offset-4 [.peer:focus-visible~*_&]:outline-focus-ring" />
             </span>
           </div>
         </div>

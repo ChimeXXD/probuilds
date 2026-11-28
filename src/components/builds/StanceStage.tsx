@@ -25,8 +25,13 @@ const STAGE =
   "relative h-[380px] w-full touch-pan-y overflow-hidden select-none [--card-top:16px] [--card-w:252px] [--peek-s:0.7937] [--peek-x:246.5px] " +
   "tablet:h-[386.67px] tablet:w-[350px] tablet:overflow-visible tablet:[--card-top:0px] tablet:[--card-w:280px] tablet:[--peek-s:0.6429] tablet:[--peek-x:85px] " +
   "desktop:h-[541.33px] desktop:w-[560px] desktop:[--card-w:392px] desktop:[--peek-s:0.5867] desktop:[--peek-x:165px]";
+// Hover (D-121 (1)): the arrows take the page's faint hover fill and a brighter border; press 0.97 (none when
+// disabled or with reduced motion). The front card's edge brightens under a mouse (it opens the builds); a side card
+// rises from 60 % to 80 % (it picks). Hover is a colour or opacity step, never movement (emil-design-eng).
 const ARROW =
-  "flex size-13 items-center justify-center rounded-sm border-[1.5px] border-border-strong text-text-primary disabled:text-action-disabled";
+  "flex size-13 items-center justify-center rounded-sm border-[1.5px] border-border-strong text-text-primary disabled:text-action-disabled " +
+  "transition-[background-color,border-color,color,scale] duration-(--dur-fast) ease-(--ease-out) not-disabled:hover:bg-hover-fill-page " +
+  "not-disabled:hover:border-input-border-hovered not-disabled:active:scale-[0.97] motion-reduce:not-disabled:active:scale-100";
 
 export function StanceStage({
   archetypes,
@@ -66,7 +71,7 @@ export function StanceStage({
               onClick={peek ? () => !dragged() && go(i) : undefined}
               style={style}
               className={`absolute top-(--card-top) left-1/2 aspect-[252/348] w-(--card-w) ${still ? "transition-none" : MOVE} ${
-                centre ? "z-2" : peek ? "z-1 cursor-pointer opacity-60 blur-[1.5px]" : "pointer-events-none opacity-0"
+                centre ? "group/stance z-2" : peek ? "z-1 cursor-pointer opacity-60 blur-[1.5px] hover:opacity-80" : "pointer-events-none opacity-0"
               }`}
             >
               <StanceCard archetype={a} eager={centre} />

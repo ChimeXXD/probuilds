@@ -111,7 +111,7 @@ function BuildHeader({ view }: { view: View }) {
             {view.reference.url && (
               <>
                 {" · "}
-                <a href={view.reference.url} target="_blank" rel="noopener noreferrer" className="tap-target">
+                <a href={view.reference.url} target="_blank" rel="noopener noreferrer" className="tap-target underline-offset-4 hover:underline">
                   Watch the video
                 </a>
               </>
@@ -126,7 +126,7 @@ function BuildHeader({ view }: { view: View }) {
           <ShareBuild title={view.title} share={view.share} />
           <Link
             href={view.shared.makeYourOwn.href}
-            className="type-button-lg inline-flex h-13 w-full items-center justify-center rounded-sm border border-border-strong px-8 text-text-primary transition-colors duration-150 hover:bg-action-hovered"
+            className="type-button-lg inline-flex h-13 w-full items-center justify-center rounded-sm border border-border-strong px-8 text-text-primary transition-[background-color,border-color,scale] duration-(--dur-fast) ease-(--ease-out) hover:border-input-border-hovered hover:bg-hover-fill-page active:scale-[0.97] motion-reduce:active:scale-100"
           >
             {view.shared.makeYourOwn.label}
           </Link>

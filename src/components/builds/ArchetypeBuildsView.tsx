@@ -20,7 +20,7 @@ export function ArchetypeBuildsView({ archetype, cards }: { archetype: Archetype
       <nav aria-label="Breadcrumb">
         <ol className="type-caption flex gap-1.5">
           <li>
-            <Link href={`/builds#${archetype.id}`} className="tap-target text-text-secondary">
+            <Link href={`/builds#${archetype.id}`} className="tap-target text-text-secondary transition-colors duration-(--dur-fast) ease-(--ease-out) hover:text-text-primary">
               Builds
             </Link>
           </li>
@@ -56,7 +56,7 @@ export function ArchetypeBuildsView({ archetype, cards }: { archetype: Archetype
               <Link
                 href="/submit"
                 data-testid="submit-tile"
-                className="flex flex-1 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-subtle text-text-primary"
+                className="flex flex-1 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-subtle text-text-primary transition-[background-color,border-color,scale] duration-(--dur-fast) ease-(--ease-out) hover:border-border-strong hover:bg-hover-fill-page active:scale-[0.98] motion-reduce:active:scale-100"
               >
                 <Icon name="plus" size={24} />
                 <span className="type-label">Submit a build</span>

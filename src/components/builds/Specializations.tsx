@@ -7,7 +7,8 @@ import { PlayStyleButton } from "./PlayStyleInfo";
 // sets PlayStyle+ name lines) and the attribute targets that unlock it (text/primary, D-115), from
 // content/archetypes/fc27.json (Chime's in-game check, RESEARCH §10.4). The tiles keep the old tiles' surface,
 // border, padding and 12 / 16 px gaps; the header and target rows are the Build page's specialization card (298:3740).
-// Stacked on phone and tablet, three across on desktop, where the badge sits over the name so "Gamechanger+" fits.
+// Stacked on phone and tablet, three across on desktop, where the badge sits over the name so "Gamechanger+" fits,
+// and the three tiles share two rows (a subgrid) so a name on two lines ("Sweeper Keeper+") keeps the targets level.
 // Not drawn in Figma yet: to be mirrored there.
 // TODO(Chime): the heading "Specializations" is the game's word (RESEARCH §10.4), not a Figma label.
 
@@ -21,12 +22,12 @@ export function Specializations({ items, heading }: { items: SpecializationView[
       >
         Specializations
       </h3>
-      <ul data-testid="specializations" className="flex flex-col gap-3 desktop:flex-row desktop:gap-4">
+      <ul data-testid="specializations" className="flex flex-col gap-3 desktop:grid desktop:grid-cols-3 desktop:gap-x-4 desktop:gap-y-3">
         {items.map((s) => (
           <li
             key={s.name}
             data-testid="specialization"
-            className="flex min-w-0 flex-1 flex-col gap-3 rounded-lg border border-border-subtle bg-bg-surface px-5 py-[18px] desktop:px-4"
+            className="flex min-w-0 flex-1 flex-col gap-3 rounded-lg border border-border-subtle bg-bg-surface px-5 py-[18px] desktop:row-span-2 desktop:grid desktop:grid-rows-subgrid desktop:px-4"
           >
             <div className="flex items-center gap-2.5 desktop:flex-col desktop:items-start desktop:gap-2">
               {s.plus.icon ? (

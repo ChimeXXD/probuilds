@@ -19,7 +19,9 @@ const EMBLEM =
   "flex size-14 shrink-0 items-center justify-center rounded-full transition-[background-color,border-color] duration-150 ease-out tablet:size-12 desktop:size-16";
 const ON =
   "border-[2.5px] border-accent-fill bg-bg-raised light:ring-1 light:ring-accent-on-fill light:ring-inset group-data-docked/rail:border-transparent group-data-docked/rail:ring-0";
-const OFF = "border border-border-subtle bg-bg-surface";
+// Hover (D-121 (1)): an emblem not picked takes the surface's faint hover fill and a stronger border (no press
+// scale: the lime ring is a separate layer and would not shrink with it).
+const OFF = "border border-border-subtle bg-bg-surface hover:border-border-strong hover:bg-hover-fill";
 
 export function EmblemRail({
   groups,
