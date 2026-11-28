@@ -15,13 +15,13 @@ import { reducedMotion, runSpring, SPRINGS, type SpringState, userInitiated } fr
 // 1 px middle line met, their anti-aliased edges left a thin seam through the picked emblem. The pieces show only
 // in flight; the ring takes over exactly the outline the pieces landed on, so the hand-over doesn't jump, and only the
 // seam goes.
-// Reduced motion: the ring fades in round the new emblem instead of travelling.
+// Reduced motion: the ring fades in round the new emblem instead of travelling. A keyboard pick puts it there at once.
 
 const LINE = "light:shadow-[inset_0_1px_0_var(--color-accent-on-fill),inset_0_-1px_0_var(--color-accent-on-fill)]";
 // Each piece is see-through at rest and the whole ring see-through in flight (data-flying on the dock).
 const PIECE = "absolute top-0 left-0 origin-left border-accent-fill opacity-0 group-data-flying/dock:opacity-100";
 
-export function RubberDock({ rail, selector }: { rail: RefObject<HTMLElement | null>; selector: string }) {
+export function RubberDock({ rail, selector, still = false }: { rail: RefObject<HTMLElement | null>; selector: string; still?: boolean }) {
   const box = useRef<HTMLSpanElement>(null);
   const left = useRef<HTMLSpanElement>(null);
   const mid = useRef<HTMLSpanElement>(null);
@@ -31,6 +31,11 @@ export function RubberDock({ rail, selector }: { rail: RefObject<HTMLElement | n
   const running = useRef<{ stop: () => SpringState }[]>([]);
 
   const measure = useRef<(animate: boolean) => void>(() => {});
+  const byKey = useRef(still);
+  // Read by the measure below, which runs after this in the same commit.
+  useLayoutEffect(() => {
+    byKey.current = still;
+  }, [still]);
 
   useLayoutEffect(() => {
     const container = rail.current;
@@ -69,7 +74,8 @@ export function RubberDock({ rail, selector }: { rail: RefObject<HTMLElement | n
       }
       mid.current.style.height = `${target.size}px`;
       // A change nobody made (the page opening on a linked archetype) puts the ring in place without a flight.
-      const instant = !animate || !prev || prev.size !== target.size || !userInitiated();
+      // A keyboard pick moves it at once too (D-120 (2)).
+      const instant = !animate || !prev || prev.size !== target.size || !userInitiated() || byKey.current;
       if (instant || reducedMotion()) {
         edges.current = { l: { value: target.l, velocity: 0 }, r: { value: target.r, velocity: 0 }, top: target.top, size: target.size };
         draw();

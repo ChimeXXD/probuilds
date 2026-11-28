@@ -24,11 +24,14 @@ const OFF = "border border-border-subtle bg-bg-surface";
 export function EmblemRail({
   groups,
   selectedId,
+  still,
   onSelect,
 }: {
   groups: { label: string; items: ArchetypeView[] }[];
   selectedId: string;
-  onSelect: (id: string) => void;
+  /** The pick came from the keyboard: the ring and the row move at once (D-120 (2)). */
+  still: boolean;
+  onSelect: (id: string, byKey: boolean) => void;
 }) {
   const rail = useRef<HTMLDivElement>(null);
   const row = useRef<HTMLDivElement>(null);
@@ -42,9 +45,9 @@ export function EmblemRail({
     const reduce = reducedMotion();
     // Rounded down, as Figma rounds the half pixel: the picked emblem sits at 169 px on a 393 px phone, not 168.
     const left = Math.floor(button.offsetLeft + button.offsetWidth / 2 - row.clientWidth / 2);
-    row.scrollTo({ left, behavior: first.current || reduce || !userInitiated() ? "instant" : "smooth" });
+    row.scrollTo({ left, behavior: first.current || reduce || still || !userInitiated() ? "instant" : "smooth" });
     first.current = false;
-  }, [selectedId]);
+  }, [selectedId, still]);
 
   return (
     <div
@@ -52,7 +55,7 @@ export function EmblemRail({
       className="relative overflow-x-auto pt-2 pb-2.5 [scrollbar-width:none] tablet:overflow-visible tablet:px-10 tablet:pb-4 desktop:mx-auto desktop:max-w-(--layout-content-max) desktop:px-0 [&::-webkit-scrollbar]:hidden"
     >
       <div ref={row} className="group/rail relative flex w-max gap-7 px-[calc(50%-28px)] tablet:w-full tablet:justify-between tablet:gap-0 tablet:px-0">
-        <RubberDock rail={row} selector={`[data-testid="emblem-${selectedId}"]`} />
+        <RubberDock rail={row} selector={`[data-testid="emblem-${selectedId}"]`} still={still} />
         {/* The archetype's name over the emblem under a mouse (Morph tooltip, #24). */}
         <MorphTooltip container={row} />
         {groups.map((g) => {
@@ -70,7 +73,7 @@ export function EmblemRail({
                       aria-label={a.name}
                       data-tip={a.name}
                       aria-pressed={on}
-                      onClick={() => onSelect(a.id)}
+                      onClick={(e) => onSelect(a.id, e.detail === 0)}
                       className={`${EMBLEM} ${on ? ON : OFF}`}
                     >
                       <Emblem id={a.id} className="size-8 tablet:size-[27.4px] desktop:size-9" />

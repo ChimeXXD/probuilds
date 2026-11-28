@@ -11,6 +11,8 @@ import { StanceStage } from "./StanceStage";
 // a link names (/builds#finisher); picking one updates that hash so a shared link opens on it.
 export function BuildsView({ archetypes, initial }: { archetypes: ArchetypeView[]; initial?: string }) {
   const [selected, setSelected] = useState(() => Math.max(0, archetypes.findIndex((a) => a.id === initial)));
+  // Whether the last pick came from the keyboard (Enter or Space: a click with detail 0): then nothing moves.
+  const [still, setStill] = useState(false);
   const groups = groupViews(archetypes);
   const current = archetypes[selected];
 
@@ -23,17 +25,22 @@ export function BuildsView({ archetypes, initial }: { archetypes: ArchetypeView[
         return; // a malformed hash (/builds#%E0) names no archetype
       }
       const i = archetypes.findIndex((a) => a.id === id);
-      if (i >= 0) setSelected(i);
+      if (i >= 0) {
+        // The page opening on a linked archetype is a change nobody made: the deck puts it in place (userInitiated).
+        setSelected(i);
+        setStill(false);
+      }
     };
     fromHash();
     window.addEventListener("hashchange", fromHash);
     return () => window.removeEventListener("hashchange", fromHash);
   }, [archetypes]);
 
-  const pick = (i: number) => {
+  const pick = (i: number, byKey = false) => {
     const a = archetypes[i];
     if (!a) return;
     setSelected(i);
+    setStill(byKey);
     window.history.replaceState(null, "", `#${a.id}`);
   };
 
@@ -48,10 +55,11 @@ export function BuildsView({ archetypes, initial }: { archetypes: ArchetypeView[
           <EmblemRail
             groups={groups}
             selectedId={current.id}
-            onSelect={(id) => pick(archetypes.findIndex((a) => a.id === id))}
+            still={still}
+            onSelect={(id, byKey) => pick(archetypes.findIndex((a) => a.id === id), byKey)}
           />
           <div className="tablet:flex tablet:gap-10 tablet:px-10 tablet:pt-6 tablet:pb-16 desktop:mx-auto desktop:max-w-(--layout-content-max) desktop:items-center desktop:gap-20 desktop:px-0 desktop:pb-20">
-            <StanceStage archetypes={archetypes} selected={selected} onSelect={pick} />
+            <StanceStage archetypes={archetypes} selected={selected} still={still} onSelect={pick} />
             <PhoneFacts archetype={current} />
             <WideFacts archetype={current} />
           </div>

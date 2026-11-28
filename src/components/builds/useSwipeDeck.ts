@@ -1,7 +1,7 @@
 "use client";
 
-import { type PointerEvent, useLayoutEffect, useRef, useState } from "react";
-import { project, reducedMotion, rubberband, runSpring, SPRINGS, type SpringState, VelocityTracker } from "@/lib/motion";
+import { type PointerEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ms, project, reducedMotion, rubberband, runSpring, SPRINGS, type SpringState, userInitiated, VelocityTracker } from "@/lib/motion";
 
 // The Swipe deck (motion-bookmarks.pdf #1) behind the Stance stage. While the finger is down only the front card
 // moves (D-116): 1:1 with the finger, tilting x ÷ 20 degrees (at most 10), with a rubber band past the first and
@@ -9,8 +9,9 @@ import { project, reducedMotion, rubberband, runSpring, SPRINGS, type SpringStat
 // performance). On release a spring takes over at the finger's speed: a flick whose projected end (apple-design §6)
 // is more than 50 px out throws the card out the side it was thrown, to that side's neighbour slot behind the new
 // front card, which settles in with the settle spring; anything less springs back. A card in flight can be caught
-// again. Reduced motion keeps the tracking (the finger makes that motion) and drops the throw and the spring: the
-// cards change places at once and only their opacity fades.
+// again. Every other change (an arrow, a tap on a neighbour, the rail) moves the cards on the same settle spring
+// (D-121 (3): "the same animation"), so a pick and a throw land alike. Reduced motion keeps the tracking (the finger
+// makes that motion) and drops the throw and the spring: the cards change places at once and only their opacity fades.
 
 export const SWIPE = 50; // px of projected travel past which a release moves one card
 const tilt = (x: number) => Math.max(-10, Math.min(10, x / 20));
@@ -25,7 +26,18 @@ interface Flight {
   selected: number;
 }
 
-export function useSwipeDeck({ selected, count, onSelect }: { selected: number; count: number; onSelect: (i: number) => void }) {
+export function useSwipeDeck({
+  selected,
+  count,
+  still,
+  onSelect,
+}: {
+  selected: number;
+  count: number;
+  /** The last change came from the keyboard: the cards change places at once (D-120 (2)). */
+  still: boolean;
+  onSelect: (i: number) => void;
+}) {
   const stage = useRef<HTMLDivElement>(null);
   const cards = useRef(new Map<number, HTMLElement>());
   const flights = useRef(new Map<HTMLElement, Flight>());
@@ -34,14 +46,23 @@ export function useSwipeDeck({ selected, count, onSelect }: { selected: number; 
   const drag = useRef<{ id: number; x0: number; base: number; moved: boolean; swiped: boolean; dx: number; v: VelocityTracker } | null>(null);
   const lastMoved = useRef(false); // whether the last press became a drag: a drag is never a tap on a neighbour
   const current = useRef(selected);
-  // The card a throw sent to the front: it lands with the settle spring; every other change eases out.
-  const [settling, setSettling] = useState<number | null>(null);
-  // Any later change of selection (the rail, an arrow, a tap) eases out, even back to the card a throw once brought.
+  const before = useRef(selected); // the selection the last layout effect saw
+  const fresh = useRef(new Set<number>()); // cards mounted since then
+  // The selections the cards are leaving: their windows of cards stay mounted while they travel out (a jump on the
+  // rail), then go, 60 ms after the last change's spring has settled, so a second quick jump doesn't cut the first
+  // one's cards off mid-flight. Empty after a keyboard pick (it moves nothing) or a change nobody made (the page
+  // opening on a linked archetype).
+  const [trail, setTrail] = useState<number[]>([]);
   const [seen, setSeen] = useState(selected);
   if (seen !== selected) {
     setSeen(selected);
-    if (settling !== null && settling !== selected) setSettling(null);
+    setTrail((t) => (still || !userInitiated() ? [] : [...t, seen]));
   }
+  useEffect(() => {
+    if (trail.length === 0) return;
+    const done = setTimeout(() => setTrail([]), ms("--spring-settle-ms", 390) + 60);
+    return () => clearTimeout(done);
+  }, [trail]);
 
   const rest = (el: HTMLElement, i: number, sel = current.current) => {
     flights.current.delete(el);
@@ -50,7 +71,7 @@ export function useSwipeDeck({ selected, count, onSelect }: { selected: number; 
   };
 
   // A new selection from anywhere else (the rail, the arrows, a tap on a neighbour) takes over a card still in an
-  // older flight: CSS carries it from where it is to its new slot.
+  // older flight: CSS carries it from where it is to its new slot, on the same settle spring a throw uses (D-121).
   useLayoutEffect(() => {
     current.current = selected;
     for (const [el, f] of flights.current) {
@@ -58,10 +79,42 @@ export function useSwipeDeck({ selected, count, onSelect }: { selected: number; 
       f.stop();
       const i = [...cards.current].find(([, c]) => c === el)?.[0];
       flights.current.delete(el);
-      el.style.transition = "";
+      el.style.transition = ""; // the class decides: transition-none after a keyboard pick
       if (i !== undefined) el.style.transform = slot(i - selected);
     }
-  }, [selected]);
+    // A jump (the rail, several cards at once): the cards it brings in were not there to move, so each starts one
+    // slot further along the way the deck is going and travels in with the others, fading up. Cards on the far side
+    // only fade in at their place. Reduced motion keeps only the fade; the keyboard and a page opening on a link move
+    // nothing.
+    const dir = Math.sign(selected - before.current);
+    if (dir !== 0 && !userInitiated()) {
+      // The page opening on a linked archetype: the cards already there take their new slots without travelling.
+      const all = [...cards.current.values()];
+      for (const el of all) el.style.transition = "none";
+      if (all.length) void stage.current?.offsetWidth;
+      for (const el of all) el.style.transition = "";
+    } else if (dir !== 0 && !still) {
+      const move = !reducedMotion();
+      const entering = [...fresh.current].flatMap((i) => {
+        const el = cards.current.get(i);
+        return el ? [{ el, offset: i - selected }] : [];
+      });
+      for (const { el, offset } of entering) {
+        const ahead = Math.sign(offset) !== -dir;
+        el.style.transition = "none";
+        if (move && ahead) el.style.transform = slot(Math.max(-2, Math.min(2, offset + dir)));
+        el.style.opacity = "0";
+      }
+      if (entering.length) void stage.current?.offsetWidth; // one layout commits every start before the transitions
+      for (const { el, offset } of entering) {
+        el.style.transition = "";
+        el.style.transform = slot(offset);
+        el.style.opacity = "";
+      }
+    }
+    fresh.current.clear();
+    before.current = selected;
+  }, [selected, still]);
   useLayoutEffect(() => () => flights.current.forEach((f) => f.stop()), []);
 
   const front = () => cards.current.get(current.current);
@@ -114,7 +167,6 @@ export function useSwipeDeck({ selected, count, onSelect }: { selected: number; 
   const throwCard = (el: HTMLElement, x: number, velocity: number, dir: 1 | -1) => {
     const index = current.current;
     const next = index + dir;
-    setSettling(next);
     onSelect(next);
     if (reducedMotion() || !stage.current) return rest(el, index, next);
     const style = getComputedStyle(stage.current);
@@ -180,8 +232,10 @@ export function useSwipeDeck({ selected, count, onSelect }: { selected: number; 
     let ref = refs.current.get(i);
     if (!ref) {
       ref = (el) => {
-        if (el) cards.current.set(i, el);
-        else cards.current.delete(i);
+        if (el) {
+          cards.current.set(i, el);
+          fresh.current.add(i);
+        } else cards.current.delete(i);
       };
       refs.current.set(i, ref);
     }
@@ -191,7 +245,7 @@ export function useSwipeDeck({ selected, count, onSelect }: { selected: number; 
   return {
     stage,
     cardRef,
-    settling,
+    trail,
     dragged,
     handlers: { onPointerDown, onPointerMove, onPointerUp: onPointerEnd, onPointerCancel: onPointerEnd, onPointerLeave },
   };
