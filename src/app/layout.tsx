@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import type { ReactNode } from "react";
+import { type ReactNode, ViewTransition } from "react";
 import { BottomNav } from "@/components/shell/BottomNav";
+import { PageMotion } from "@/components/shell/PageMotion";
 import { PreviewBar } from "@/components/shell/PreviewBar";
 import { SiteFooter } from "@/components/shell/SiteFooter";
 import { TopBar } from "@/components/shell/TopBar";
@@ -35,7 +36,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="flex min-h-dvh flex-col bg-bg-page text-text-primary">
         <TopBar />
         <PreviewBar />
-        <div className="flex-1">{children}</div>
+        {/* Each page is one View Transition group, so a page change eases in (PageMotion, globals.css). */}
+        <ViewTransition name="page">
+          <div className="flex-1">{children}</div>
+        </ViewTransition>
+        <PageMotion />
         <SiteFooter />
         <BottomNav />
       </body>

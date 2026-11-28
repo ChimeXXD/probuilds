@@ -100,9 +100,9 @@
 
 /* Expand card (motion-bookmarks.pdf #22): a build card's picture and name carried to the build page by a View
    Transition (React's <ViewTransition share="build-expand">). The pair moves and resizes over --dur-page with the
-   house ease-out; the rest of the page crossfades as the browser does by default. Reduced motion: nothing travels,
-   the page only crossfades. Browsers without View Transitions just open the page. Every other navigation off these
-   pages has no transition (default="none" on each boundary). The pair's snapshot crossfade runs on the same clock as
+   house ease-out; the rest of the page fades in (the "page" group below, data-page-motion="expand"). Reduced motion:
+   nothing travels, the page only fades. Browsers without View Transitions just open the page. Every other navigation
+   off these pages carries nothing (default="none" on each boundary) and only runs the page change below. The pair's snapshot crossfade runs on the same clock as
    its move, so the old picture doesn't vanish 50 ms before it lands (the browser's default fade is 250 ms). */
 ::view-transition-group(.build-expand),
 ::view-transition-old(.build-expand),
@@ -113,6 +113,51 @@
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(.build-expand) {
     animation: none;
+  }
+}
+
+/* Page changes (D-121 (2), DESIGN.md Motion; PageMotion.tsx chooses the way on <html data-page-motion>). Each page is
+   one View Transition group, "page". It doesn't morph between two pages' boxes; the old page steps aside at once (a
+   snapshot of a page scrolled down would otherwise show its top as it fades), and the new one comes in 40 px from the
+   side it came from while it fades in, over --dur-page with --ease-out: on the compositor, so it stays smooth while
+   the next page loads. A build card opening its build ("expand") keeps its own travelling pair and the page only
+   fades in. No data-page-motion (a key press, Back, a change no click started) means no motion. The shell around
+   the page (top bar, footer, bottom nav) is the root group and stays put, live: the bottom nav's pill keeps sliding.
+   Reduced motion: every change is a short fade. */
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(page),
+::view-transition-new(page) {
+  animation: none;
+}
+::view-transition-old(page) {
+  animation: none;
+  opacity: 0;
+}
+:root[data-page-motion="forward"]::view-transition-new(page) {
+  animation: page-from-right var(--dur-page) var(--ease-out) both;
+}
+:root[data-page-motion="back"]::view-transition-new(page) {
+  animation: page-from-left var(--dur-page) var(--ease-out) both;
+}
+:root[data-page-motion="expand"]::view-transition-new(page) {
+  animation: fade-in var(--dur-page) var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-page-motion]:not([data-page-motion="still"])::view-transition-new(page) {
+    animation: fade-in var(--dur-fast) var(--ease-out) both;
+  }
+}
+@keyframes page-from-right {
+  from {
+    opacity: 0;
+    translate: 40px 0;
+  }
+}
+@keyframes page-from-left {
+  from {
+    opacity: 0;
+    translate: -40px 0;
   }
 }
 

@@ -54,8 +54,8 @@ test("expand card with reduced motion: the pair doesn't travel, the page only cr
   await expect.poll(async () => (await transitions(page)).length).toBe(1);
   const [anims] = await transitions(page);
   expect(anims!.filter((a) => a.pseudo.startsWith("::view-transition-group(build-"))).toEqual([]);
-  // What's left is the page's own crossfade.
-  expect(anims!.map((a) => a.pseudo)).toContain("::view-transition-old(root)");
+  // What's left is the page's own short fade (D-121 (2), PageMotion).
+  expect(anims!.map((a) => a.pseudo)).toContain("::view-transition-new(page)");
 });
 
 test("expand card without View Transitions: the page simply opens", async ({ page }) => {
@@ -69,11 +69,13 @@ test("expand card without View Transitions: the page simply opens", async ({ pag
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Meta Finisher");
 });
 
-test("expand card: leaving the archetype page any other way runs no View Transition", async ({ page }) => {
+test("expand card: leaving the archetype page any other way carries nothing; the page only slides (D-121 (2))", async ({ page }) => {
   await recordTransitions(page);
   await page.goto("/builds/finisher");
   await page.getByRole("navigation", { name: "Breadcrumb" }).getByRole("link", { name: "Builds" }).click();
   await expect(page).toHaveURL(/\/builds#finisher$/);
-  await page.waitForTimeout(400);
-  expect(await transitions(page)).toEqual([]);
+  await expect.poll(async () => (await transitions(page)).length).toBe(1);
+  const [anims] = await transitions(page);
+  expect(anims!.filter((a) => a.pseudo.startsWith("::view-transition-group(build-"))).toEqual([]);
+  expect(anims!.map((a) => a.pseudo)).toContain("::view-transition-new(page)");
 });
