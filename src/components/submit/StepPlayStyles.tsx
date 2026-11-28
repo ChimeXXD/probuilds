@@ -172,7 +172,7 @@ function ChipItem({ name, plus, on, onPress }: { name: string; plus: boolean; on
         <PlayStyleButton
           name={name}
           tier={plus ? "plus" : "playStyle"}
-          className="absolute top-0 right-0 flex size-11 items-center justify-center rounded-full text-text-muted"
+          className="absolute top-0 right-0 flex size-11 items-center justify-center rounded-full text-text-muted hover:text-text-primary"
         >
           <Icon name="info" size={16} />
         </PlayStyleButton>

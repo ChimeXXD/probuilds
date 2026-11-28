@@ -4,6 +4,7 @@ import { type CSSProperties, forwardRef, useEffect, useImperativeHandle, useRef,
 import { Icon } from "@/components/shell/Icon";
 import { ActionIcon, shake, useFor } from "@/components/ui/ActionIcon";
 import { ButtonLabel, buttonClass } from "@/components/ui/Button";
+import { iconButtonClass } from "@/components/ui/interaction";
 import { Toast } from "@/components/ui/Toast";
 import type { ShareCardsView } from "@/lib/share-cards";
 import { SAVE_TOAST, type SaveState, saveState } from "@/lib/share-images";
@@ -30,8 +31,9 @@ export const COPIED = "Link copied. Paste it in any chat.";
 // Whether the browser has a share menu: fixed for the page's life, and false in the static HTML.
 const noSubscribe = () => () => {};
 const hasShare = () => typeof navigator.share === "function";
-const ICON_BUTTON = "flex shrink-0 items-center justify-center rounded-sm transition-colors duration-150 hover:bg-action-hovered";
-const SECONDARY = buttonClass("secondary", "hover:bg-action-hovered");
+// On the raised sheet: the raised hover fill and the shared press (D-121 (1), interaction.ts).
+const ICON_BUTTON = `flex shrink-0 items-center justify-center rounded-sm ${iconButtonClass("raised")}`;
+const SECONDARY = buttonClass("secondary", "", "large", "raised");
 
 export interface ShareSheetHandle {
   /** Opens the sheet; focus goes back to `from` when it closes. */

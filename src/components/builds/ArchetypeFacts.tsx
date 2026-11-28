@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Icon } from "@/components/shell/Icon";
-import { buttonClass } from "@/components/ui/Button";
+import { ButtonLabel, buttonClass } from "@/components/ui/Button";
 import { type ArchetypeView, buildsHref } from "@/lib/builds";
 import { PlayStyleArt } from "./PlayStyleArt";
 import { PlayStyleButton } from "./PlayStyleInfo";
@@ -17,18 +16,11 @@ function Badge({ icon }: { icon: string }) {
 
 function BuildsLink({ archetype }: { archetype: ArchetypeView }) {
   // The lime primary button, the page's one main action (D-121 (3), D-115), the full width of the facts column. Its
-  // arrow nudges 2 px towards where it goes under a mouse (purpose: it says "this goes somewhere"; --dur-fast,
-  // ease-out; none under reduced motion), as every arrow button does once the shared Button carries it (lane 2).
+  // arrow nudges 2 px towards where it goes under a mouse, as every arrow button's does (ButtonLabel, D-121 (1)).
   // /builds/<archetype> is a preview page for now (D-105): on the live export the link opens the 404 until it ships.
   return (
-    <Link href={buildsHref(archetype)} data-testid="see-builds" className={buttonClass("primary", "group/see w-full transition-colors duration-(--dur-fast) ease-(--ease-out) hover:bg-accent-fill-hover")}>
-      {`See ${archetype.name} builds`}
-      <span
-        aria-hidden="true"
-        className="flex transition-transform duration-(--dur-fast) ease-(--ease-out) group-hover/see:translate-x-0.5 motion-reduce:group-hover/see:translate-x-0"
-      >
-        <Icon name="arrow-right" size={20} />
-      </span>
+    <Link href={buildsHref(archetype)} data-testid="see-builds" className={buttonClass("primary", "w-full")}>
+      <ButtonLabel icon="arrow-right">{`See ${archetype.name} builds`}</ButtonLabel>
     </Link>
   );
 }

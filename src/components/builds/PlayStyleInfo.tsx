@@ -2,6 +2,7 @@
 
 import { createContext, type ReactNode, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { iconButtonClass } from "@/components/ui/interaction";
 import { playStyleIcon, playStylePlusIcon } from "@/lib/builds";
 import type { PlayStyleInfo, Tier } from "@/lib/content/playstyles";
 import type { Source } from "@/lib/content/types";
@@ -76,7 +77,7 @@ export function PlayStyleInfoProvider({ infos, children }: { infos: PlayStyleInf
                 type="button"
                 aria-label="Close"
                 onClick={close}
-                className="-mt-1 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-sm text-text-primary transition-colors duration-(--dur-fast) ease-(--ease-out) hover:bg-action-hovered"
+                className={`-mt-1 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-sm text-text-primary ${iconButtonClass("raised")}`}
               >
                 <Icon name="close" size={20} />
               </button>
