@@ -15,7 +15,6 @@ import {
   type FaceFilter,
   filterCounts,
   REQUEST_FACE_HREF,
-  SUBMIT_HREF,
   visibleFaces,
 } from "@/lib/faces";
 import { FaceCard } from "./FaceCard";
@@ -109,7 +108,7 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
               <li data-flip="missing-face">
                 {/* Figma "Suggest a face" (341:1316): the picture's size, a dashed border/strong outline, lime plus. */}
                 <Link
-                  href={SUBMIT_HREF}
+                  href={REQUEST_FACE_HREF}
                   data-testid="missing-face-tile"
                   className={`group flex aspect-[4/5] flex-col justify-end gap-1.5 rounded-md border border-dashed border-border-strong p-4 hover:border-input-border-hovered hover:bg-hover-fill-page ${STATE_TRANSITION} ${PRESS_CARD}`}
                 >

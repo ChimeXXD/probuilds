@@ -1,13 +1,7 @@
-import type { Metadata } from "next";
-import { RequestFace } from "@/components/faces/RequestFace";
-import { SHOW_DRAFTS } from "@/lib/drafts";
-import { SITE_NAME } from "@/lib/site";
+import { redirect } from "next/navigation";
 
-// Request a face (Figma "Phase 4 · Changelog & Submit": 402:3451 / 418:9607 / 418:9742 and its states; D-83, D-84,
-// D-96). Preview only (D-105) until the Supabase project exists: rename this file to page.tsx then. With no project
-// the preview shows Figma's sample list (D-107).
-export const metadata: Metadata = { title: `Request a face · ${SITE_NAME}` };
-
-export default function RequestFacePage() {
-  return <RequestFace preview={SHOW_DRAFTS} />;
+// Request a face moved into Submit as its second tab (D-121 (5)). The host answers /faces/request with a 301
+// (public/_redirects); this page is the static fallback: the export writes it as a page that sends the browser on.
+export default function RequestFaceMoved() {
+  redirect("/submit/request");
 }

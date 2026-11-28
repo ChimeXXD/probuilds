@@ -6,8 +6,8 @@ test.skip(process.env.PROBUILDS_DRAFTS !== "1", "preview page");
 
 const rows = (page: import("@playwright/test").Page) => page.getByTestId("face-request");
 
-test("the sample list: ranked by votes, two voted, one being made, the Faces tab lit (402:3451)", async ({ page }) => {
-  await page.goto("/faces/request");
+test("the sample list: ranked by votes, two voted, one being made, the Submit tab lit (402:3451, D-121 (5))", async ({ page }) => {
+  await page.goto("/submit/request");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Request a face");
   await expect(rows(page)).toHaveText([
     /^12017 RonaldoFootballer · Being made214$/,
@@ -18,13 +18,13 @@ test("the sample list: ranked by votes, two voted, one being made, the Faces tab
   ]);
   await expect(page.getByRole("button", { name: /^Vote for 2017 Ronaldo/ })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: /^Vote for Kanye West/ })).toHaveAttribute("aria-pressed", "false");
-  await expect(page.getByTestId("bottom-nav").locator("[aria-current=page]")).toHaveAccessibleName("Faces");
+  await expect(page.getByTestId("bottom-nav").locator("[aria-current=page]")).toHaveAccessibleName("Submit");
   await page.getByTestId("request-kind").filter({ hasText: "Musicians" }).click();
   await expect(rows(page)).toHaveText([/^2Kanye West/, /^4Burna Boy/]);
 });
 
 test("voting: once per browser, counted at once, and kept on reload", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const kanye = page.getByRole("button", { name: /^Vote for Kanye West/ });
   await kanye.click();
   await expect(kanye).toHaveAttribute("aria-pressed", "true");
@@ -36,7 +36,7 @@ test("voting: once per browser, counted at once, and kept on reload", async ({ p
 });
 
 test("a vote that doesn't go through is taken back, with the red toast (441:9992)", async ({ page }) => {
-  await page.goto("/faces/request?vote=fail");
+  await page.goto("/submit/request?vote=fail");
   const burna = page.getByRole("button", { name: /^Vote for Burna Boy/ });
   await burna.click();
   await expect(page.getByText("Your vote didn't go through. Try again.")).toBeVisible();
@@ -45,7 +45,7 @@ test("a vote that doesn't go through is taken back, with the red toast (441:9992
 });
 
 test("typing a name already asked for offers the vote instead, or a new request (430:6093)", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   await page.getByLabel("Who do you want?").fill("Kanye");
   const asked = page.getByTestId("already-asked");
   await expect(asked).toHaveText("Already asked forKanye WestMusician · 167 votesVote");
@@ -55,7 +55,7 @@ test("typing a name already asked for offers the vote instead, or a new request 
 });
 
 test("a request is sent, and Ask for another starts again (430:6517)", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   await page.getByLabel("Who do you want?").fill("2010 Messi");
   await page.getByRole("button", { name: "Request" }).click();
   await expect(page.getByTestId("request-sent")).toContainText("Asked for 2010 MessiNew requests show in the list once we've checked them");
@@ -66,7 +66,7 @@ test("a request is sent, and Ask for another starts again (430:6517)", async ({ 
 });
 
 test("a request that doesn't go through keeps the name and offers Try again (441:9598)", async ({ page }) => {
-  await page.goto("/faces/request?request=fail");
+  await page.goto("/submit/request?request=fail");
   await page.getByLabel("Who do you want?").fill("2010 Messi");
   await page.getByRole("button", { name: "Request" }).click();
   await expect(page.getByTestId("request-failed")).toHaveText("Couldn't send your request. Check your connection and try again.");
@@ -75,13 +75,13 @@ test("a request that doesn't go through keeps the name and offers Try again (441
 });
 
 test("no requests yet: the empty card in place of the chips and list (430:6931)", async ({ page }) => {
-  await page.goto("/faces/request?requests=none");
+  await page.goto("/submit/request?requests=none");
   await expect(page.getByTestId("requests-empty")).toHaveText("No requests yetBe the first: ask for a face above");
   await expect(page.getByTestId("request-kind")).toHaveCount(0);
 });
 
 test("phone: the field is 16 px or more and every vote box is a 56 px target", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const size = await page.getByLabel("Who do you want?").evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
   expect(size).toBeGreaterThanOrEqual(16);
   const box = await page.getByRole("button", { name: /^Vote for Usain Bolt/ }).boundingBox();

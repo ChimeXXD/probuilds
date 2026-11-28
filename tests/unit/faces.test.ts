@@ -10,7 +10,6 @@ import {
   filterCounts,
   matchesSearch,
   REQUEST_FACE_HREF,
-  SUBMIT_HREF,
   visibleFaces,
 } from "@/lib/faces";
 
@@ -140,8 +139,7 @@ describe("faces library data", () => {
     expect(ids(visibleFaces(cards, "all", "Zidane"))).toEqual([]);
   });
 
-  it("sends Missing a face to Submit (D-70) and Request a face to the Faces section's request page", () => {
-    expect(SUBMIT_HREF).toBe("/submit");
-    expect(REQUEST_FACE_HREF).toBe("/faces/request");
+  it("sends Missing a face and Request a face to Submit's Request tab (D-121 (5))", () => {
+    expect(REQUEST_FACE_HREF).toBe("/submit/request");
   });
 });

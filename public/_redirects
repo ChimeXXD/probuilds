@@ -2,3 +2,6 @@
 # A player's shared build, probuilds.club/b/<id>, is one static page that reads the id from the address (D-99 (2)).
 # 200 rewrites: the address stays /b/<id>; scripts/serve-out.mjs applies the same rule locally.
 /b/*  /b  200
+# Request a face moved into Submit as its second tab (D-121 (5)).
+/faces/request  /submit/request  301
+/faces/request/  /submit/request  301

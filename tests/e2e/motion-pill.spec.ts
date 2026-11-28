@@ -133,7 +133,7 @@ test.describe("tab pill", () => {
   });
 
   test("request a face: the kind chips (which wrap) use the same pill", async ({ page }) => {
-    await page.goto("/faces/request");
+    await page.goto("/submit/request");
     const kinds = page.getByTestId("request-kind");
     // On the same line as "All" the pill slides; on the next line of the wrapped row it fades in there instead
     // of sliding diagonally across both lines.

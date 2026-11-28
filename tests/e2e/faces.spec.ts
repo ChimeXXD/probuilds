@@ -108,7 +108,7 @@ test("faces: search filters by name, the chips count what it leaves, and Clear b
   const emptyState = page.getByTestId("faces-empty");
   await expect(emptyState.getByText("No faces here yet")).toBeVisible();
   await expect(emptyState.getByText("Ask for it, and vote for what we make next")).toBeVisible();
-  await expect(emptyState.getByRole("link", { name: "Request a face" })).toHaveAttribute("href", "/faces/request");
+  await expect(emptyState.getByRole("link", { name: "Request a face" })).toHaveAttribute("href", "/submit/request");
   await expect(page.getByTestId("missing-face-tile")).toHaveCount(0);
   await expect(page.getByText("Who should we make next?")).toHaveCount(0);
   expect(await counts(page)).toEqual(["0", "0", "0", "0"]);
@@ -121,10 +121,10 @@ test("faces: search filters by name, the chips count what it leaves, and Clear b
   expect(await counts(page)).toEqual(["5", "3", "1", "1"]);
 });
 
-test("faces: Missing a face goes to Submit; the request panel's Request a face goes to the request page", async ({ page }) => {
+test("faces: Missing a face and the request panel's Request a face open Submit's Request tab (D-121 (5))", async ({ page }) => {
   await page.goto("/faces");
   const tile = page.getByTestId("missing-face-tile");
-  await expect(tile).toHaveAttribute("href", "/submit");
+  await expect(tile).toHaveAttribute("href", "/submit/request");
   await expect(tile.getByText("Missing a face?")).toBeVisible();
   await expect(tile.getByText("Suggest one on Submit")).toBeVisible();
   // The tile is the picture's size, beside the last card (Michael Jackson).
@@ -133,9 +133,10 @@ test("faces: Missing a face goes to Submit; the request panel's Request a face g
   expect(slot && box && Math.round(box.height)).toBe(Math.round(slot?.height ?? 0));
   expect(slot && box && Math.round(box.x - (slot.x + slot.width))).toBe(12);
   await expect(page.getByText("Who should we make next?")).toBeVisible();
-  await expect(page.getByTestId("request-face-link")).toHaveAttribute("href", "/faces/request");
+  await expect(page.getByTestId("request-face-link")).toHaveAttribute("href", "/submit/request");
   await tile.click();
-  await expect(page).toHaveURL(/\/submit$/);
+  await expect(page).toHaveURL(/\/submit\/request$/);
+  await expect(page.getByTestId("submit-tab").filter({ hasText: "Request a face" })).toHaveAttribute("aria-current", "page");
 });
 
 test("faces on tablet: three columns, 24 px apart, chips and a 300 px search on one row", async ({ page }) => {

@@ -42,13 +42,23 @@ function resolve(urlPath) {
 
 // The 200 rewrites in out/_redirects ("/b/*  /b  200"), as Cloudflare Pages applies them: a path under the rule's
 // prefix is answered with the target page, and the address stays as it was.
-const REWRITES = existsSync(join(OUT, "_redirects"))
+const RULES = existsSync(join(OUT, "_redirects"))
   ? readFileSync(join(OUT, "_redirects"), "utf8")
       .split("\n")
       .map((line) => line.trim().split(/\s+/))
-      .filter(([from, to, status]) => from?.endsWith("/*") && to && status === "200")
-      .map(([from, to]) => ({ prefix: from.slice(0, -1), to }))
   : [];
+const REWRITES = RULES.filter(([from, to, status]) => from?.endsWith("/*") && to && status === "200").map(([from, to]) => ({
+  prefix: from.slice(0, -1),
+  to,
+}));
+
+// The exact-path 301 and 302 redirects in out/_redirects ("/faces/request  /submit/request  301"), as Cloudflare
+// Pages sends them: the browser is told to go to the target, and the query goes with it.
+const REDIRECTS = new Map(
+  RULES.filter(([from, to, status]) => from?.startsWith("/") && !from.includes("*") && to && (status === "301" || status === "302")).map(
+    ([from, to, status]) => [from, { to, status: Number(status) }],
+  ),
+);
 
 function rewrite(url) {
   const path = url.split("?")[0];
@@ -57,6 +67,13 @@ function rewrite(url) {
 }
 
 createServer((req, res) => {
+  const [path, query] = (req.url ?? "/").split(/\?(.*)/s);
+  const moved = REDIRECTS.get(path);
+  if (moved) {
+    res.writeHead(moved.status, { location: moved.to + (query ? `?${query}` : "") });
+    res.end();
+    return;
+  }
   const file = resolve(rewrite(req.url ?? "/"));
   if (!file) {
     const notFound = join(OUT, "404.html");

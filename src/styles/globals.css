@@ -148,6 +148,27 @@
     animation: fade-in var(--dur-fast) var(--ease-out) both;
   }
 }
+/* A tab bar that two pages share (Submit's, SubmitTabs, view-transition-name page-tabs) holds still while the page
+   under it slides, and its pill slides live. Coming from a page without it, it arrives with the page. */
+::view-transition-group(page-tabs),
+::view-transition-new(page-tabs) {
+  animation: none;
+}
+::view-transition-old(page-tabs) {
+  animation: none;
+  opacity: 0;
+}
+:root[data-page-motion="forward"]::view-transition-new(page-tabs):only-child {
+  animation: page-from-right var(--dur-page) var(--ease-out) both;
+}
+:root[data-page-motion="back"]::view-transition-new(page-tabs):only-child {
+  animation: page-from-left var(--dur-page) var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-page-motion]:not([data-page-motion="still"])::view-transition-new(page-tabs):only-child {
+    animation: fade-in var(--dur-fast) var(--ease-out) both;
+  }
+}
 @keyframes page-from-right {
   from {
     opacity: 0;

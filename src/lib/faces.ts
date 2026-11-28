@@ -17,11 +17,10 @@ export const FACE_FILTERS: readonly { value: FaceFilter; label: string }[] = [
   { value: "musician", label: "Musicians" },
 ];
 
-/** The dashed "Missing a face?" tile at the end of the grid (D-70). */
-export const SUBMIT_HREF = "/submit";
-// TODO(Chime): Figma's Request a face screen (402:3451) sits in the Faces section (its bottom nav is Page=Faces) but
-// no route is named anywhere; /faces/request is assumed. The page waits on Supabase (D-84, D-96), so it 404s for now.
-export const REQUEST_FACE_HREF = "/faces/request";
+// Request a face is Submit's second tab (D-121 (5)); the dashed "Missing a face?" tile at the end of the grid (D-70)
+// and the request panel both open it. /faces/request redirects there (public/_redirects). The page waits on Supabase
+// (D-84, D-96): preview only for now.
+export const REQUEST_FACE_HREF = "/submit/request";
 
 export interface FaceCardView {
   id: string;

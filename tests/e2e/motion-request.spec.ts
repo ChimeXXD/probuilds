@@ -16,7 +16,7 @@ const animations = (root: Locator) =>
   );
 
 test("a vote: the arrow pops, six dots burst out and fade, the count rolls up", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const kanye = page.getByRole("button", { name: /^Vote for Kanye West/ });
   await kanye.click();
   const moving = await animations(kanye);
@@ -28,7 +28,7 @@ test("a vote: the arrow pops, six dots burst out and fade, the count rolls up", 
 });
 
 test("a vote from the keyboard counts without the burst (nothing animates on keyboard input)", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const burna = page.getByRole("button", { name: /^Vote for Burna Boy/ });
   await burna.focus();
   await page.keyboard.press("Enter");
@@ -39,7 +39,7 @@ test("a vote from the keyboard counts without the burst (nothing animates on key
 
 test("reduced motion: no burst, the count crossfades", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const bolt = page.getByRole("button", { name: /^Vote for Usain Bolt/ });
   await bolt.click();
   const moving = await animations(bolt);
@@ -48,7 +48,7 @@ test("reduced motion: no burst, the count crossfades", async ({ page }) => {
 });
 
 test("a vote that fails rolls the count back down", async ({ page }) => {
-  await page.goto("/faces/request?vote=fail");
+  await page.goto("/submit/request?vote=fail");
   const burna = page.getByRole("button", { name: /^Vote for Burna Boy/ });
   await burna.click();
   await expect(page.getByText("Your vote didn't go through. Try again.")).toBeVisible();
@@ -57,7 +57,7 @@ test("a vote that fails rolls the count back down", async ({ page }) => {
 });
 
 test("ghost suggestion: the rest of a name already asked for shows muted; Tab takes it, → too", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const field = page.getByLabel("Who do you want?");
   await field.fill("Kan");
   const ghost = page.getByTestId("name-ghost");
@@ -81,7 +81,7 @@ test("ghost suggestion: the rest of a name already asked for shows muted; Tab ta
 });
 
 test("letter limit: past half of the 80 the ring shows; in the last 10 it turns amber and says what's left", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const field = page.getByLabel("Who do you want?");
   await expect(field).toHaveAttribute("maxlength", "80");
   await field.fill("2006 Ronaldinho");
@@ -105,7 +105,7 @@ test("letter limit: past half of the 80 the ring shows; in the last 10 it turns 
 });
 
 test("sent: the card's check draws in; a failed request shakes the button 4 px", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   await page.getByLabel("Who do you want?").fill("2010 Messi");
   await page.getByRole("button", { name: "Request" }).click();
   await expect(page.getByTestId("request-sent")).toBeVisible();
@@ -123,7 +123,7 @@ test("sent: the card's check draws in; a failed request shakes the button 4 px",
       return animate.call(this, keyframes, options);
     };
   });
-  await page.goto("/faces/request?request=fail");
+  await page.goto("/submit/request?request=fail");
   await page.getByLabel("Who do you want?").fill("2010 Messi");
   await page.getByRole("button", { name: "Request" }).click();
   await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();

@@ -62,7 +62,7 @@ test("Changelog: a filter swaps the entries with a crossfade, the new ones 12 px
 });
 
 test("Request a face: a kind chip glides the rows that stay and fades the rest; from the keyboard it doesn't", async ({ page }) => {
-  await page.goto("/faces/request");
+  await page.goto("/submit/request");
   const list = page.getByRole("region", { name: "Most requested" }).or(page.locator("section[aria-labelledby=most-requested]"));
   const kinds = page.getByTestId("request-kind");
   await kinds.nth(1).click();
