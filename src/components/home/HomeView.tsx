@@ -68,7 +68,7 @@ export function HomeView({ view }: { view: View }) {
         </div>
       </section>
       <Section id="home-builds" title="Meta builds" link={{ href: "/builds", label: "View all builds" }} className="tablet:col-span-2 tablet:row-start-3">
-        <ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 [scrollbar-width:none] tablet:mx-0 tablet:grid tablet:grid-cols-2 tablet:gap-6 tablet:overflow-visible tablet:px-0 desktop:grid-cols-3">
+        <ul className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 rail tablet:mx-0 tablet:grid tablet:grid-cols-2 tablet:gap-6 tablet:overflow-visible tablet:px-0 desktop:grid-cols-3">
           {view.builds.map((build, i) => (
             <li key={build.href} className="flex w-80 shrink-0 snap-start tablet:w-auto">
               {/* Cards in a row share one height: an unrecorded line has no stat row (D-115). */}

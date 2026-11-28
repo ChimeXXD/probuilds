@@ -179,7 +179,7 @@ export function ChangelogView({
                 for each chip's 44 px tap area and its focus ring (2 px outline, 2 px offset); 4 px of scroll padding keeps
                 the ring in view when focus scrolls a chip to the row's edge. */}
             <div className="mt-5 desktop:mt-2.5">
-              <div className="-m-1 flex scroll-px-1 overflow-x-auto p-1">
+              <div className="rail -m-1 flex scroll-px-1 overflow-x-auto p-1">
                 <PillRow
                   selected={FILTERS.findIndex((f) => f.value === filter)}
                   className="flex w-max shrink-0 gap-2 desktop:w-full desktop:shrink desktop:flex-wrap"
