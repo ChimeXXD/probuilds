@@ -27,7 +27,7 @@ export function FaceSearch({
   return (
     <div
       data-testid="search-field"
-      className={`flex h-12 shrink-0 items-center gap-2 rounded-sm border border-input-border bg-input-bg px-4 transition-colors duration-(--dur-fast) ease-(--ease-out) hover:border-input-border-hovered has-focus-visible:border-input-border-focused has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring ${width}`}
+      className={`flex h-12 shrink-0 items-center gap-2 rounded-sm border border-input-border bg-input-bg px-4 hover:border-input-border-hovered has-focus-visible:border-input-border-focused has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus-ring ${width}`}
     >
       <span className="flex text-text-muted">
         <Icon name="search" size={20} />

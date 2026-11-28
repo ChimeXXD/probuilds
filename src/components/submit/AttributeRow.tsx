@@ -94,7 +94,7 @@ export const AttributeRow = forwardRef<
                 // Two digits are a whole value, except "10", which may be the start of 100 (shown as an error).
                 if (digits.length === 2 && v !== 10 && !attributeError(v)) onAdvance();
               }}
-              className={`type-number-md h-11 w-15 rounded-[10px] bg-input-bg text-center outline-none transition-colors duration-(--dur-fast) ease-(--ease-out) ${box}`}
+              className={`type-number-md h-11 w-15 rounded-[10px] bg-input-bg text-center outline-none ${box}`}
             />
             {!typing && (
               <span aria-hidden="true" data-testid="attribute-value" className={`type-number-md pointer-events-none absolute inset-0 flex items-center justify-center tabular-nums ${tone}`}>

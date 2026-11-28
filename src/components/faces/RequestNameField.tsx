@@ -36,7 +36,7 @@ export function RequestNameField({ value, suggestion, onChange }: { value: strin
   useLayoutEffect(hideIfScrolled);
 
   return (
-    <div className="relative flex h-13 items-center gap-2.5 rounded-md border border-input-border bg-input-bg px-4 transition-colors duration-(--dur-fast) ease-(--ease-out) hover:border-input-border-hovered focus-within:border-2 focus-within:border-input-border-focused focus-within:px-[15px]">
+    <div className="relative flex h-13 items-center gap-2.5 rounded-md border border-input-border bg-input-bg px-4 hover:border-input-border-hovered focus-within:border-2 focus-within:border-input-border-focused focus-within:px-[15px]">
       <span className="flex shrink-0 text-text-muted">
         <Icon name="search" size={20} />
       </span>
