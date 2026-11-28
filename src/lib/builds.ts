@@ -108,6 +108,9 @@ export function archetypeViews(file: ArchetypeFile): ArchetypeView[] {
   }));
 }
 
+/** The archetype's builds page: the Stance card and its "See … builds" button both open it (D-121 (3)). */
+export const buildsHref = (a: { id: string }) => `/builds/${a.id}`;
+
 /** The rail's groups with their archetypes, skipping any group with none. */
 export function groupViews(views: ArchetypeView[]): { label: string; items: ArchetypeView[] }[] {
   return GROUPS.map(({ group, label }) => ({ label, items: views.filter((v) => v.group === group) })).filter((g) => g.items.length > 0);

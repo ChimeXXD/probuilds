@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buttonClass } from "@/components/ui/Button";
-import type { ArchetypeView } from "@/lib/builds";
+import { type ArchetypeView, buildsHref } from "@/lib/builds";
 import { PlayStyleArt } from "./PlayStyleArt";
 
 // The selected archetype's facts under or beside its Stance card, all from content/archetypes/fc27.json.
@@ -13,9 +13,9 @@ function Badge({ icon }: { icon: string }) {
 }
 
 function BuildsLink({ archetype, className }: { archetype: ArchetypeView; className: string }) {
-  // /builds/<archetype> isn't built yet, so the link opens the 404 until it lands (as the shell's links do, D-102).
+  // /builds/<archetype> is a preview page for now (D-105): on the live export the link opens the 404 until it ships.
   return (
-    <Link href={`/builds/${archetype.id}`} className={buttonClass("secondary", className)}>
+    <Link href={buildsHref(archetype)} className={buttonClass("secondary", className)}>
       {`See ${archetype.name} builds`}
     </Link>
   );

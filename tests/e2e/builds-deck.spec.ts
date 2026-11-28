@@ -115,3 +115,30 @@ test("deck: a page opened on a linked archetype puts its card in place without a
   expect(xs.filter((x) => Math.abs(x) > 2 && Math.abs(x) < 240)).toEqual([]);
   expect(Math.abs(xs.at(-1)!)).toBeLessThan(1);
 });
+
+// D-121 (3): "If you click the card, it should take you to the build section".
+test("deck: tapping the front card opens that archetype's builds, the same page as its See builds button", async ({ page }) => {
+  await page.goto("/builds#finisher");
+  await page.waitForTimeout(400);
+  const href = await page.getByRole("link", { name: "See Finisher builds" }).getAttribute("href");
+  await page.getByTestId("stance-card-finisher").click();
+  await expect(page).toHaveURL(new RegExp(`${href}/?$`));
+});
+
+test("deck: a drag on the front card still swipes and never opens it; a tap on a side card still picks it", async ({ page }) => {
+  await page.goto("/builds#boss");
+  await page.waitForTimeout(400);
+  const box = (await page.getByTestId("stance-stage").boundingBox())!;
+  const y = box.y + box.height / 2;
+  await page.mouse.move(box.x + box.width / 2, y);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 - 90, y, { steps: 6 });
+  await page.mouse.up();
+  await expect(page.getByTestId("emblem-marauder")).toHaveAttribute("aria-pressed", "true");
+  await page.waitForTimeout(700); // let the thrown card land: a tap that catches a card in flight is a catch, not a pick
+  await expect(page).toHaveURL(/#marauder$/);
+  // The side card left of Marauder is Boss: a tap on its visible edge picks it; it doesn't open it.
+  await page.mouse.click(box.x + 12, y);
+  await expect(page.getByTestId("emblem-boss")).toHaveAttribute("aria-pressed", "true");
+  await expect(page).toHaveURL(/#boss$/);
+});

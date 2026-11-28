@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Icon } from "@/components/shell/Icon";
-import type { ArchetypeView } from "@/lib/builds";
+import { type ArchetypeView, buildsHref } from "@/lib/builds";
 import { StanceCard } from "./StanceCard";
 import { slot, useSwipeDeck } from "./useSwipeDeck";
 
@@ -15,7 +16,9 @@ import { slot, useSwipeDeck } from "./useSwipeDeck";
 // buttons with "12 of 13". A change from a tap, an arrow or the rail moves the cards on the same settle spring as a
 // throw (D-121 (3), Chime: "It should be the same animation"), opacity on 250 ms --ease-out; a jump along the rail
 // carries the old cards out and the new ones in the way the deck is going. The keyboard moves nothing (D-120 (2));
-// reduced motion keeps only the fade.
+// reduced motion keeps only the fade. A tap or click on the front card opens the archetype's builds (D-121 (3)), the
+// page its "See … builds" button opens; a press that became a drag never does. The card is not a second link for
+// the keyboard or a screen reader: the button under it is that way in (as Submit's "Your card" does).
 const MOVE =
   "[transition:transform_var(--spring-settle-ms)_var(--spring-settle),opacity_250ms_var(--ease-out)] motion-reduce:[transition:opacity_250ms_var(--ease-out)]";
 const STAGE =
@@ -67,6 +70,19 @@ export function StanceStage({
               }`}
             >
               <StanceCard archetype={a} eager={centre} />
+              {centre && (
+                // The whole front card opens the builds page. Out of the tab order and hidden from screen readers:
+                // the "See … builds" button is the same link for them. Not draggable, so a drag stays a swipe.
+                <Link
+                  href={buildsHref(a)}
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  draggable={false}
+                  data-testid="stance-card-open"
+                  onClick={(e) => dragged() && e.preventDefault()}
+                  className="absolute inset-0 z-3"
+                />
+              )}
             </div>
           );
         })}

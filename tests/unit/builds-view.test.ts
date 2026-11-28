@@ -4,7 +4,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { BuildsView } from "@/components/builds/BuildsView";
-import { archetypeViews } from "@/lib/builds";
+import { archetypeViews, buildsHref } from "@/lib/builds";
 import type { ArchetypeFile } from "@/lib/content/types";
 
 // The Builds page as the static export renders it (Figma 241:556 / 279:1399 / 276:1073), Finisher picked.
@@ -52,6 +52,15 @@ describe("BuildsView", () => {
     expect(html).toContain("12 of 13");
     expect(html).toMatch(/<a[^>]*href="\/builds\/finisher"[^>]*>See Finisher builds<\/a>/);
     expect(html).toContain("Pro Clubs HQ");
+  });
+
+  it("the front Stance card opens the archetype's builds, as its button does, without a second tab stop (D-121 (3))", () => {
+    expect(buildsHref({ id: "finisher" })).toBe("/builds/finisher");
+    const open = /<a[^>]*data-testid="stance-card-open"[^>]*>/.exec(html)?.[0] ?? "";
+    expect(open).toContain('href="/builds/finisher"');
+    expect(open).toContain('tabindex="-1"');
+    expect(open).toContain('aria-hidden="true"');
+    expect(html.match(/data-testid="stance-card-open"/g)).toHaveLength(1);
   });
 
   it("starts on the first archetype when none is asked for", () => {
