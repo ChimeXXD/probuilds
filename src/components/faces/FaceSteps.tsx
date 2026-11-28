@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { TEXT_LINK } from "@/components/ui/interaction";
 import {
   firstStep,
   isDone,
@@ -77,7 +78,7 @@ export function FaceSteps({ recipe, storage, paired }: { recipe: Recipe; storage
         // Figma "Resume" (372:1981): bg/surface, 12 px corners, 10 / 14 px in.
         <div data-testid="face-resume" className="flex items-center justify-between gap-2 rounded-md bg-bg-surface px-3.5 py-2.5">
           <p className="type-label text-text-primary">Continuing from step {step}</p>
-          <button type="button" onClick={startOver} className="type-label tap-target shrink-0 text-text-primary">
+          <button type="button" onClick={startOver} className={`type-label tap-target shrink-0 text-text-primary ${TEXT_LINK}`}>
             Start over
           </button>
         </div>

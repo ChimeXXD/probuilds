@@ -6,6 +6,7 @@ import type { Archetype, ArchetypeFile, Position, PositionGroup } from "@/lib/co
 import { apAtLevel, archetypesIn, LEVEL_MAX, levelLine, POSITIONS_BY_GROUP, type SubmitDraft, withArchetype } from "@/lib/submit/editor";
 import { BodyCard } from "./BodyCard";
 import { RollingNumber } from "@/components/ui/RollingNumber";
+import { PRESS_CARD } from "@/components/ui/interaction";
 import { SmallChip } from "@/components/ui/SmallChip";
 import { RoundButton, SectionTitle, StepLine, useRollGate } from "./controls";
 import { GroupChips } from "./GroupChips";
@@ -149,7 +150,7 @@ function ArchetypeTile({ archetype, selected, enter, onPick }: { archetype: Arch
       aria-pressed={selected}
       onClick={onPick}
       style={enter === null ? undefined : ({ "--delay": `${enter}ms` } as CSSProperties)}
-      className={`flex flex-col items-start gap-2 rounded-lg p-4 text-left transition-colors duration-150 ${selected ? "bg-action-selected ring-2 ring-accent-fill ring-inset" : "bg-bg-surface ring-1 ring-border-subtle ring-inset"} ${enter === null ? "" : TILE_ENTER}`}
+      className={`flex flex-col items-start gap-2 rounded-lg p-4 text-left transition-[background-color,box-shadow,scale] duration-(--dur-fast) ease-(--ease-out) ${PRESS_CARD} ${selected ? "bg-action-selected ring-2 ring-accent-fill ring-inset" : "bg-bg-surface ring-1 ring-border-subtle ring-inset hover:bg-hover-fill hover:ring-border-strong"} ${enter === null ? "" : TILE_ENTER}`}
     >
       <span className="flex size-10 items-center justify-center rounded-full bg-bg-page">
         <Emblem id={archetype.id} className="size-6.5" />

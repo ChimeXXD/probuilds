@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { type CSSProperties, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
+import { iconButtonClass } from "@/components/ui/interaction";
 import { type SearchIndex, searchResults } from "@/lib/search";
 import { Icon } from "./Icon";
 import { panelItems, SearchPanel } from "./SearchPanel";
@@ -103,7 +104,7 @@ export function TopSearch() {
   const style = { clipPath: open ? OPEN : SHUT, ...(instant ? { transitionDuration: "0ms" } : {}) } as CSSProperties;
   return (
     <>
-      <Link href="/search" aria-label="Search" className="flex size-11 shrink-0 items-center justify-center rounded-sm text-text-primary tablet:hidden">
+      <Link href="/search" aria-label="Search" className={`flex size-11 shrink-0 items-center justify-center rounded-sm text-text-primary tablet:hidden ${iconButtonClass("page")}`}>
         <Icon name="search" size={20} />
       </Link>
       {/* Keys are read here, not on the form, so Esc and the arrows still work once focus is in the panel. */}
@@ -129,7 +130,7 @@ export function TopSearch() {
           aria-expanded={open}
           aria-controls="top-search"
           onClick={openIt}
-          className="flex size-11 shrink-0 items-center justify-center rounded-sm text-text-primary"
+          className={`flex size-11 shrink-0 items-center justify-center rounded-sm text-text-primary ${iconButtonClass("page")}`}
         >
           <Icon name="search" size={20} />
         </button>

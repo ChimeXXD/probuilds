@@ -5,6 +5,7 @@ import { Icon } from "@/components/shell/Icon";
 import { shake } from "@/components/ui/ActionIcon";
 import { Spinner } from "@/components/builds/ShareSheet";
 import { buttonClass } from "@/components/ui/Button";
+import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 import { plural } from "@/lib/face-page";
 import { KIND_LABEL } from "@/lib/faces";
 import type { FaceRequest } from "@/lib/requests";
@@ -63,7 +64,7 @@ export function RequestForm({
             <p className="type-caption text-text-secondary">New requests show in the list once we&apos;ve checked them</p>
           </div>
         </div>
-        <button type="button" className={buttonClass("secondary", "w-full hover:bg-action-hovered")} onClick={onAnother}>
+        <button type="button" className={buttonClass("secondary", "w-full", "large", "surface")} onClick={onAnother}>
           Ask for another
         </button>
       </section>
@@ -98,14 +99,14 @@ export function RequestForm({
                 aria-pressed={voted}
                 aria-label={`Vote for ${match.name}`}
                 onClick={() => onVote(match)}
-                className="type-button-md flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-accent-fill pr-3.5 pl-3 text-accent-on-fill light:ring-1 light:ring-accent-on-fill light:ring-inset"
+                className={`type-button-md flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-accent-fill pr-3.5 pl-3 text-accent-on-fill hover:bg-accent-fill-hover light:ring-1 light:ring-accent-on-fill light:ring-inset ${STATE_TRANSITION} ${PRESS}`}
               >
                 <Icon name="chevron-up" size={18} />
                 Vote
               </button>
             </div>
           </div>
-          <button type="submit" className={buttonClass("secondary", "w-full hover:bg-action-hovered")}>
+          <button type="submit" className={buttonClass("secondary", "w-full", "large", "surface")}>
             {`Ask for “${typed}” as a new face`}
           </button>
         </>

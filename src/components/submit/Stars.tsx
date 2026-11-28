@@ -2,6 +2,7 @@
 
 import { type CSSProperties, type MouseEvent, useRef, useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 import { popFrames, starDelays } from "@/lib/submit/motion";
 import { reducedMotion } from "@/lib/motion";
 
@@ -56,7 +57,7 @@ export function Stars({ label, value, onChange }: { label: string; value: number
             aria-label={`${n} ${n === 1 ? "star" : "stars"}`}
             onClick={(e) => pick(n, e)}
             onPointerEnter={(e) => e.pointerType === "mouse" && hover(n)}
-            className="tap-target flex size-6"
+            className={`tap-target flex size-6 ${STATE_TRANSITION} ${PRESS}`}
           >
             <span ref={(el) => void (icons.current[n - 1] = el)} data-part="star" className="grid size-6">
               <span className="col-start-1 row-start-1 flex text-border-strong">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Icon } from "@/components/shell/Icon";
+import { STATE_TRANSITION } from "@/components/ui/interaction";
 import { PageContent } from "@/components/ui/PageContent";
 import { SHOW_DRAFTS } from "@/lib/drafts";
 import { NOTICE, SITE_NAME } from "@/lib/site";
@@ -41,13 +42,17 @@ export default function AboutPage() {
       <div className="mt-6 desktop:col-start-2 desktop:row-span-2 desktop:row-start-1 desktop:mt-0">
         {ROWS.map(({ q, a }) => (
           <details key={q} open={a !== null} className="group border-b border-system-divider">
-            {/* The 16 px row padding is on the summary, so the whole 54 px row opens and closes it. */}
-            <summary className="type-label flex cursor-pointer list-none items-center gap-3 py-4 text-text-primary [&::-webkit-details-marker]:hidden">
+            {/* The 16 px row padding is on the summary, so the whole 54 px row opens and closes it. Hover (D-121 (1)): the
+                row takes the page's faint fill (12 px each side, taken back by a negative margin) and its chevron
+                turns text/primary. */}
+            <summary
+              className={`type-label group/q -mx-3 flex cursor-pointer list-none items-center gap-3 rounded-sm px-3 py-4 text-text-primary hover:bg-hover-fill-page [&::-webkit-details-marker]:hidden ${STATE_TRANSITION}`}
+            >
               <span className="flex-1">{q}</span>
-              <span className="hidden text-text-secondary group-open:inline-flex">
+              <span className={`hidden text-text-secondary group-open:inline-flex group-hover/q:text-text-primary ${STATE_TRANSITION}`}>
                 <Icon name="chevron-up" size={22} />
               </span>
-              <span className="inline-flex text-text-secondary group-open:hidden">
+              <span className={`inline-flex text-text-secondary group-open:hidden group-hover/q:text-text-primary ${STATE_TRANSITION}`}>
                 <Icon name="chevron-down" size={22} />
               </span>
             </summary>

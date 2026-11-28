@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { iconButtonClass, PRESS, STATE_TRANSITION, TEXT_LINK } from "@/components/ui/interaction";
 import { RollingNumber } from "@/components/ui/RollingNumber";
 import { type Recipe, sectionDone } from "@/lib/face-page";
 import { drawTicks, growFromTrigger, staggerIn } from "./allStepsMotion";
@@ -16,7 +17,9 @@ import { drawTicks, growFromTrigger, staggerIn } from "./allStepsMotion";
 // opens with its done count ("3 of 4", rolling as ticks fill it), and on a tapped open the rows come in one after
 // another (staggerIn).
 // TODO(Chime): Figma draws no All steps list; this is the Design System's Sheet and Step row, for your OK.
-const ICON_BUTTON = "flex size-11 shrink-0 items-center justify-center rounded-sm transition-colors duration-150 hover:bg-action-hovered";
+// Hover (D-121 (1)): the close button takes the raised sheet's faint fill; a tick's ring brightens (a done tick steps to
+// accent/fill-hover); "All steps" underlines. Presses scale (interaction.ts).
+const ICON_BUTTON = `flex size-11 shrink-0 items-center justify-center rounded-sm ${iconButtonClass("raised")}`;
 const DIM = "transition-colors duration-(--dur-fast) ease-(--ease-out)";
 
 export function AllSteps({ recipe, step, onPick }: { recipe: Recipe; step: number; onPick: (step: number) => void }) {
@@ -48,7 +51,7 @@ export function AllSteps({ recipe, step, onPick }: { recipe: Recipe; step: numbe
           // Opened by a tap or click (detail 0 is a key press, where nothing animates): the rows come in.
           if (e.detail > 0) staggerIn(d);
         }}
-        className="type-label tap-target shrink-0 text-text-primary"
+        className={`type-label tap-target shrink-0 text-text-primary ${TEXT_LINK}`}
       >
         All steps
       </button>
@@ -109,7 +112,7 @@ export function AllSteps({ recipe, step, onPick }: { recipe: Recipe; step: numbe
                       ticked.current = recipe.screens.map((s) => s.step).filter((s) => s >= step && s < to);
                       onPick(to);
                     }}
-                    className={`tap-target flex size-7 shrink-0 items-center justify-center rounded-full transition-colors duration-150 ${done ? "bg-accent-fill text-accent-on-fill" : "border-2 border-border-strong"}`}
+                    className={`tap-target flex size-7 shrink-0 items-center justify-center rounded-full ${STATE_TRANSITION} ${PRESS} ${done ? "bg-accent-fill text-accent-on-fill hover:bg-accent-fill-hover" : "border-2 border-border-strong hover:border-input-border-hovered"}`}
                   >
                     {done && <Icon name="check" size={18} />}
                   </button>

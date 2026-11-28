@@ -15,6 +15,8 @@ import { type ChangeEvent, memo, useEffect, useRef, useState } from "react";
 //   rides on it, both on the follow spring (no overshoot: the finger leads, the knob keeps up); the knob follows its
 //   steps on the same spring. A key press moves it at once and shows no bubble.
 // The knob shows the input's focus ring; the bubble is hidden from screen readers (the value is read from the input).
+// Hover (a mouse or trackpad, D-121 (1)): the track steps to the hovered border colour and the knob grows to 1.1×, the
+// size it is held at, saying "grab me".
 export type SlideInfo = { held: boolean; at: number };
 
 export function Slider({
@@ -90,7 +92,10 @@ export function Slider({
         onKeyDown={() => (heldNow.current = false)}
         className="peer absolute -inset-x-2.5 -inset-y-3 z-10 cursor-pointer opacity-0"
       />
-      <span aria-hidden="true" className="absolute inset-x-0 top-2 h-1 overflow-hidden rounded-[2px] bg-border-strong">
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-2 h-1 overflow-hidden rounded-[2px] bg-border-strong transition-colors duration-(--dur-fast) ease-(--ease-out) can-hover:[.peer:hover~&]:bg-input-border-hovered"
+      >
         {fill && <span data-part="fill" className={`block h-full origin-left bg-accent-fill ${move}`} style={{ transform: `scaleX(${p})` }} />}
       </span>
       {mark && <span aria-hidden="true" className="absolute top-1 left-1/2 h-3 w-0.5 -translate-x-1/2 bg-text-muted" />}
@@ -99,7 +104,7 @@ export function Slider({
       <span aria-hidden="true" data-part="knob" className={`absolute top-0 left-0 h-5 w-0 ${move}`} style={{ transform: `translateX(calc(${p} * 100cqw))` }}>
         <span
           data-part="knob-dot"
-          className={`absolute top-0 -left-2.5 size-5 rounded-full bg-text-primary transition-[scale] duration-(--spring-follow-ms) ease-(--spring-follow) motion-reduce:transition-none motion-reduce:scale-100 [.peer:focus-visible~*_&]:outline-2 [.peer:focus-visible~*_&]:outline-offset-2 [.peer:focus-visible~*_&]:outline-focus-ring ${
+          className={`absolute top-0 -left-2.5 size-5 rounded-full bg-text-primary transition-[scale] duration-(--spring-follow-ms) ease-(--spring-follow) motion-reduce:transition-none motion-reduce:scale-100 can-hover:[.peer:hover~*_&]:scale-110 [.peer:focus-visible~*_&]:outline-2 [.peer:focus-visible~*_&]:outline-offset-2 [.peer:focus-visible~*_&]:outline-focus-ring ${
             follow ? "scale-110" : ""
           }`}
         />

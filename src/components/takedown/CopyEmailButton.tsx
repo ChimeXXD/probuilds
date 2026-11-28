@@ -22,7 +22,7 @@ export function CopyEmailButton({ email }: { email: string }) {
     <>
       <button
         type="button"
-        className={buttonClass("secondary", "flex-1")}
+        className={buttonClass("secondary", "flex-1", "large", "surface")}
         onClick={async () => {
           // The clipboard is missing outside a secure context and can be refused; the address stays on screen
           // and the Email button still works, so a failed copy just shows no toast.

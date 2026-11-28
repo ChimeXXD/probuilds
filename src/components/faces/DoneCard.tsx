@@ -20,7 +20,7 @@ export function DoneCard({ paired, onStartOver }: { paired: BuildPreviewView; on
         </h2>
         <p className="type-body text-text-secondary">Save it, then check it in a match cutscene, not only in the editor.</p>
         <div className="flex gap-2 pt-1.5">
-          <button type="button" onClick={onStartOver} className={buttonClass("secondary", "flex-1 basis-0 whitespace-nowrap px-3!")}>
+          <button type="button" onClick={onStartOver} className={buttonClass("secondary", "flex-1 basis-0 whitespace-nowrap px-3!", "large", "surface")}>
             Start over
           </button>
           <Link href="/faces" className={buttonClass("primary", "flex-1 basis-0 whitespace-nowrap px-3!")}>

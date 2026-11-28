@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { Icon } from "@/components/shell/Icon";
 import { DraftTag } from "@/components/ui/DraftTag";
 import { FilterChip, FilterChipGhost } from "@/components/ui/FilterChip";
+import { COLOR_TRANSITION } from "@/components/ui/interaction";
 import { PillRow } from "@/components/ui/PillRow";
 import {
   dayAndMonth,
@@ -29,6 +30,11 @@ import {
 const noSubscribe = () => () => {};
 const isClient = () => true;
 const isServer = () => false;
+// Hover (D-121 (1)): over an entry's head the card takes the surface's faint fill and its chevron turns text/primary
+// (a mouse or trackpad only, as the hover variant in globals.css); the source link underlines and its arrow nudges
+// towards the corner it opens to.
+const HOVER_ENTRY = `${COLOR_TRANSITION} can-hover:has-[>summary:hover]:bg-hover-fill`;
+const CHEVRON = `${COLOR_TRANSITION} can-hover:group-has-[>summary:hover]:text-text-primary`;
 const EXPAND =
   "[&::details-content]:grid [&::details-content]:grid-rows-[0fr] [&::details-content]:transition-[grid-template-rows,content-visibility] [&::details-content]:transition-discrete [&::details-content]:duration-(--dur-fast) [&::details-content]:ease-(--ease-out) open:[&::details-content]:grid-rows-[1fr] open:[&::details-content]:duration-(--dur-base) motion-reduce:[&::details-content]:transition-none";
 
@@ -47,7 +53,7 @@ function Entry({
     <details
       data-testid={`changelog-entry-${index}`}
       open={open}
-      className={`group rounded-lg bg-bg-surface p-4 tablet:px-5 tablet:py-[18px] ${EXPAND}`}
+      className={`group rounded-lg bg-bg-surface p-4 tablet:px-5 tablet:py-[18px] ${HOVER_ENTRY} ${EXPAND}`}
     >
       <summary className="flex cursor-pointer list-none items-center gap-3.5 tablet:gap-4 [&::-webkit-details-marker]:hidden">
         <span className="flex w-11 shrink-0 flex-col items-center tablet:w-12">
@@ -67,10 +73,10 @@ function Entry({
             {item.title}
           </span>
         </span>
-        <span className="hidden text-text-secondary group-open:inline-flex">
+        <span className={`hidden text-text-secondary group-open:inline-flex ${CHEVRON}`}>
           <Icon name="chevron-up" size={24} />
         </span>
-        <span className="inline-flex text-text-secondary group-open:hidden">
+        <span className={`inline-flex text-text-secondary group-open:hidden ${CHEVRON}`}>
           <Icon name="chevron-down" size={24} />
         </span>
       </summary>
@@ -100,10 +106,10 @@ function Entry({
               href={item.source.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-label tap-target flex flex-1 items-center gap-2 text-text-primary tablet:flex-none"
+              className="group/source type-label tap-target flex flex-1 items-center gap-2 text-text-primary tablet:flex-none"
             >
-              <span className="flex-1 tablet:flex-none">{item.source.title}</span>
-              <span className="text-text-secondary">
+              <span className="flex-1 underline-offset-4 group-hover/source:underline tablet:flex-none">{item.source.title}</span>
+              <span className="text-text-secondary transition-[color,translate] duration-(--dur-fast) ease-(--ease-out) group-hover/source:translate-x-px group-hover/source:-translate-y-px group-hover/source:text-text-primary motion-reduce:translate-none!">
                 <Icon name="external" size={18} />
               </span>
             </a>

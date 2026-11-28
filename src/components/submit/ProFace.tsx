@@ -110,15 +110,15 @@ export function ProFace({ picture, onPicture }: { picture: string | null; onPict
       />
       {picture ? (
         <div className="relative flex gap-2.5">
-          <button type="button" className={buttonClass("secondary", "flex-1 hover:bg-action-hovered", "medium")} onClick={pick}>
+          <button type="button" className={buttonClass("secondary", "flex-1", "medium", "surface")} onClick={pick}>
             Change
           </button>
-          <button type="button" className={buttonClass("secondary", "flex-1 border-transparent hover:bg-action-hovered", "medium")} onClick={() => onPicture(null)}>
+          <button type="button" className={buttonClass("secondary", "flex-1 border-transparent", "medium", "surface")} onClick={() => onPicture(null)}>
             Remove
           </button>
         </div>
       ) : (
-        <button type="button" data-testid="face-upload" className={buttonClass("secondary", "relative w-full hover:bg-action-hovered", "medium")} onClick={pick}>
+        <button type="button" data-testid="face-upload" className={buttonClass("secondary", "relative w-full", "medium", "surface")} onClick={pick}>
           <ButtonLabel icon="plus" iconSide="left">
             Add a picture
           </ButtonLabel>

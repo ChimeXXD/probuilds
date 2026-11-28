@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 import type { Archetype } from "@/lib/content/types";
 import { apCounter, attributeError, bodyChanges, EDITOR_GROUPS, groupAverage, nextAttribute, stepLine, type SubmitDraft } from "@/lib/submit/editor";
 import { AttributeRow } from "./AttributeRow";
@@ -72,7 +73,7 @@ export function StepAttributes({
             type="button"
             aria-current={g.code === active ? "true" : undefined}
             onClick={() => jump(g.code)}
-            className={`type-caption flex h-11 min-w-0 flex-1 items-center justify-center rounded-full border ${g.code === active ? "border-accent-fill bg-bg-raised text-accent-text" : "border-border-strong text-text-secondary"}`}
+            className={`type-caption flex h-11 min-w-0 flex-1 items-center justify-center rounded-full border ${STATE_TRANSITION} ${PRESS} ${g.code === active ? "border-accent-fill bg-bg-raised text-accent-text" : "border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
           >
             {g.code}
           </button>

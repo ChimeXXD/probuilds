@@ -1,11 +1,12 @@
-import { Icon } from "@/components/shell/Icon";
-import { ButtonLabel, buttonClass } from "@/components/ui/Button";
+import { ButtonLabel, buttonClass, NudgedIcon } from "@/components/ui/Button";
+import { PRESS_ENABLED, STATE_TRANSITION } from "@/components/ui/interaction";
 import type { RecipeScreen, RecipeValue } from "@/lib/face-page";
 
 // Figma "Step card" (353:1449): bg/surface, 1 px border/subtle, 20 px corners, 18 px in, 12 px apart. "In the game" and
 // the menu path; the screen's title (H3); its values in the game's order, each a row with a divider above, the label
 // left (Label/Default, secondary) and the value right, large in lime (Number/Large; the value is the hero); one hint;
-// then Back (52 px icon button, disabled on the first step) and "Done, next".
+// then Back (52 px icon button, disabled on the first step) and "Done, next". Back hovers as a secondary button on a
+// card does (D-121 (1)).
 export function StepCard({ screen, onBack, onNext }: { screen: RecipeScreen; onBack: (() => void) | null; onNext: () => void }) {
   return (
     <section
@@ -32,9 +33,9 @@ export function StepCard({ screen, onBack, onNext }: { screen: RecipeScreen; onB
           aria-label="Back"
           disabled={onBack === null}
           onClick={onBack ?? undefined}
-          className="flex size-13 shrink-0 items-center justify-center rounded-sm border-[1.5px] border-border-strong text-text-primary disabled:border-0 disabled:bg-action-disabled-bg disabled:text-action-disabled"
+          className={`group/button flex size-13 shrink-0 items-center justify-center rounded-sm border-[1.5px] border-border-strong text-text-primary not-disabled:hover:border-input-border-hovered not-disabled:hover:bg-hover-fill ${PRESS_ENABLED} disabled:border-0 disabled:bg-action-disabled-bg disabled:text-action-disabled ${STATE_TRANSITION}`}
         >
-          <Icon name="chevron-left" size={24} />
+          <NudgedIcon name="chevron-left" size={24} />
         </button>
         <button type="button" onClick={onNext} className={buttonClass("primary", "flex-1")}>
           <ButtonLabel icon="arrow-right">Done, next</ButtonLabel>

@@ -5,6 +5,7 @@
 // 1 px border sits inside the 12 px side, as Figma's inside stroke does (11 px padding + 1 px border), so a chip is
 // its label + 24 px and Submit's four group chips fit one line at 390 px, as Figma 400:3219 draws them.
 import type { MouseEvent } from "react";
+import { PRESS, STATE_TRANSITION } from "./interaction";
 
 const SHAPE = "type-label inline-flex h-8 shrink-0 items-center rounded-full border px-[11px] whitespace-nowrap";
 
@@ -26,14 +27,14 @@ export function SmallChip({
   const tone =
     pressed && !pill
       ? "border-transparent bg-accent-fill text-accent-on-fill light:ring-1 light:ring-accent-on-fill light:ring-inset"
-      : "border-border-strong bg-bg-surface text-text-primary";
+      : "border-border-strong bg-bg-surface text-text-primary hover:border-input-border-hovered hover:bg-hover-fill";
   return (
     <button
       type="button"
       data-testid={testId}
       aria-pressed={pressed}
       onClick={onPress}
-      className={`${SHAPE} tap-target touch-manipulation transition-colors duration-150 select-none [-webkit-tap-highlight-color:transparent] ${tone}`}
+      className={`${SHAPE} tap-target touch-manipulation select-none [-webkit-tap-highlight-color:transparent] ${STATE_TRANSITION} ${PRESS} ${tone}`}
     >
       {label}
     </button>

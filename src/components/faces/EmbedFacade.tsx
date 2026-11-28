@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { PRESS_CARD, STATE_TRANSITION } from "@/components/ui/interaction";
 
 // Figma "Embed facade" (203:346): a bg/raised card, 12 px corners; a 201 px bg/surface poster with a 56 px play icon;
 // then the video's title (Label/Default) and "<channel> · Tap to play" (Label/Caption, muted), 16 px in, 2 px apart.
@@ -35,9 +36,10 @@ export function EmbedFacade({ embed }: { embed: { videoId: string; title: string
       data-testid="embed-facade"
       aria-label={`Play ${embed.title}`}
       onClick={() => setPlaying(true)}
-      className="flex w-full flex-col overflow-hidden rounded-md bg-bg-raised"
+      className={`group flex w-full flex-col overflow-hidden rounded-md bg-bg-raised hover:bg-hover-fill-raised ${STATE_TRANSITION} ${PRESS_CARD}`}
     >
-      <span className="flex h-[201px] w-full items-center justify-center bg-bg-surface text-text-primary">
+      {/* Hover (D-121 (1)): the facade's faint fills; press 0.98. */}
+      <span className={`flex h-[201px] w-full items-center justify-center bg-bg-surface text-text-primary group-hover:bg-hover-fill ${STATE_TRANSITION}`}>
         <Icon name="play" size={56} />
       </span>
       {meta}

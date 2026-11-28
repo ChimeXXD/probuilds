@@ -82,10 +82,13 @@ export function usePill<T extends HTMLElement>(selected: number | null, onMove?:
     }
     // Sub-pixel boxes (offsetLeft rounds to whole pixels), measured from the row's padding edge, where the layers
     // start, and without any slide the item is in the middle of (the nav's icons, BottomNav).
+    // A chip still easing back from its press (scale 0.97 about its centre, interaction.ts) is measured at full size.
     const outer = box.getBoundingClientRect();
-    const r = item.getBoundingClientRect();
-    const transform = getComputedStyle(item).transform;
-    const shift = new DOMMatrixReadOnly(transform === "none" ? undefined : transform);
+    const seen = item.getBoundingClientRect();
+    const style = getComputedStyle(item);
+    const [sx = 1, sy = sx] = !style.scale || style.scale === "none" ? [] : style.scale.split(" ").map(Number).filter((n) => n > 0);
+    const r = { left: seen.left - (seen.width / sx - seen.width) / 2, top: seen.top - (seen.height / sy - seen.height) / 2, width: seen.width / sx, height: seen.height / sy };
+    const shift = new DOMMatrixReadOnly(style.transform === "none" ? undefined : style.transform);
     const rect = {
       left: r.left - outer.left - box.clientLeft - shift.m41,
       top: r.top - outer.top - box.clientTop - shift.m42,

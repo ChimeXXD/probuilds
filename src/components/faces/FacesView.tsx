@@ -6,6 +6,7 @@ import { useSmoothTab } from "@/components/ui/useSmoothTab";
 import { Icon } from "@/components/shell/Icon";
 import { ButtonLabel, buttonClass } from "@/components/ui/Button";
 import { FilterChip, FilterChipGhost } from "@/components/ui/FilterChip";
+import { PRESS_CARD, STATE_TRANSITION } from "@/components/ui/interaction";
 import { PillRow } from "@/components/ui/PillRow";
 import {
   FACE_FILTERS,
@@ -100,9 +101,9 @@ export function FacesView({ cards }: { cards: FaceCardView[] }) {
                 <Link
                   href={SUBMIT_HREF}
                   data-testid="missing-face-tile"
-                  className="flex aspect-[4/5] flex-col justify-end gap-1.5 rounded-md border border-dashed border-border-strong p-4"
+                  className={`group flex aspect-[4/5] flex-col justify-end gap-1.5 rounded-md border border-dashed border-border-strong p-4 hover:border-input-border-hovered hover:bg-hover-fill-page ${STATE_TRANSITION} ${PRESS_CARD}`}
                 >
-                  <span className="flex text-text-secondary">
+                  <span className={`flex text-text-secondary group-hover:text-text-primary ${STATE_TRANSITION}`}>
                     <Icon name="plus" size={24} />
                   </span>
                   <span className="type-label text-text-primary">Missing a face?</span>
@@ -130,7 +131,7 @@ function RequestPanel() {
         </h2>
         <p className="type-body text-text-secondary">Ask for a face, or vote for one someone already asked for</p>
       </div>
-      <Link href={REQUEST_FACE_HREF} data-testid="request-face-link" className={buttonClass("secondary", "w-full shrink-0 tablet:w-60")}>
+      <Link href={REQUEST_FACE_HREF} data-testid="request-face-link" className={buttonClass("secondary", "w-full shrink-0 tablet:w-60", "large", "surface")}>
         <ButtonLabel icon="arrow-right">Request a face</ButtonLabel>
       </Link>
     </section>
@@ -148,7 +149,7 @@ function NoFaces() {
       {/* Figma sets this line on one line at 393, running 3 px into the card's 24 px padding: -4 px each side allows
           that, and it still wraps, balanced, on narrower phones. */}
       <p className="type-body -mx-1 text-balance text-text-secondary">Ask for it, and vote for what we make next</p>
-      <Link href={REQUEST_FACE_HREF} className={buttonClass("secondary", "", "medium")}>
+      <Link href={REQUEST_FACE_HREF} className={buttonClass("secondary", "", "medium", "surface")}>
         <ButtonLabel icon="arrow-right">Request a face</ButtonLabel>
       </Link>
     </div>

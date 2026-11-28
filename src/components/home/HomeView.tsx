@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { FaceCard } from "@/components/faces/FaceCard";
 import { ButtonLabel, buttonClass } from "@/components/ui/Button";
 import { BuildPreviewCard } from "@/components/ui/BuildPreviewCard";
+import { PRESS, PRESS_CARD, STATE_TRANSITION, TEXT_LINK } from "@/components/ui/interaction";
 import { NEXT_SEASON } from "@/lib/changelog";
 import type { HomeView as View } from "@/lib/home";
 import { SITE_NAME } from "@/lib/site";
@@ -12,7 +13,9 @@ import { SITE_NAME } from "@/lib/site";
 // season card. Tablet and desktop, 40 px apart: Faces as poster cards across the width (D-78), the week (half the width
 // plus 14 px) beside What changed, the builds in two columns with a "View all builds" tile (tablet) or three (desktop),
 // the season card. The DOM keeps the phone's order; the wider grid places the week and the changes side by side.
-const LINK = "type-label tap-target text-text-primary";
+// Hover (D-121 (1)): links underline; a round face's ring and name brighten; the "View all builds" tile takes the page's
+// faint fill and a brighter dashed border. Presses scale (interaction.ts).
+const LINK = `type-label tap-target text-text-primary ${TEXT_LINK}`;
 
 export function HomeView({ view }: { view: View }) {
   return (
@@ -22,14 +25,14 @@ export function HomeView({ view }: { view: View }) {
         <ul className="grid grid-cols-4 gap-2 tablet:hidden">
           {view.faces.map((face, i) => (
             <li key={face.id}>
-              <Link href={face.href} data-testid={`home-face-${i + 1}`} className="flex flex-col items-center gap-2 text-center">
-                <span className="size-18 overflow-hidden rounded-full border-2 border-border-strong bg-bg-surface">
+              <Link href={face.href} data-testid={`home-face-${i + 1}`} className={`group flex flex-col items-center gap-2 text-center ${STATE_TRANSITION} ${PRESS}`}>
+                <span className={`size-18 overflow-hidden rounded-full border-2 border-border-strong bg-bg-surface group-hover:border-input-border-hovered ${STATE_TRANSITION}`}>
                   {face.picture && (
                     // eslint-disable-next-line @next/next/no-img-element -- static export; our own sized capture
                     <img src={face.picture.src} alt="" width={72} height={72} className="size-full object-cover" />
                   )}
                 </span>
-                <span className="type-caption text-text-secondary">{face.title}</span>
+                <span className={`type-caption text-text-secondary group-hover:text-text-primary ${STATE_TRANSITION}`}>{face.title}</span>
               </Link>
             </li>
           ))}
@@ -76,7 +79,7 @@ export function HomeView({ view }: { view: View }) {
             <Link
               href="/builds"
               data-testid="view-all-builds-tile"
-              className="flex w-full flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-border-strong p-4 text-center"
+              className={`flex w-full flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-border-strong p-4 text-center hover:border-input-border-hovered hover:bg-hover-fill-page ${STATE_TRANSITION} ${PRESS_CARD}`}
             >
               <span className="type-label text-text-primary">View all builds</span>
               <span className="type-caption text-text-muted">Pick an archetype, then a build</span>

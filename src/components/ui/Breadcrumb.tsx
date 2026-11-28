@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Fragment } from "react";
+import { QUIET_LINK } from "./interaction";
 
 // Figma "Navigation - Breadcrumb" (build page, 298:3641): caption links and "/" in text/secondary,
 // the current page last in text/primary, 8 px apart. Each link has a 44 px tap area (D-102 (4)). `muted` draws the
 // current page in text/secondary, as the shared build's "Builds / Shared build" does (439:8850).
-// The face page draws its own (427:8652): every part text/muted, 6 px apart (tone="muted").
+// The face page draws its own (427:8652): every part text/muted, 6 px apart (tone="muted"). A link turns
+// text/primary on hover (D-121 (1)).
 export function Breadcrumb({
   links,
   current,
@@ -25,7 +27,7 @@ export function Breadcrumb({
         {links.map((l) => (
           <Fragment key={l.href}>
             <li>
-              <Link href={l.href} className={`tap-target ${part}`}>
+              <Link href={l.href} className={`tap-target ${part} ${QUIET_LINK}`}>
                 {l.label}
               </Link>
             </li>

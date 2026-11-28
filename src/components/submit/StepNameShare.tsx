@@ -120,7 +120,7 @@ export function StepNameShare({
               Share card
             </ButtonLabel>
           </button>
-          <button type="button" data-testid="copy-link" className={buttonClass("secondary", "w-full hover:bg-action-hovered")} onClick={copy}>
+          <button type="button" data-testid="copy-link" className={buttonClass("secondary", "w-full")} onClick={copy}>
             <ActionIcon icon="copy" state={copied ? "done" : "idle"} />
             Copy link
           </button>
@@ -144,7 +144,7 @@ export function StepNameShare({
             data-testid="submit-listing"
             aria-busy={sending || undefined}
             disabled={sending || sent}
-            className={buttonClass("secondary", "w-full border-transparent hover:bg-action-hovered")}
+            className={buttonClass("secondary", "w-full border-transparent", "large", "surface")}
             onClick={send}
           >
             {failed ? "Try again" : "Send for listing"}

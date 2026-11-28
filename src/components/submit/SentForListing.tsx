@@ -30,7 +30,7 @@ export function SentForListing({ onShare, onAnother }: { onShare: (from: HTMLEle
               Share card
             </ButtonLabel>
           </button>
-          <button type="button" className={buttonClass("secondary", "w-full hover:bg-action-hovered tablet:min-w-0 tablet:flex-1 tablet:px-0")} onClick={onAnother}>
+          <button type="button" className={buttonClass("secondary", "w-full tablet:min-w-0 tablet:flex-1 tablet:px-0")} onClick={onAnother}>
             Submit another build
           </button>
         </div>

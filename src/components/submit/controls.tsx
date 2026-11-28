@@ -3,6 +3,7 @@
 import { createContext, type MouseEvent, type ReactNode, useContext, useRef, useState } from "react";
 import { Icon } from "@/components/shell/Icon";
 import { buttonClass, ButtonLabel } from "@/components/ui/Button";
+import { PRESS_ENABLED, STATE_TRANSITION } from "@/components/ui/interaction";
 import { RollingNumber } from "@/components/ui/RollingNumber";
 import { skipsMotion } from "@/lib/submit/motion";
 
@@ -48,7 +49,7 @@ export function useRollGate(value: number) {
   return [gated.still || gated.value !== value, gate] as const;
 }
 
-/** A round − or + button (bg/raised in a card, bg/surface on the page). */
+/** A round − or + button (bg/raised in a card, bg/surface on the page), with that surface's hover fill and a press. */
 export function RoundButton({
   sign,
   label,
@@ -70,7 +71,7 @@ export function RoundButton({
       aria-label={label}
       disabled={disabled}
       onClick={onPress}
-      className={`flex shrink-0 items-center justify-center rounded-full text-text-primary transition-colors duration-150 disabled:text-action-disabled ${surface === "raised" ? "bg-bg-raised" : "bg-bg-surface"} ${size === 48 ? "size-12" : "size-11"}`}
+      className={`flex shrink-0 items-center justify-center rounded-full text-text-primary disabled:text-action-disabled ${PRESS_ENABLED} ${STATE_TRANSITION} ${surface === "raised" ? "bg-bg-raised not-disabled:hover:bg-hover-fill-raised" : "bg-bg-surface not-disabled:hover:bg-hover-fill"} ${size === 48 ? "size-12" : "size-11"}`}
     >
       <Icon name={sign} size={size === 48 ? 22 : 20} />
     </button>
@@ -98,7 +99,7 @@ export function ActionsBar({
       className={`sticky bottom-0 z-10 flex gap-3 border-t border-system-divider bg-bg-page px-5 pt-3 pb-[calc(28px+env(safe-area-inset-bottom))] tablet:static tablet:justify-end tablet:border-0 tablet:px-0 tablet:pb-0 ${gap}`}
     >
       {back && (
-        <button type="button" onClick={back} className={buttonClass("secondary", "w-29.25 shrink-0 tablet:w-35 hover:bg-action-hovered")}>
+        <button type="button" onClick={back} className={buttonClass("secondary", "w-29.25 shrink-0 tablet:w-35")}>
           <ButtonLabel icon="arrow-left" iconSide="left">
             Back
           </ButtonLabel>

@@ -47,7 +47,7 @@ export const AttributeRow = forwardRef<
     onChange(next);
   };
   const tone = error ? "text-status-danger" : "text-text-primary";
-  const box = `${error ? "border-2 border-status-danger" : typing ? "border-2 border-input-border-focused" : "border border-input-border"} ${typing ? tone : "text-transparent"}`;
+  const box = `${error ? "border-2 border-status-danger" : typing ? "border-2 border-input-border-focused" : "border border-input-border hover:border-input-border-hovered"} ${typing ? tone : "text-transparent"}`;
   const id = `attr-${name.replace(/\W+/g, "-").toLowerCase()}`;
   return (
     <div data-testid="attribute-row" className="flex flex-col gap-1.5 border-b border-system-divider pt-2 pb-3">
@@ -94,7 +94,7 @@ export const AttributeRow = forwardRef<
                 // Two digits are a whole value, except "10", which may be the start of 100 (shown as an error).
                 if (digits.length === 2 && v !== 10 && !attributeError(v)) onAdvance();
               }}
-              className={`type-number-md h-11 w-15 rounded-[10px] bg-input-bg text-center outline-none ${box}`}
+              className={`type-number-md h-11 w-15 rounded-[10px] bg-input-bg text-center outline-none transition-colors duration-(--dur-fast) ease-(--ease-out) ${box}`}
             />
             {!typing && (
               <span aria-hidden="true" data-testid="attribute-value" className={`type-number-md pointer-events-none absolute inset-0 flex items-center justify-center tabular-nums ${tone}`}>

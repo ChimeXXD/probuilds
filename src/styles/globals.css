@@ -9,6 +9,29 @@
 /* Screens too short for the larger share card (D-118). */
 @custom-variant short (@media (max-height: 829px));
 
+/* Hover only where a pointer really hovers (DESIGN.md Motion: "only inside (hover: hover) and (pointer: fine)").
+   Tailwind's own hover: checks (hover: hover) alone, which a phone with a stylus or a hybrid laptop passes, and
+   a tap there would leave the hover stuck on. Redefining the variant gates every hover:, group-hover: and
+   peer-hover: in the app at once (D-121 (1)). */
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+/* The same gate for hovers the hover variant can't express (a :hover inside has-[] or a sibling selector). */
+@custom-variant can-hover (@media (hover: hover) and (pointer: fine));
+
+/* Grey hover fills (DESIGN.md Color, O-21): the surface they sit on plus a little of the text colour, faint on
+   purpose. Not Figma variables yet (Figma has action/hovered at 4 %): mirror them into the Design System. */
+@theme {
+  --color-hover-fill: color-mix(in srgb, var(--color-bg-surface), var(--color-text-primary) 2%);
+  --color-hover-fill-raised: color-mix(in srgb, var(--color-bg-raised), var(--color-text-primary) 2%);
+  --color-hover-fill-page: color-mix(in srgb, var(--color-bg-page), var(--color-text-primary) 1%);
+}
+
 /* A one-colour SVG from public/icons used as a mask, so it takes the text colour of its parent (currentColor).
    The file's shape is untouched; its own fill is ignored. Set the file with style --icon: url(...). */
 @utility icon-mask {

@@ -18,7 +18,9 @@ import { Icon } from "./Icon";
 // label fades in, and the icons beside it, which the wider pill pushes along, slide to their new places in the same
 // spring instead of jumping (a FLIP on transform). It starts on the tap, not when the next page arrives, so the nav
 // answers at once. Reduced motion: the pill fades in at the new tab and nothing slides.
-const ITEM = "flex h-12 items-center rounded-full [-webkit-tap-highlight-color:transparent] touch-manipulation select-none";
+// An icon turns text/primary on hover (a narrow window on a computer; D-121 (1)), over --dur-fast.
+const ITEM =
+  "flex h-12 items-center rounded-full [-webkit-tap-highlight-color:transparent] touch-manipulation select-none transition-colors duration-(--dur-fast) ease-(--ease-out)";
 const PICKED_GEOMETRY = "gap-1.5 pr-[18px] pl-3.5";
 
 export function BottomNav() {
@@ -78,7 +80,7 @@ export function BottomNav() {
         const idle = none && s.href === "/" ? "text-text-primary" : "text-text-secondary";
         // Before hydration the link draws its own lime pill; after it, the pill layer does.
         const look = !picked
-          ? `size-12 justify-center ${idle}`
+          ? `size-12 justify-center hover:text-text-primary ${idle}`
           : ready
             ? `${PICKED_GEOMETRY} ${idle}`
             : `${PICKED_GEOMETRY} bg-accent-fill text-accent-on-fill light:ring-1 light:ring-accent-on-fill light:ring-inset`;

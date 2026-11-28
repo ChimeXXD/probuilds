@@ -78,7 +78,7 @@ function FaceTitle({ view }: { view: View }) {
                 </span>
               )}
               {view.tutorial.url ? (
-                <a href={view.tutorial.url} target="_blank" rel="noopener noreferrer" className="tap-target text-text-primary underline">
+                <a href={view.tutorial.url} target="_blank" rel="noopener noreferrer" className="tap-target text-text-primary underline hover:decoration-2">
                   {view.tutorial.label}
                 </a>
               ) : (

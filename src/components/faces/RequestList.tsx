@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 import { PillRow } from "@/components/ui/PillRow";
 import { RollingNumber } from "@/components/ui/RollingNumber";
 import { SmallChip, SmallChipGhost } from "@/components/ui/SmallChip";
@@ -83,7 +84,7 @@ export function RequestList({
                       setByKey(e.detail === 0 ? r.id : null);
                       onVote(r);
                     }}
-                    className={`type-label relative flex size-14 shrink-0 touch-manipulation flex-col items-center justify-center rounded-[14px] transition-colors duration-150 select-none [-webkit-tap-highlight-color:transparent] ${on ? "bg-accent-fill text-accent-on-fill light:ring-1 light:ring-accent-on-fill light:ring-inset" : "bg-bg-surface text-text-primary hover:bg-bg-raised"}`}
+                    className={`type-label relative flex size-14 shrink-0 touch-manipulation flex-col items-center justify-center rounded-[14px] select-none [-webkit-tap-highlight-color:transparent] ${STATE_TRANSITION} ${PRESS} ${on ? "bg-accent-fill text-accent-on-fill hover:bg-accent-fill-hover light:ring-1 light:ring-accent-on-fill light:ring-inset" : "bg-bg-surface text-text-primary hover:bg-hover-fill"}`}
                   >
                     <span data-vote-arrow className="flex">
                       <Icon name="chevron-up" size={20} />

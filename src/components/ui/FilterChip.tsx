@@ -1,12 +1,16 @@
+import { PRESS, STATE_TRANSITION } from "./interaction";
+
 // Figma Chip (200:337), Size=medium: a real, clickable filter, 40 px tall with a 44 px tap area; selected is lime
 // (with a dark ring in light mode, where lime barely shows on the page, D-37). An optional count follows the label
 // in Label/Caption: muted when off, on-fill when selected. In a PillRow the row's sliding pill draws the selected
 // look (`pill`), and FilterChipGhost is the chip as the pill shows it. Picked and unpicked chips are the same size
 // (a transparent border on the picked one), as Figma's inside strokes are, so the pill's copy lines up.
 const SHAPE = "type-label inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full border px-4 whitespace-nowrap";
-const CHIP = `${SHAPE} tap-target touch-manipulation select-none [-webkit-tap-highlight-color:transparent]`;
+const CHIP = `${SHAPE} tap-target touch-manipulation select-none [-webkit-tap-highlight-color:transparent] ${STATE_TRANSITION} ${PRESS}`;
 const CHIP_ON = "border-transparent bg-accent-fill text-accent-on-fill light:ring-1 light:ring-accent-on-fill light:ring-inset";
-const CHIP_OFF = "border-border-strong bg-bg-surface text-text-primary";
+// Hover (D-121 (1)): the surface's faint fill and the hovered border. Under the pill, the picked chip draws unpicked;
+// its hover sits under the pill's copy, unseen.
+const CHIP_OFF = "border-border-strong bg-bg-surface text-text-primary hover:border-input-border-hovered hover:bg-hover-fill";
 
 export function FilterChip({
   testId,

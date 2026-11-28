@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/shell/Icon";
+import { PRESS, PRESS_CARD, STATE_TRANSITION } from "@/components/ui/interaction";
 import { PlayStyleArt } from "@/components/builds/PlayStyleArt";
 import { PlayStyleButton, useKnowsPlayStyle } from "@/components/builds/PlayStyleInfo";
 import { playStylePlusIcon } from "@/lib/archetype-page";
@@ -68,7 +69,7 @@ export function StepPlayStyles({
               aria-expanded={isOpen}
               aria-label={`PlayStyle+ slot ${slot + 1}: ${name}+`}
               onClick={() => onOpen(isOpen ? null : slot)}
-              className={`flex min-w-0 flex-1 flex-col items-stretch gap-2 rounded-[14px] bg-bg-surface p-3 text-left ${isOpen ? "h-30 border-2 border-accent-fill" : "h-[118px] border border-border-strong"}`}
+              className={`flex min-w-0 flex-1 flex-col items-stretch gap-2 rounded-[14px] bg-bg-surface p-3 text-left hover:bg-hover-fill ${STATE_TRANSITION} ${PRESS_CARD} ${isOpen ? "h-30 border-2 border-accent-fill" : "h-[118px] border border-border-strong hover:border-input-border-hovered"}`}
             >
               <span className="flex h-9 items-center justify-between">
                 <PlusArt name={name} size="size-9" />
@@ -97,7 +98,7 @@ export function StepPlayStyles({
                       onChange((d) => ({ ...d, plus: pickPlus(d.plus, archetype, open, o.name) }));
                       onOpen(null);
                     }}
-                    className={`flex h-12 w-full items-center gap-2.5 rounded-[10px] px-2.5 text-left transition-colors duration-150 ${picked ? "bg-bg-surface" : "hover:bg-action-hovered"}`}
+                    className={`flex h-12 w-full items-center gap-2.5 rounded-[10px] px-2.5 text-left ${STATE_TRANSITION} ${picked ? "bg-bg-surface" : "hover:bg-hover-fill-raised"}`}
                   >
                     <PlusArt name={o.name} size="size-6.5" />
                     <span className="type-label min-w-0 flex-1 text-text-primary">{`${o.name}+`}</span>
@@ -190,7 +191,7 @@ function Chip({ name, on, onPress, end }: { name: string; on: boolean; onPress: 
       data-state={on ? "on" : "off"}
       aria-pressed={on}
       onClick={onPress}
-      className={`flex h-11 items-center gap-1.5 rounded-full pl-2 ${end} transition-colors duration-150 ${on ? "border-[1.5px] border-text-primary bg-bg-raised text-text-primary" : "border border-border-strong text-text-secondary hover:bg-action-hovered"}`}
+      className={`flex h-11 items-center gap-1.5 rounded-full pl-2 ${end} ${STATE_TRANSITION} ${PRESS} ${on ? "border-[1.5px] border-text-primary bg-bg-raised text-text-primary" : "border border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
     >
       {badge ? <PlayStyleArt src={badge} className={`size-6.5 ${on ? "" : "opacity-60"}`} /> : <span aria-hidden="true" className="size-6.5" />}
       <span className="type-caption">{name}</span>

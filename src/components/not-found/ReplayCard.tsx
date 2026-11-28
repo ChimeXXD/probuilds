@@ -2,6 +2,7 @@
 
 import { type CSSProperties, useState } from "react";
 import { Icon } from "@/components/shell/Icon";
+import { PRESS, STATE_TRANSITION } from "@/components/ui/interaction";
 
 // Figma Replay card (431:1219) with the "Over the bar" art (D-81, D-93). The art is Figma's vectors placed at
 // their design positions as percentages of the 324.76 × 257.6 art box, so it scales with the art box (324.76 px
@@ -31,7 +32,7 @@ export function ReplayCard() {
         <button
           type="button"
           onClick={() => setShot((n) => n + 1)}
-          className="tap-target flex items-center gap-1.5 rounded-full bg-bg-raised py-1 pr-2.5 pl-2 text-text-primary motion-reduce:hidden"
+          className={`tap-target flex items-center gap-1.5 rounded-full bg-bg-raised py-1 pr-2.5 pl-2 text-text-primary hover:bg-hover-fill-raised motion-reduce:hidden ${STATE_TRANSITION} ${PRESS}`}
         >
           <Icon name="play" size={14} />
           <span className="type-caption">Replay</span>
