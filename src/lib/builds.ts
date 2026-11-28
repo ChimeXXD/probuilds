@@ -16,6 +16,7 @@ const SOURCE_LABEL: Record<string, string> = {
   "dexerto-archetypes": "Dexerto",
   "dexerto-levels": "Dexerto",
   "pchq-archetype-changes": "Pro Clubs HQ",
+  "chime-in-game-20261125": "Chime, in game", // D-122 (2)
 };
 
 /** Where the stance sits in its 252 × 348 Stance card, per the Figma component's 13 variants (258:585), in px. */

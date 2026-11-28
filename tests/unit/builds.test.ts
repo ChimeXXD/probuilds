@@ -36,7 +36,7 @@ describe("builds page data", () => {
     expect(finisher?.sources.map((s) => s.label)).toEqual([
       "Dexerto",
       "Pro Clubs HQ",
-      "Chime's in-game check of every specialization, PS5, Season 2 (RESEARCH §10.4)",
+      "Chime, in game",
     ]);
     expect(finisher?.sources[0]?.url).toBe("https://www.dexerto.com/wikis/ea-fc-27/all-archetypes-explained/");
   });
