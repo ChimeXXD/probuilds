@@ -169,6 +169,18 @@
     animation: fade-in var(--dur-fast) var(--ease-out) both;
   }
 }
+/* The bottom nav through a page change (D-125 (2)): its own group, so it paints above the page group instead of
+   sitting in the root under it, where the incoming page covered it while it faded in and the nav seemed to vanish
+   and come back. It doesn't move or crossfade: the live new view shows throughout (its pill keeps sliding), the old
+   snapshot is hidden. */
+::view-transition-group(bottom-nav),
+::view-transition-new(bottom-nav) {
+  animation: none;
+}
+::view-transition-old(bottom-nav) {
+  animation: none;
+  opacity: 0;
+}
 @keyframes page-from-right {
   from {
     opacity: 0;

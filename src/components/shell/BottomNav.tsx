@@ -19,6 +19,8 @@ import { Icon } from "./Icon";
 // spring instead of jumping (a FLIP on transform). It starts on the tap, not when the next page arrives, so the nav
 // answers at once. Reduced motion: the pill fades in at the new tab and nothing slides.
 // An icon turns text/primary on hover (a narrow window on a computer; D-121 (1)), over --dur-fast.
+// Through a page change (a View Transition, D-121 (2)) the nav is its own group, bottom-nav, painted above the page
+// group and shown live, so the incoming page never covers it (D-125 (2); globals.css).
 const ITEM =
   "flex h-12 items-center rounded-full [-webkit-tap-highlight-color:transparent] touch-manipulation select-none transition-colors duration-(--dur-fast) ease-(--ease-out)";
 const PICKED_GEOMETRY = "gap-1.5 pr-[18px] pl-3.5";
@@ -73,7 +75,7 @@ export function BottomNav() {
       ref={nav}
       aria-label="Sections"
       data-testid="bottom-nav"
-      className="fixed inset-x-0 bottom-[calc(24px+env(safe-area-inset-bottom))] z-10 mx-auto flex w-[344px] max-w-[calc(100%-16px)] items-center justify-between rounded-full border border-border-strong bg-bg-page p-[5px] shadow-bottom-nav tablet:hidden"
+      className="fixed inset-x-0 bottom-[calc(24px+env(safe-area-inset-bottom))] z-10 [view-transition-name:bottom-nav] mx-auto flex w-[344px] max-w-[calc(100%-16px)] items-center justify-between rounded-full border border-border-strong bg-bg-page p-[5px] shadow-bottom-nav tablet:hidden"
     >
       {SECTIONS.map((s, i) => {
         const picked = i === current;

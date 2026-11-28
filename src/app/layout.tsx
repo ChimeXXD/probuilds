@@ -38,7 +38,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <PreviewBar />
         {/* Each page is one View Transition group, so a page change eases in (PageMotion, globals.css). */}
         <ViewTransition name="page">
-          <div className="flex-1">{children}</div>
+          <div data-testid="page" className="flex-1">
+            {children}
+          </div>
         </ViewTransition>
         <PageMotion />
         <SiteFooter />
