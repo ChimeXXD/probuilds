@@ -76,16 +76,37 @@ test("Home's build cards and a face's paired build: the PlayStyle+ badges open t
   await expect(sheet(page)).toContainText("PlayStyle+");
 });
 
-test("Submit: a chip still picks; its info button opens what it does", async ({ page }) => {
+test("Submit: chips have no info buttons; each category's What these do lists its PlayStyles in EA's words (D-122 (5))", async ({ page }) => {
   await page.goto("/submit?state=playstyles");
+  // The chips are Figma's size again and a tap still picks.
   const chip = page.getByTestId("playstyle-chip").filter({ hasText: "Dead Ball" });
-  const name = "Dead Ball";
   await expect(chip).toHaveAttribute("aria-pressed", "false");
   await chip.click();
   await expect(chip).toHaveAttribute("aria-pressed", "true");
   await expect(sheet(page)).toBeHidden();
-  await page.getByRole("button", { name: `${name}: what it does` }).click();
-  await expect(sheet(page).getByRole("heading", { name })).toBeVisible();
+  await expect(page.getByRole("button", { name: /: what it does$/ })).toHaveCount(0);
+  // One link per category.
+  await expect(page.getByRole("button", { name: /^What these do/ })).toHaveCount(5);
+  const shooting = page.getByRole("button", { name: "What these do: Shooting" });
+  await expect(shooting).toHaveAttribute("aria-haspopup", "dialog");
+  await shooting.click();
+  const dialog = sheet(page);
+  await expect(dialog.getByRole("heading", { level: 2, name: "Shooting" })).toBeVisible();
+  const items = dialog.getByTestId("playstyle-info-item");
+  await expect(items).toHaveCount(8);
+  await expect(items.first()).toContainText("Finesse Shot");
+  // The sample Finisher holds Low Driven Shot and Chip Shot as PlayStyle+: they are listed as such, in EA's PlayStyle+
+  // words; the rest in the PlayStyle words.
+  await expect(dialog.getByRole("heading", { level: 3, name: "Low Driven Shot+" })).toBeVisible();
+  await expect(dialog).toContainText("Enhances a Player's ability to perform low driven shots with significantly enhanced accuracy");
+  await expect(dialog).toContainText("Faster power shots with increased speed");
+  await expect(dialog.getByRole("link", { name: /PlayStyles: Everything You Need to Know/ }).first()).toHaveAttribute("href", /ea\.com/);
+  // EA's disagreement on Low Driven Shot shows in the list too (D-122 (3)).
+  await expect(items.filter({ hasText: "Low Driven Shot" })).toContainText("Removed the shot speed boost");
+  // Escape closes it and focus goes back to the button.
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(shooting).toBeFocused();
 });
 
 test("opened from the keyboard, the sheet appears at once (nothing moves on keyboard actions)", async ({ page }) => {

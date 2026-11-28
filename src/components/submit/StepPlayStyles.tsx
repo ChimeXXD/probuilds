@@ -1,9 +1,9 @@
 "use client";
 
 import { Icon } from "@/components/shell/Icon";
-import { PRESS, PRESS_CARD, STATE_TRANSITION } from "@/components/ui/interaction";
+import { PRESS, PRESS_CARD, QUIET_LINK, STATE_TRANSITION } from "@/components/ui/interaction";
 import { PlayStyleArt } from "@/components/builds/PlayStyleArt";
-import { PlayStyleButton, useKnowsPlayStyle } from "@/components/builds/PlayStyleInfo";
+import { PlayStyleListButton } from "@/components/builds/PlayStyleInfo";
 import { playStylePlusIcon } from "@/lib/archetype-page";
 import { playStyleBadge } from "@/lib/build-page";
 import type { Archetype } from "@/lib/content/types";
@@ -121,7 +121,13 @@ export function StepPlayStyles({
       <p className="type-caption pt-1 text-text-muted">Tap to add or remove</p>
       {PLAYSTYLE_CATEGORIES.map((c) => (
         <div key={c.name} className="flex flex-col gap-2 pt-4">
-          <h3 className="type-caption text-text-muted uppercase">{c.name}</h3>
+          {/* Each category's one "What these do" opens its PlayStyles in EA's words (D-122 (5)). */}
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="type-caption text-text-muted uppercase">{c.name}</h3>
+            <PlayStyleListButton title={c.name} names={c.playStyles} plus={draft.plus} label={`What these do: ${c.name}`} className={`type-caption tap-target shrink-0 text-text-secondary ${QUIET_LINK}`}>
+              What these do
+            </PlayStyleListButton>
+          </div>
           <ul className="flex flex-wrap gap-1.5">
             {c.playStyles.map((name) => (
               <ChipItem key={name} name={name} plus={draft.plus.includes(name)} on={regular.includes(name)} onPress={() => toggle(name)} />
@@ -153,36 +159,24 @@ function Count({ value, label, tone }: { value: string; label: string; tone: str
   );
 }
 
-// A tap on a chip still picks it; the small info button at its end (laid over the chip, not inside it: a button can't
-// hold a button) opens what it does (D-121 (4)). A PlayStyle the page has no words for gets no button and no room for it.
+// A tap on a chip picks it (D-122 (5): the chips carry no info button; their category's "What these do" explains them).
 function ChipItem({ name, plus, on, onPress }: { name: string; plus: boolean; on: boolean; onPress: () => void }) {
-  const info = useKnowsPlayStyle(name);
-  const end = info ? "pr-10" : "pr-3";
   return (
-    <li className="relative flex">
+    <li className="flex">
       {plus ? (
-        <span data-testid="playstyle-chip" data-state="plus" className={`flex h-11 items-center gap-1.5 rounded-full bg-bg-surface pl-2 ${end}`}>
+        <span data-testid="playstyle-chip" data-state="plus" className="flex h-11 items-center gap-1.5 rounded-full bg-bg-surface pr-3 pl-2">
           <PlusArt name={name} size="size-6.5" />
           <span className="type-caption text-text-primary">{`${name}+`}</span>
         </span>
       ) : (
-        <Chip name={name} on={on} onPress={onPress} end={end} />
-      )}
-      {info && (
-        <PlayStyleButton
-          name={name}
-          tier={plus ? "plus" : "playStyle"}
-          className="absolute top-0 right-0 flex size-11 items-center justify-center rounded-full text-text-muted hover:text-text-primary"
-        >
-          <Icon name="info" size={16} />
-        </PlayStyleButton>
+        <Chip name={name} on={on} onPress={onPress} />
       )}
     </li>
   );
 }
 
 /** Figma "PlayStyle chip" (431:950): off (border, art at 60 %), on (raised, 1.5 px cream ring, a tick). */
-function Chip({ name, on, onPress, end }: { name: string; on: boolean; onPress: () => void; end: string }) {
+function Chip({ name, on, onPress }: { name: string; on: boolean; onPress: () => void }) {
   const badge = playStyleBadge(name);
   return (
     <button
@@ -191,7 +185,7 @@ function Chip({ name, on, onPress, end }: { name: string; on: boolean; onPress: 
       data-state={on ? "on" : "off"}
       aria-pressed={on}
       onClick={onPress}
-      className={`flex h-11 items-center gap-1.5 rounded-full pl-2 ${end} ${STATE_TRANSITION} ${PRESS} ${on ? "border-[1.5px] border-text-primary bg-bg-raised text-text-primary" : "border border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
+      className={`flex h-11 items-center gap-1.5 rounded-full pr-3 pl-2 ${STATE_TRANSITION} ${PRESS} ${on ? "border-[1.5px] border-text-primary bg-bg-raised text-text-primary" : "border border-border-strong text-text-secondary hover:border-input-border-hovered hover:bg-hover-fill-page hover:text-text-primary"}`}
     >
       {badge ? <PlayStyleArt src={badge} className={`size-6.5 ${on ? "" : "opacity-60"}`} /> : <span aria-hidden="true" className="size-6.5" />}
       <span className="type-caption">{name}</span>
