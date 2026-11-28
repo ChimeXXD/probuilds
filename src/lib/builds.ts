@@ -38,6 +38,13 @@ const STANCE_BOX: Record<string, Box> = {
 };
 const DEFAULT_BOX: Box = { left: 28.39, top: 4.1, ...FULL };
 
+export interface SpecializationView {
+  name: string;
+  plus: { name: string; icon: string | null };
+  /** A target's value is null when only its attribute is known (FORMAT §Archetype). */
+  targets: { attribute: string; value: number | null }[];
+}
+
 export interface ArchetypeView {
   id: string;
   name: string;
@@ -47,10 +54,9 @@ export interface ArchetypeView {
   place: number;
   total: number;
   signature: { name: string; since: string; icon: string }[];
-  /** "Finishing, Composure", or null when no source gave them yet. */
-  mastery: string | null;
-  /** "6 up · 4 down" (the 22 Oct AP cost changes), or null. */
-  apChange: string | null;
+  /** The archetype's specializations (D-121 (3)), each with the PlayStyle+ it gives and the attribute targets it needs;
+   * empty when the file has none yet, `targets` empty when nobody has read them. */
+  specializations: SpecializationView[];
   checked: boolean;
   sources: { label: string; url: string }[];
   stance: { src: string; box: Box };
@@ -72,12 +78,26 @@ export function playStyleIcon(name: string): string {
   return `/art/playstyles/${playStyleSlug(name)}.webp`;
 }
 
+/** The PlayStyle+ badges in public/art/playstyles-plus (Figma PlayStyle/…, Tier=PlayStyle+; EA's art, D-39). */
+const PLUS_BADGES = new Set([
+  "1v1-close-down", "acrobatic", "aerial-fortress", "anticipate", "block", "bruiser", "chip-shot", "cross-claimer",
+  "dead-ball", "deflector", "enforcer", "far-reach", "far-throw", "finesse-shot", "first-touch", "footwork",
+  "gamechanger", "incisive-pass", "intercept", "inventive", "jockey", "long-ball-pass", "low-driven-shot",
+  "pinged-pass", "power-shot", "precision-header", "press-proven", "quick-step", "rapid", "relentless",
+  "slide-tackle", "technical", "trickster", "whipped-pass",
+]);
+
+/** The badge file for a PlayStyle+, or null for a placeholder or a name with no file. */
+export function playStylePlusIcon(name: string): string | null {
+  const slug = playStyleSlug(name);
+  return PLUS_BADGES.has(slug) ? `/art/playstyles-plus/${slug}.webp` : null;
+}
+
 /** The sources an archetype's shown facts come from, in the file's order, one per short name. */
 function sourcesOf(a: Archetype, file: ArchetypeFile): ArchetypeView["sources"] {
   const used = new Set([
     ...a.signaturePlayStyles.flatMap((p) => p.sourceIds),
-    ...(a.masteryAttributes?.sourceIds ?? []),
-    ...(a.apCostChange20261022?.sourceIds ?? []),
+    ...(a.specializations ?? []).flatMap((s) => s.sourceIds),
   ]);
   const seen = new Set<string>();
   return file.sources.flatMap((s) => {
@@ -99,8 +119,11 @@ export function archetypeViews(file: ArchetypeFile): ArchetypeView[] {
     place: i + 1,
     total: ordered.length,
     signature: a.signaturePlayStyles.map((p) => ({ name: p.name, since: sinceLabel(p.since), icon: playStyleIcon(p.name) })),
-    mastery: a.masteryAttributes ? a.masteryAttributes.attributes.join(", ") : null,
-    apChange: a.apCostChange20261022 ? `${a.apCostChange20261022.up} up · ${a.apCostChange20261022.down} down` : null,
+    specializations: (a.specializations ?? []).map((s) => ({
+      name: s.name,
+      plus: { name: s.playStyle, icon: playStylePlusIcon(s.playStyle) },
+      targets: s.targets ?? [],
+    })),
     checked: a.verifiedInGame,
     sources: sourcesOf(a, file),
     stance: { src: `/art/stances/${a.id}.webp`, box: STANCE_BOX[a.id] ?? DEFAULT_BOX },

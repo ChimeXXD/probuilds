@@ -3,9 +3,9 @@
 // a game number the file doesn't hold (CLAUDE.md). The level switch, AP, key stats and "All of it at level N" show
 // only Figma's sample figures (D-107): a recorded build needs each archetype's attribute prices (O-14), the level
 // engine (Sharon's PR #7) and a rule for the key stats (A-18) first.
-import { buildCardView, type BuildCardView, playStylePlusIcon } from "./archetype-page.ts";
+import { buildCardView, type BuildCardView } from "./archetype-page.ts";
 import { allOfItView, type LevelsView, levelsView, SAMPLE_FOOTNOTE, SAMPLE_LABEL } from "./build-level.ts";
-import { GROUPS, playStyleSlug } from "./builds.ts";
+import { GROUPS, playStylePlusIcon, playStyleSlug } from "./builds.ts";
 import { ATTRIBUTE_GROUPS } from "./content/attributes.ts";
 import type { LoadedBuild } from "./content/load.ts";
 import type { AcceleRate, Archetype, ArchetypeFile } from "./content/types.ts";

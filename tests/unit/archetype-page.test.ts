@@ -8,10 +8,10 @@ import {
   buildCountLabel,
   creditLine,
   KEY_STATS,
-  playStylePlusIcon,
   SAMPLE_CARDS_NOTE,
   submitTile,
 } from "@/lib/archetype-page";
+import { playStylePlusIcon } from "@/lib/builds";
 import { loadContent, type LoadedBuild } from "@/lib/content/load";
 
 // The archetype page's rules (Figma 288:1031 / 290:796 / 290:1084, D-62), read from the real content (drafts on, as

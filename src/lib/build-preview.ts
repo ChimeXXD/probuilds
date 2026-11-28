@@ -3,8 +3,8 @@
 // a dash for every key stat and its signature PlayStyles+; a line of the team with no build file at all is drawn
 // from its archetype (Home's Meta Maestro and Meta Boss, D-75 (4)). Values reach the card as the build file writes
 // them; no number is made up.
-import { bodyLine, creditLine, KEY_STATS, playStylePlusIcon } from "./archetype-page.ts";
-import { GROUPS } from "./builds.ts";
+import { bodyLine, creditLine, KEY_STATS } from "./archetype-page.ts";
+import { GROUPS, playStylePlusIcon } from "./builds.ts";
 import type { LoadedBuild } from "./content/load.ts";
 import type { Archetype, KeyStatCode, Position } from "./content/types.ts";
 import { versionWording } from "./content/version.ts";

@@ -31,32 +31,59 @@ describe("builds page data", () => {
       { name: "Low Driven Shot", since: "Since launch", icon: "/art/playstyles/low-driven-shot.webp" },
       { name: "First Touch", since: "Since Season 2", icon: "/art/playstyles/first-touch.webp" },
     ]);
-    expect(finisher?.mastery).toBe("Finishing, Composure");
-    expect(finisher?.apChange).toBe("6 up · 4 down");
     expect(finisher?.checked).toBe(false);
+    // The sources of what the page shows: the signatures and the specializations (D-121 (3)).
     expect(finisher?.sources.map((s) => s.label)).toEqual([
-      "EA, The Grounds deep dive",
-      "EA, archetypes update (22 Oct)",
       "Dexerto",
       "Pro Clubs HQ",
+      "Chime's in-game check of every specialization, PS5, Season 2 (RESEARCH §10.4)",
     ]);
-    expect(finisher?.sources[0]?.url).toBe("https://www.ea.com/en/games/ea-sports-fc/fc-27/news/pitch-notes-fc27-the-grounds-deep-dive");
+    expect(finisher?.sources[0]?.url).toBe("https://www.dexerto.com/wikis/ea-fc-27/all-archetypes-explained/");
   });
 
-  it("gives every archetype its mastery attributes, as EA's Pitch Notes table lists them", () => {
-    expect(views.find((v) => v.id === "spark")?.mastery).toBe("Crossing, Dribbling");
-    expect(views.find((v) => v.id === "creator")?.mastery).toBe("FK Accuracy, Vision");
-    expect(views.every((v) => v.mastery !== null)).toBe(true);
+  it("gives each archetype its specializations, each with its PlayStyle+ badge and the targets it needs (D-121 (3))", () => {
+    expect(finisher?.specializations).toEqual([
+      {
+        name: "Finisher+",
+        plus: { name: "Chip Shot", icon: "/art/playstyles-plus/chip-shot.webp" },
+        targets: [
+          { attribute: "Ball Control", value: 90 },
+          { attribute: "Composure", value: 92 },
+          { attribute: "Reactions", value: 90 },
+        ],
+      },
+      {
+        name: "Presser",
+        plus: { name: "Relentless", icon: "/art/playstyles-plus/relentless.webp" },
+        targets: [
+          { attribute: "Agility", value: 90 },
+          { attribute: "Stamina", value: 92 },
+          { attribute: "Aggression", value: 90 },
+        ],
+      },
+      {
+        name: "Hunter",
+        plus: { name: "Gamechanger", icon: "/art/playstyles-plus/gamechanger.webp" },
+        targets: [
+          { attribute: "Balance", value: 90 },
+          { attribute: "Finishing", value: 90 },
+          { attribute: "Curve", value: 92 },
+        ],
+      },
+    ]);
+    expect(views.every((v) => v.specializations.length === 3)).toBe(true);
   });
 
-  it("leaves out facts the file doesn't have yet", () => {
+  it("leaves out specializations the file doesn't have yet, and targets nobody has read", () => {
     const bare: ArchetypeFile = {
       ...file,
-      archetypes: file.archetypes.map((a) => (a.id === "spark" ? { ...a, masteryAttributes: null, apCostChange20261022: null } : a)),
+      archetypes: file.archetypes.map((a) =>
+        a.id === "spark" ? { ...a, specializations: null } : a.id === "magician" ? { ...a, specializations: [{ name: "Hotshot", playStyle: "Power Shot", targets: null, sourceIds: ["chime-in-game-20261125"] }] } : a,
+      ),
     };
-    const spark = archetypeViews(bare).find((v) => v.id === "spark");
-    expect(spark?.mastery).toBeNull();
-    expect(spark?.apChange).toBeNull();
+    const bareViews = archetypeViews(bare);
+    expect(bareViews.find((v) => v.id === "spark")?.specializations).toEqual([]);
+    expect(bareViews.find((v) => v.id === "magician")?.specializations[0]?.targets).toEqual([]);
   });
 
   it("gives every archetype its own stance and pattern", () => {

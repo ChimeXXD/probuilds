@@ -1,7 +1,7 @@
 // The archetype page's rules (`/builds/[archetype]`, Figma 288:1031 / 290:796 / 290:1084; D-62): its builds as
 // "stat strip" cards. Values reach the card as the build file writes them: a draft's "PLACEHOLDER" stays
 // "PLACEHOLDER" (CLAUDE.md: never invent values).
-import { playStyleSlug } from "./builds.ts";
+import { playStylePlusIcon } from "./builds.ts";
 import { KEY_STATS } from "./content/attributes.ts";
 import type { LoadedBuild, ResolvedCredit } from "./content/load.ts";
 import type { Badge, KeyStatCode, Position } from "./content/types.ts";
@@ -9,15 +9,8 @@ import { versionWording } from "./content/version.ts";
 
 /** The six key stats the card's strip shows (D-62), in the game's order. */
 export { KEY_STATS };
-
-/** The PlayStyle+ badges in public/art/playstyles-plus (Figma PlayStyle/…, Tier=PlayStyle+; EA's art, D-39). */
-const PLUS_BADGES = new Set([
-  "1v1-close-down", "acrobatic", "aerial-fortress", "anticipate", "block", "bruiser", "chip-shot", "cross-claimer",
-  "dead-ball", "deflector", "enforcer", "far-reach", "far-throw", "finesse-shot", "first-touch", "footwork",
-  "gamechanger", "incisive-pass", "intercept", "inventive", "jockey", "long-ball-pass", "low-driven-shot",
-  "pinged-pass", "power-shot", "precision-header", "press-proven", "quick-step", "rapid", "relentless",
-  "slide-tackle", "technical", "trickster", "whipped-pass",
-]);
+/** Lives in builds.ts now; re-exported for Submit's modules (another lane's files), to move at the next merge. */
+export { playStylePlusIcon };
 
 /** Figma's note above the sample cards (288:1094), shown once in place of each card's Draft tag (D-107, D-113). */
 export const SAMPLE_CARDS_NOTE = "Sample values: not real builds yet";
@@ -44,12 +37,6 @@ export interface BuildCardView {
   versionTag: string;
   olderSeason: string | null;
   credit: string | null;
-}
-
-/** The badge file for a PlayStyle+, or null for a placeholder or a name with no file. */
-export function playStylePlusIcon(name: string): string | null {
-  const slug = playStyleSlug(name);
-  return PLUS_BADGES.has(slug) ? `/art/playstyles-plus/${slug}.webp` : null;
 }
 
 /** An archetype's builds: Meta pick first, then Recommended, then the rest (each by id, as the loader sorts). */

@@ -47,10 +47,20 @@ describe("BuildsView", () => {
     expect(html).toContain("Low Driven Shot");
     expect(html).toContain("Since Season 2");
     expect(html).toContain("/art/playstyles/first-touch.webp");
-    expect(html).toContain("Mastery attributes: Finishing, Composure");
-    expect(html).toContain("6 up · 4 down");
+    // Specializations replace the Mastery and AP cost tiles (D-121 (3)).
+    expect(html).not.toContain("Mastery attributes");
+    expect(html).not.toContain("6 up · 4 down");
+    expect(html).toContain("Specializations");
+    expect(html).toContain("Presser");
+    expect(html).toContain("/art/playstyles-plus/gamechanger.webp");
+    expect(html).toContain("Stamina");
     expect(html).toContain("12 of 13");
-    expect(html).toMatch(/<a[^>]*href="\/builds\/finisher"[^>]*>See Finisher builds<\/a>/);
+    // The lime primary button with an arrow (D-121 (3)).
+    const see = /<a[^>]*data-testid="see-builds"[^>]*>.*?<\/a>/.exec(html)?.[0] ?? "";
+    expect(see).toContain('href="/builds/finisher"');
+    expect(see).toContain("See Finisher builds");
+    expect(see).toContain("bg-accent-fill");
+    expect(see).toContain("/icons/arrow-right.svg");
     expect(html).toContain("Pro Clubs HQ");
   });
 

@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Icon } from "@/components/shell/Icon";
 import { buttonClass } from "@/components/ui/Button";
 import { type ArchetypeView, buildsHref } from "@/lib/builds";
 import { PlayStyleArt } from "./PlayStyleArt";
+import { Specializations } from "./Specializations";
 
 // The selected archetype's facts under or beside its Stance card, all from content/archetypes/fc27.json.
 
@@ -12,11 +14,20 @@ function Badge({ icon }: { icon: string }) {
   return <PlayStyleArt src={icon} className="size-12" />;
 }
 
-function BuildsLink({ archetype, className }: { archetype: ArchetypeView; className: string }) {
+function BuildsLink({ archetype }: { archetype: ArchetypeView }) {
+  // The lime primary button, the page's one main action (D-121 (3), D-115), the full width of the facts column. Its
+  // arrow nudges 2 px towards where it goes under a mouse (purpose: it says "this goes somewhere"; --dur-fast,
+  // ease-out; none under reduced motion), as every arrow button does once the shared Button carries it (lane 2).
   // /builds/<archetype> is a preview page for now (D-105): on the live export the link opens the 404 until it ships.
   return (
-    <Link href={buildsHref(archetype)} className={buttonClass("secondary", className)}>
+    <Link href={buildsHref(archetype)} data-testid="see-builds" className={buttonClass("primary", "group/see w-full transition-colors duration-(--dur-fast) ease-(--ease-out) hover:bg-accent-fill-hover")}>
       {`See ${archetype.name} builds`}
+      <span
+        aria-hidden="true"
+        className="flex transition-transform duration-(--dur-fast) ease-(--ease-out) group-hover/see:translate-x-0.5 motion-reduce:group-hover/see:translate-x-0"
+      >
+        <Icon name="arrow-right" size={20} />
+      </span>
     </Link>
   );
 }
@@ -36,21 +47,14 @@ export function PhoneFacts({ archetype }: { archetype: ArchetypeView }) {
           ))}
         </ul>
       </div>
-      {/* All 13 have them (EA's Pitch Notes table); a file without them leaves the line out. */}
-      {archetype.mastery && (
-        <p className="type-caption text-center text-text-secondary">{`Mastery attributes: ${archetype.mastery}`}</p>
-      )}
-      <BuildsLink archetype={archetype} className="w-full" />
+      <Specializations items={archetype.specializations} heading="phone" />
+      <BuildsLink archetype={archetype} />
     </div>
   );
 }
 
 /** Tablet and desktop (Figma "Facts" 279:1464 / 276:1233, D-60): beside the card. */
 export function WideFacts({ archetype }: { archetype: ArchetypeView }) {
-  const tiles = [
-    archetype.mastery && { label: "Mastery attributes", value: archetype.mastery },
-    archetype.apChange && { label: "AP cost changes, 22 Oct", value: archetype.apChange },
-  ].filter((t): t is { label: string; value: string } => Boolean(t));
   return (
     <div className="hidden min-w-0 flex-1 flex-col gap-6 tablet:flex desktop:gap-7">
       <div className="flex flex-col gap-1">
@@ -71,17 +75,8 @@ export function WideFacts({ archetype }: { archetype: ArchetypeView }) {
           ))}
         </ul>
       </div>
-      {tiles.length > 0 && (
-        <div className="flex flex-col gap-3 desktop:flex-row desktop:gap-4">
-          {tiles.map((t) => (
-            <div key={t.label} className="flex flex-1 flex-col gap-1.5 rounded-lg border border-border-subtle bg-bg-surface px-5 py-[18px]">
-              <p className="type-caption text-text-secondary">{t.label}</p>
-              <p className="type-h4 text-text-primary">{t.value}</p>
-            </div>
-          ))}
-        </div>
-      )}
-      <BuildsLink archetype={archetype} className="w-full desktop:w-[360px]" />
+      <Specializations items={archetype.specializations} heading="wide" />
+      <BuildsLink archetype={archetype} />
       {archetype.sources.length > 0 && (
         <p className="type-caption text-text-muted">
           Sources:{" "}
