@@ -130,3 +130,26 @@ export function playStyleInfos(file: PlayStylesFile): PlayStyleInfo[] {
   };
   return file.playStyles.map((e) => ({ name: e.name, playStyle: resolve(e.playStyle), plus: resolve(e.plus) }));
 }
+
+export type Tier = "playStyle" | "plus";
+
+/**
+ * The descriptions a page needs: only the PlayStyles it shows, each with only the tiers it shows it in (the other
+ * tier is null and never asked for), so a page's payload carries a few entries, not all 36.
+ */
+export function infosFor(all: PlayStyleInfo[], uses: { name: string; tier: Tier }[]): PlayStyleInfo[] {
+  const tiers = new Map<string, Set<Tier>>();
+  for (const { name, tier } of uses) tiers.set(name, (tiers.get(name) ?? new Set()).add(tier));
+  const byName = new Map(all.map((info) => [info.name, info]));
+  // In the order the page first shows them.
+  return [...tiers].flatMap(([name, used]) => {
+    const info = byName.get(name);
+    if (!info) return [];
+    return [{ name, playStyle: used.has("playStyle") ? info.playStyle : null, plus: used.has("plus") ? info.plus : null }];
+  });
+}
+
+/** The PlayStyle+ badges a list of build cards shows, as uses for infosFor. */
+export function plusUses(cards: { playStylesPlus: { name: string }[] }[]): { name: string; tier: Tier }[] {
+  return cards.flatMap((c) => c.playStylesPlus.map((p) => ({ name: p.name, tier: "plus" as const })));
+}

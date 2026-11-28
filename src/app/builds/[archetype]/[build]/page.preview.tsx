@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BuildPageView } from "@/components/builds/BuildPageView";
-import { buildPageView, pageBuilds } from "@/lib/build-page";
+import { PlayStyleInfoProvider } from "@/components/builds/PlayStyleInfo";
+import { buildPageView, buildPlayStyleUses, pageBuilds } from "@/lib/build-page";
+import { infosFor } from "@/lib/content/playstyles";
 import { siteContent } from "@/lib/content/site-content";
 import { buildPreviewPath, previewImages } from "@/lib/link-preview";
 import { SITE_NAME } from "@/lib/site";
@@ -30,5 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BuildPage({ params }: Props) {
   const build = buildOf(await params);
   if (!build) notFound();
-  return <BuildPageView view={buildPageView(build, siteContent().archetypeFile.sources)} />;
+  const view = buildPageView(build, siteContent().archetypeFile.sources);
+  return (
+    <PlayStyleInfoProvider infos={infosFor(siteContent().playStyles, buildPlayStyleUses(view))}>
+      <BuildPageView view={view} />
+    </PlayStyleInfoProvider>
+  );
 }

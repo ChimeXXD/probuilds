@@ -39,6 +39,15 @@ export interface AttributeGroupView {
   attributes: { name: string; value: number | string; mastery: boolean; percent: number; body?: number }[];
 }
 
+/** The PlayStyles a Build page shows, by tier, for its info sheet (D-121 (4)). */
+export function buildPlayStyleUses(view: Pick<BuildPageView, "playStylesPlus" | "playStyles" | "specialization">) {
+  return [
+    ...view.playStylesPlus.map((p) => ({ name: p.name, tier: "plus" as const })),
+    ...view.playStyles.map((p) => ({ name: p.name, tier: "playStyle" as const })),
+    ...(view.specialization?.plus ? [{ name: view.specialization.plus.replace(/\+$/, ""), tier: "plus" as const }] : []),
+  ];
+}
+
 export interface SpecializationView {
   name: string;
   /** "Chip Shot+", or null when the archetype file doesn't list this specialization. */

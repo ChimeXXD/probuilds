@@ -3,6 +3,7 @@ import { Icon } from "@/components/shell/Icon";
 import { buttonClass } from "@/components/ui/Button";
 import { type ArchetypeView, buildsHref } from "@/lib/builds";
 import { PlayStyleArt } from "./PlayStyleArt";
+import { PlayStyleButton } from "./PlayStyleInfo";
 import { Specializations } from "./Specializations";
 
 // The selected archetype's facts under or beside its Stance card, all from content/archetypes/fc27.json.
@@ -40,9 +41,11 @@ export function PhoneFacts({ archetype }: { archetype: ArchetypeView }) {
         <p className="type-caption text-center text-text-muted">Signature PlayStyles</p>
         <ul className="flex gap-8">
           {archetype.signature.map((p) => (
-            <li key={p.name} className="flex flex-col items-center gap-2">
-              <Badge icon={p.icon} />
-              <span className="type-label text-center text-text-primary">{p.name}</span>
+            <li key={p.name} className="flex flex-col items-center">
+              <PlayStyleButton name={p.name} tier="playStyle" className="-m-1.5 flex flex-col items-center gap-2 p-1.5">
+                <Badge icon={p.icon} />
+                <span className="type-label text-center text-text-primary">{p.name}</span>
+              </PlayStyleButton>
             </li>
           ))}
         </ul>
@@ -68,8 +71,10 @@ export function WideFacts({ archetype }: { archetype: ArchetypeView }) {
         <ul className="flex gap-10">
           {archetype.signature.map((p) => (
             <li key={p.name} className="flex flex-col items-center gap-2 text-center">
-              <Badge icon={p.icon} />
-              <span className="type-label text-text-primary">{p.name}</span>
+              <PlayStyleButton name={p.name} tier="playStyle" className="-m-1.5 flex flex-col items-center gap-2 p-1.5 text-center">
+                <Badge icon={p.icon} />
+                <span className="type-label text-text-primary">{p.name}</span>
+              </PlayStyleButton>
               <span className="type-caption text-text-muted">{p.since}</span>
             </li>
           ))}

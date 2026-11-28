@@ -2,7 +2,9 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PlayStyleInfoProvider } from "@/components/builds/PlayStyleInfo";
 import { FacePageView } from "@/components/faces/FacePageView";
+import { infosFor, plusUses } from "@/lib/content/playstyles";
 import { siteContent } from "@/lib/content/site-content";
 import { faceOgView } from "@/lib/face-og";
 import { facePageView } from "@/lib/face-view";
@@ -40,5 +42,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function FacePage({ params }: { params: Promise<{ slug: string }> }) {
   const face = faceBySlug((await params).slug);
   if (!face) notFound();
-  return <FacePageView view={facePageView(face, (file) => existsSync(join(publicDir, file)))} />;
+  const view = facePageView(face, (file) => existsSync(join(publicDir, file)));
+  // The paired build's PlayStyle+ badges open what each does (D-121 (4)).
+  return (
+    <PlayStyleInfoProvider infos={infosFor(siteContent().playStyles, plusUses([view.paired]))}>
+      <FacePageView view={view} />
+    </PlayStyleInfoProvider>
+  );
 }

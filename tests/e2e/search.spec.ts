@@ -20,7 +20,7 @@ test("the top bar's search opens Search; typing finds faces and builds, in their
   await expect(faces.getByTestId("face-card-1")).toHaveAttribute("href", "/faces/cristiano-ronaldo-2008");
   const builds = page.getByTestId("search-builds");
   await expect(builds.locator('[data-testid^="build-preview-"]')).toHaveCount(1);
-  await expect(builds.getByTestId("build-preview-1")).toHaveAttribute("href", "/builds/spark/spark-2008-winger");
+  await expect(builds.getByTestId("build-preview-1").locator("a").first()).toHaveAttribute("href", "/builds/spark/spark-2008-winger");
   // The query goes into the address, so the results survive a reload and can be shared.
   await expect(page).toHaveURL(/\?q=Ronaldo$/);
   await page.reload();

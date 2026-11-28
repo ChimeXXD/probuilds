@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadContent } from "@/lib/content/load";
-import { playStyleNamesUsed, validatePlayStylesFile } from "@/lib/content/playstyles";
+import { infosFor, playStyleNamesUsed, validatePlayStylesFile } from "@/lib/content/playstyles";
 import { validateAll } from "@/lib/content/validate";
 import { PLAYSTYLE_CATEGORIES } from "@/lib/submit/editor";
 
@@ -89,5 +89,33 @@ describe("PlayStyle names across content", () => {
         expect(d?.source.url).toMatch(/^https:\/\/www\.ea\.com\//);
       }
     }
+  });
+});
+
+describe("infosFor", () => {
+  const all = loadContent(join(process.cwd(), "content")).playStyles;
+
+  it("keeps only the PlayStyles a page shows, and only the tiers it shows them in, so a page carries what it needs", () => {
+    const picked = infosFor(all, [
+      { name: "Chip Shot", tier: "plus" },
+      { name: "Rapid", tier: "playStyle" },
+      { name: "Chip Shot", tier: "plus" },
+    ]);
+    expect(picked.map((p) => p.name)).toEqual(["Chip Shot", "Rapid"]);
+    expect(picked[0]?.plus?.text).toBe("Performs chip shots more quickly with exceptional accuracy.");
+    expect(picked[0]?.playStyle).toBeNull();
+    expect(picked[1]?.playStyle?.text).toMatch(/^Reaches a higher sprint speed while dribbling/);
+    expect(picked[1]?.plus).toBeNull();
+  });
+
+  it("keeps both tiers when a page shows both, and skips names with no entry (a placeholder)", () => {
+    const picked = infosFor(all, [
+      { name: "Rapid", tier: "playStyle" },
+      { name: "Rapid", tier: "plus" },
+      { name: "PLACEHOLDER", tier: "playStyle" },
+    ]);
+    expect(picked).toHaveLength(1);
+    expect(picked[0]?.playStyle).not.toBeNull();
+    expect(picked[0]?.plus).not.toBeNull();
   });
 });

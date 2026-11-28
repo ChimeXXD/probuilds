@@ -50,14 +50,14 @@ test.describe("preview home", () => {
     await expect(cards).toHaveCount(3);
     await expect(cards.nth(0)).toContainText("Meta Finisher");
     await expect(cards.nth(0)).toContainText("Level 55 · 185 cm · 80 kg");
-    await expect(cards.nth(0)).toHaveAttribute("href", "/builds/finisher/meta-finisher");
+    await expect(cards.nth(0).locator("a").first()).toHaveAttribute("href", "/builds/finisher/meta-finisher");
     await expect(cards.nth(1)).toContainText("Meta Maestro");
     await expect(cards.nth(1)).toContainText("Midfielder · not recorded yet");
     await expect(cards.nth(1)).toContainText("Pinged Pass");
-    await expect(cards.nth(1)).toHaveAttribute("href", "/builds/maestro");
+    await expect(cards.nth(1).locator("a").first()).toHaveAttribute("href", "/builds/maestro");
     await expect(cards.nth(2)).toContainText("Meta Boss");
     await expect(cards.nth(2)).toContainText("Defender · not recorded yet");
-    await expect(cards.nth(2)).toHaveAttribute("href", "/builds/boss");
+    await expect(cards.nth(2).locator("a").first()).toHaveAttribute("href", "/builds/boss");
     for (const i of [0, 1, 2]) await expect(cards.nth(i)).toContainText("Meta pick");
     await expect(builds).toContainText("Sample builds. Maestro and Boss values come when they are recorded in game. Tap a card to open its build.");
     // Phone: the cards swipe sideways inside the rail; the page itself never scrolls sideways.

@@ -78,7 +78,7 @@ test("finished: Face done, then the matching build card (D-79)", async ({ page }
   await expect(page.getByText("Save it, then check it in a match cutscene, not only in the editor.")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Set up the matching build" })).toBeVisible();
   const paired = page.getByTestId("paired-build");
-  await expect(paired).toHaveAttribute("href", "/builds/spark/spark-2008-winger");
+  await expect(paired.locator("a").first()).toHaveAttribute("href", "/builds/spark/spark-2008-winger");
   await expect(paired).toContainText("Spark · not recorded yet");
   await expect(paired).toContainText("Trickster");
   await expect(page.getByRole("link", { name: "Back to faces" })).toHaveAttribute("href", "/faces");

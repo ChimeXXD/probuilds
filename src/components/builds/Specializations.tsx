@@ -1,5 +1,6 @@
 import type { SpecializationView } from "@/lib/builds";
 import { NUMBER_SM } from "./BuildAttributes";
+import { PlayStyleButton } from "./PlayStyleInfo";
 
 // The archetype's specializations on the Builds page (D-121 (3), replacing the "Mastery attributes" and "AP cost
 // changes" tiles): each one's name, the PlayStyle+ it gives (EA's gold badge and its name, text/secondary as D-115
@@ -29,8 +30,11 @@ export function Specializations({ items, heading }: { items: SpecializationView[
           >
             <div className="flex items-center gap-2.5 desktop:flex-col desktop:items-start desktop:gap-2">
               {s.plus.icon ? (
-                // eslint-disable-next-line @next/next/no-img-element -- static export; EA's gold PlayStyle+ badge (D-39)
-                <img src={s.plus.icon} alt="" width={36} height={36} className="size-9 shrink-0" />
+                // The badge opens what the PlayStyle+ does (D-121 (4)); 4 px around it make the 44 px target.
+                <PlayStyleButton name={s.plus.name} tier="plus" on="surface" className="-m-1 flex shrink-0 p-1">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- static export; EA's gold PlayStyle+ badge (D-39) */}
+                  <img src={s.plus.icon} alt="" width={36} height={36} className="size-9 shrink-0" />
+                </PlayStyleButton>
               ) : (
                 <span aria-hidden="true" className="size-9 shrink-0" />
               )}

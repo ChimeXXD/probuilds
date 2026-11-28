@@ -55,7 +55,7 @@ test("All steps: a tick pops and its check draws in by clip-path; the row dims w
   const dialog = page.getByRole("dialog", { name: "All steps" });
   await expect(dialog).toBeVisible();
   await dialog.getByTestId("step-tick-2").click();
-  const ticks = await animations(page, "dialog");
+  const ticks = await animations(page, "dialog[open]");
   // Steps 1 and 2 are marked done by the one tap: both pop and draw together.
   expect(ticks.filter((a) => a.on.startsWith("step-tick-") && a.props.includes("transform")).map((a) => a.on).sort()).toEqual(["step-tick-1", "step-tick-2"]);
   expect(ticks.filter((a) => a.props.includes("clipPath"))).toHaveLength(2);
@@ -66,7 +66,7 @@ test("All steps: a tick pops and its check draws in by clip-path; the row dims w
   await dialog.getByRole("button", { name: "Close" }).click();
   await page.getByRole("button", { name: "All steps" }).click();
   await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => null))));
-  expect((await animations(page, "dialog")).filter((a) => a.props.includes("clipPath"))).toHaveLength(0);
+  expect((await animations(page, "dialog[open]")).filter((a) => a.props.includes("clipPath"))).toHaveLength(0);
 });
 
 test("All steps, reduced motion: the check fades in, nothing pops", async ({ page }) => {
@@ -74,7 +74,7 @@ test("All steps, reduced motion: the check fades in, nothing pops", async ({ pag
   await page.goto(URL);
   await page.getByRole("button", { name: "All steps" }).click();
   await page.getByRole("dialog", { name: "All steps" }).getByTestId("step-tick-1").click();
-  const ticks = await animations(page, "dialog");
+  const ticks = await animations(page, "dialog[open]");
   expect(ticks.some((a) => a.props.includes("transform") || a.props.includes("clipPath"))).toBe(false);
   expect(ticks.some((a) => a.props.includes("opacity"))).toBe(true);
 });
@@ -85,7 +85,7 @@ test("tablet: the All steps dialog grows out of the All steps link", async ({ pa
   const link = page.getByRole("button", { name: "All steps" });
   await link.click();
   const dialog = page.getByRole("dialog", { name: "All steps" });
-  const moving = await animations(page, "dialog");
+  const moving = await animations(page, "dialog[open]");
   // Scale and a fade (the sheet's translate is reset to 0 from tablet, a no-op transition from 0px).
   const props = moving.filter((a) => a.on === "dialog").flatMap((a) => a.props);
   expect(props).toEqual(expect.arrayContaining(["opacity", "scale"]));

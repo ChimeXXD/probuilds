@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArchetypeBuildsView } from "@/components/builds/ArchetypeBuildsView";
+import { PlayStyleInfoProvider } from "@/components/builds/PlayStyleInfo";
 import { archetypeBuilds, buildCardView } from "@/lib/archetype-page";
 import { archetypeViews } from "@/lib/builds";
+import { infosFor, plusUses } from "@/lib/content/playstyles";
 import { siteContent } from "@/lib/content/site-content";
 import { SITE_NAME } from "@/lib/site";
 
@@ -28,5 +30,9 @@ export default async function ArchetypePage({ params }: Props) {
   const archetype = archetypeOf((await params).archetype);
   if (!archetype) notFound();
   const cards = archetypeBuilds(siteContent().builds, archetype.id).map((b) => buildCardView(b));
-  return <ArchetypeBuildsView archetype={archetype} cards={cards} />;
+  return (
+    <PlayStyleInfoProvider infos={infosFor(siteContent().playStyles, plusUses(cards))}>
+      <ArchetypeBuildsView archetype={archetype} cards={cards} />
+    </PlayStyleInfoProvider>
+  );
 }

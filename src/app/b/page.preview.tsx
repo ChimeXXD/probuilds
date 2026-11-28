@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SharedBuildRoute } from "@/components/builds/SharedBuildRoute";
+import { PlayStyleInfoProvider } from "@/components/builds/PlayStyleInfo";
 import { siteContent } from "@/lib/content/site-content";
 import { SHOW_DRAFTS } from "@/lib/drafts";
 import { previewImages, sharedPreviewPath } from "@/lib/link-preview";
@@ -22,5 +23,10 @@ export default function SharedBuildPage() {
   const sample = meta
     ? { id: SAMPLE_SHARE_ID, view: sharedBuildPageView(sampleSharedBuild(meta), archetypeFile.sources, SAMPLE_SHARE_ID) }
     : null;
-  return <SharedBuildRoute archetypeFile={archetypeFile} sample={sample} />;
+  // A shared build is read in the browser, so the page carries every description (D-121 (4)).
+  return (
+    <PlayStyleInfoProvider infos={siteContent().playStyles}>
+      <SharedBuildRoute archetypeFile={archetypeFile} sample={sample} />
+    </PlayStyleInfoProvider>
+  );
 }

@@ -26,7 +26,7 @@ test("archetype: Finisher shows Figma's three sample cards in its order, marked 
   const titles = page.locator("[data-testid^=build-card-] h2");
   await expect(titles).toHaveText(["Meta Finisher", "Tall Finisher", "Quick Finisher"]);
   const tall = page.getByTestId("build-card-tall-finisher");
-  await expect(tall).toHaveAttribute("href", "/builds/finisher/tall-finisher");
+  await expect(tall.locator("a").first()).toHaveAttribute("href", "/builds/finisher/tall-finisher");
   await expect(tall.getByText("Recommended", { exact: true })).toBeVisible();
   await expect(tall.getByText("Level 55 · 193 cm · 88 kg")).toBeVisible();
   await expect(tall.getByText("Precision Header")).toBeVisible();
@@ -75,7 +75,7 @@ test("archetype: the draft build's card shows its values as written, its version
   await page.goto("/builds/spark");
   await expect(page.getByText("Forward · 1 build", { exact: true })).toBeVisible();
   const card = page.getByTestId("build-card-spark-2008-winger");
-  await expect(card).toHaveAttribute("href", "/builds/spark/spark-2008-winger");
+  await expect(card.getByRole("link", { name: "2008 Winger" })).toHaveAttribute("href", "/builds/spark/spark-2008-winger");
   await expect(card.getByRole("heading", { level: 2 })).toHaveText("2008 Winger");
   await expect(card.getByText("Draft", { exact: true })).toBeVisible();
   await expect(card.getByText("Level PLACEHOLDER · PLACEHOLDER cm · PLACEHOLDER kg")).toBeVisible();

@@ -1,6 +1,7 @@
 import type { BuildPageView, SpecializationView } from "@/lib/build-page";
 import { NUMBER_SM } from "./BuildAttributes";
 import { PlayStyleArt } from "./PlayStyleArt";
+import { PlayStyleButton } from "./PlayStyleInfo";
 
 // The build page's details (Figma 298:3733 to 298:3849, D-63): "All of it at level N" (the sample's, D-107), the
 // specialization card, body and skills, PlayStyles+ and PlayStyles. Returned as siblings so the details column's 24 px gap (tablet, desktop) falls between them. Two
@@ -49,13 +50,15 @@ export function BuildDetails({ view }: { view: BuildPageView }) {
       {/* Figma's phone and tablet lists are 36 px tall around 36.8 px items (298:3630, 306:794); desktop's hug them. */}
       <ul className={`${COLUMNS} -mb-[0.8px] gap-y-2 pt-2 desktop:mb-0`}>
         {view.playStylesPlus.map((p) => (
-          <li key={p.name} className="flex items-center gap-2">
-            <Badge icon={p.icon} />
-            <span className="flex min-w-0 flex-col">
-              {/* Figma's name line is 16.8 px tall, so "Signature" sits 3.2 px into it (298:3811). */}
-              <span className={`type-label break-words text-text-primary ${p.signature ? "-mb-[3.2px]" : ""}`}>{p.name}</span>
-              {p.signature && <span className="type-label text-text-secondary">Signature</span>}
-            </span>
+          <li key={p.name} className="flex min-w-0">
+            <PlayStyleButton name={p.name} tier="plus" className="-m-1 flex min-w-0 items-center gap-2 p-1">
+              <Badge icon={p.icon} />
+              <span className="flex min-w-0 flex-col">
+                {/* Figma's name line is 16.8 px tall, so "Signature" sits 3.2 px into it (298:3811). */}
+                <span className={`type-label break-words text-text-primary ${p.signature ? "-mb-[3.2px]" : ""}`}>{p.name}</span>
+                {p.signature && <span className="type-label text-text-secondary">Signature</span>}
+              </span>
+            </PlayStyleButton>
           </li>
         ))}
       </ul>
@@ -63,9 +66,11 @@ export function BuildDetails({ view }: { view: BuildPageView }) {
       {/* TODO(Chime): no design for a build with no regular PlayStyles; the heading then stands over an empty list. */}
       <ul className={`${COLUMNS} gap-y-2 pt-2 pb-4`}>
         {view.playStyles.map((p) => (
-          <li key={p.name} className="flex items-center gap-2">
-            <Badge icon={p.icon} tinted />
-            <span className="type-label min-w-0 break-words text-text-primary">{p.name}</span>
+          <li key={p.name} className="flex min-w-0">
+            <PlayStyleButton name={p.name} tier="playStyle" className="-m-1 flex min-w-0 items-center gap-2 p-1">
+              <Badge icon={p.icon} tinted />
+              <span className="type-label min-w-0 break-words text-text-primary">{p.name}</span>
+            </PlayStyleButton>
           </li>
         ))}
       </ul>
@@ -94,8 +99,11 @@ function Specialization({ spec }: { spec: SpecializationView }) {
         </h2>
         <div className="flex h-[49px] items-center gap-2 pt-2">
           {spec.icon && (
-            // eslint-disable-next-line @next/next/no-img-element -- static export, files already sized
-            <img src={spec.icon} alt="" width={36} height={36} className="size-9 shrink-0" />
+            // The badge opens what the PlayStyle+ does (D-121 (4)); 4 px around it make the 44 px target.
+            <PlayStyleButton name={spec.plus?.replace(/\+$/, "") ?? ""} tier="plus" on="surface" className="-m-1 flex shrink-0 p-1">
+              {/* eslint-disable-next-line @next/next/no-img-element -- static export, files already sized */}
+              <img src={spec.icon} alt="" width={36} height={36} className="size-9 shrink-0" />
+            </PlayStyleButton>
           )}
           <div className="flex min-w-0 flex-col">
             <p className="type-number-md break-words text-text-primary uppercase">{spec.name}</p>

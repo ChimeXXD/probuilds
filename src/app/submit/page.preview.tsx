@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PlayStyleInfoProvider } from "@/components/builds/PlayStyleInfo";
 import { SubmitEditor } from "@/components/submit/SubmitEditor";
 import { siteContent } from "@/lib/content/site-content";
 import { SHOW_DRAFTS } from "@/lib/drafts";
@@ -13,6 +14,11 @@ import { SAMPLE_DRAFT } from "@/lib/submit/editor";
 export const metadata: Metadata = { title: `Submit a build · ${SITE_NAME}` };
 
 export default function SubmitPage() {
-  const { archetypeFile } = siteContent();
-  return <SubmitEditor file={archetypeFile} initial={SAMPLE_DRAFT} preview={SHOW_DRAFTS} />;
+  const { archetypeFile, playStyles } = siteContent();
+  // The PlayStyles step lists every PlayStyle, each with an info button (D-121 (4)).
+  return (
+    <PlayStyleInfoProvider infos={playStyles}>
+      <SubmitEditor file={archetypeFile} initial={SAMPLE_DRAFT} preview={SHOW_DRAFTS} />
+    </PlayStyleInfoProvider>
+  );
 }

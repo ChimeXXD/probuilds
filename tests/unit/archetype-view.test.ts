@@ -41,7 +41,11 @@ describe("ArchetypeBuildsView", () => {
   });
 
   it("shows the draft build as a card linking to its page, values as written", () => {
-    expect(spark).toMatch(/<a[^>]*href="\/builds\/spark\/spark-2008-winger"[^>]*data-testid="build-card-spark-2008-winger"|data-testid="build-card-spark-2008-winger"[^>]*href="\/builds\/spark\/spark-2008-winger"/);
+    // The card holds a link laid over it, named by the title, so its PlayStyle+ badges can be buttons (D-121 (4)).
+    const link = /data-testid="build-card-spark-2008-winger"[^>]*>(<a[^>]*>)/.exec(spark)?.[1] ?? "";
+    expect(link).toContain('href="/builds/spark/spark-2008-winger"');
+    expect(link).toContain('aria-labelledby="build-card-title-spark-2008-winger"');
+    expect(spark).toMatch(/<h2 id="build-card-title-spark-2008-winger"/);
     expect(spark).toMatch(/<h2[^>]*><span[^>]*>2008 Winger<\/span><\/h2>/);
     expect(spark).toContain(">Draft<");
     expect(spark).toContain(">RW<");
@@ -55,7 +59,8 @@ describe("ArchetypeBuildsView", () => {
     expect(spark).toContain("PlayStyles+");
     expect(spark).toContain("/art/playstyles-plus/trickster.webp");
     expect(spark).toContain("/art/playstyles-plus/rapid.webp");
-    expect(spark).toMatch(/>PLACEHOLDER<\/span><\/li>/);
+    // A placeholder has no description, so it stays plain text, not a button.
+    expect(spark).toMatch(/>PLACEHOLDER<\/span><\/span><\/li>/);
   });
 
   it("carries the version tag and credit line on the card (D-05, D-08)", () => {

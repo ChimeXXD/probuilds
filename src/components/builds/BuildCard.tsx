@@ -3,6 +3,7 @@ import { ViewTransition } from "react";
 import { DraftTag } from "@/components/ui/DraftTag";
 import type { BuildCardView } from "@/lib/archetype-page";
 import { KeyStats } from "./KeyStats";
+import { PlayStyleButton } from "./PlayStyleInfo";
 
 // Figma "Build · Meta Finisher" (288:1096, D-62 option B, the "stat strip" card): the build's in-game face, or the
 // ProBuilds mannequin when it has none (D-89, D-98); a Meta pick or Recommended tag; the name; position chips with
@@ -12,6 +13,11 @@ import { KeyStats } from "./KeyStats";
 // subgrid of three rows, or four with the footer, so headers in a row share one height and the stat rows line up (D-62).
 // Expand card (motion-bookmarks.pdf #22): the picture and the name are shared with the build page's (BuildPageView), so
 // opening a card carries them across in a View Transition where the browser has one; elsewhere the page just opens.
+// The whole card opens the build: a link laid over it, named by the build's title, under the PlayStyle+ badges, which
+// are buttons that open what each does (D-121 (4)); a button can't sit inside a link. Hover (D-121 (1)): the card's
+// surface takes the faint hover fill (pointer only), press 0.98 (emil-design-eng: a card is larger, so a smaller step).
+export const CARD_STATE =
+  "transition-[background-color,scale] duration-(--dur-fast) ease-(--ease-out) hover:bg-hover-fill has-[>a:active]:scale-[0.98] motion-reduce:has-[>a:active]:scale-100";
 export const LIME = "bg-accent-fill text-accent-on-fill light:ring-1 light:ring-accent-on-fill light:ring-inset";
 // Position chips are neutral: lime is kept for the badge, the main action and the selection (DESIGN.md "one accent", D-115).
 export const POSITION = "bg-bg-raised text-text-primary ring-1 ring-border-subtle ring-inset";
@@ -23,11 +29,11 @@ export function BuildCard({ card, rows }: { card: BuildCardView; rows: keyof typ
   const draft = card.draft && !card.sample;
   return (
     <li className={`${CARD_ROWS[rows]} grid grid-rows-subgrid`}>
-      <Link
-        href={card.href}
+      <div
         data-testid={`build-card-${card.id}`}
-        className={`${CARD_ROWS[rows]} grid grid-rows-subgrid gap-y-3.5 rounded-lg border border-border-subtle bg-bg-surface p-4`}
+        className={`relative ${CARD_ROWS[rows]} grid grid-rows-subgrid gap-y-3.5 rounded-lg border border-border-subtle bg-bg-surface p-4 ${CARD_STATE}`}
       >
+        <Link href={card.href} aria-labelledby={`build-card-title-${card.id}`} className="absolute inset-0 z-1 rounded-lg" />
         <div className="flex items-center gap-3.5">
           <ViewTransition name={`build-${card.id}-picture`} share="build-expand" default="none">
             <div className="size-19 shrink-0 overflow-hidden rounded-md">
@@ -52,7 +58,7 @@ export function BuildCard({ card, rows }: { card: BuildCardView; rows: keyof typ
                 {draft && <DraftTag />}
               </div>
             )}
-            <h2 className="type-h3 max-w-full break-words text-text-primary uppercase">
+            <h2 id={`build-card-title-${card.id}`} className="type-h3 max-w-full break-words text-text-primary uppercase">
               {/* The name travels as a box that hugs its words, so the two snapshots keep one shape and only scale. */}
               <ViewTransition name={`build-${card.id}-title`} share="build-expand" default="none">
                 <span className="inline-block max-w-full">{card.title}</span>
@@ -73,12 +79,15 @@ export function BuildCard({ card, rows }: { card: BuildCardView; rows: keyof typ
           <h3 className="type-caption text-text-secondary">PlayStyles+</h3>
           <ul className="flex flex-wrap gap-x-4 gap-y-2">
             {card.playStylesPlus.map((p) => (
-              <li key={p.name} className="flex items-center gap-1.5">
-                {p.icon && (
-                  // eslint-disable-next-line @next/next/no-img-element -- static export, files already sized (2x)
-                  <img src={p.icon} alt="" width={24} height={24} className="size-6 shrink-0" />
-                )}
-                <span className="type-caption text-text-primary">{p.name}</span>
+              <li key={p.name} className="flex">
+                {/* Above the card's link; 10 px around the 24 px badge make the 44 px target. */}
+                <PlayStyleButton name={p.name} tier="plus" on="surface" className="relative z-2 -m-2.5 flex items-center gap-1.5 p-2.5">
+                  {p.icon && (
+                    // eslint-disable-next-line @next/next/no-img-element -- static export, files already sized (2x)
+                    <img src={p.icon} alt="" width={24} height={24} className="size-6 shrink-0" />
+                  )}
+                  <span className="type-caption text-text-primary">{p.name}</span>
+                </PlayStyleButton>
               </li>
             ))}
           </ul>
@@ -93,7 +102,7 @@ export function BuildCard({ card, rows }: { card: BuildCardView; rows: keyof typ
               {card.credit && <p className="type-caption text-text-muted">{card.credit}</p>}
             </div>
           ))}
-      </Link>
+      </div>
     </li>
   );
 }

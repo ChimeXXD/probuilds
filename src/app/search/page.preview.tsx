@@ -1,7 +1,9 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { Metadata } from "next";
+import { PlayStyleInfoProvider } from "@/components/builds/PlayStyleInfo";
 import { SearchView } from "@/components/search/SearchView";
+import { infosFor, plusUses } from "@/lib/content/playstyles";
 import { siteContent } from "@/lib/content/site-content";
 import { searchIndex } from "@/lib/search";
 import { SITE_NAME } from "@/lib/site";
@@ -14,5 +16,11 @@ export const metadata: Metadata = { title: `Search · ${SITE_NAME}` };
 const publicDir = join(process.cwd(), "public");
 
 export default function SearchPage() {
-  return <SearchView index={searchIndex(siteContent(), (file) => existsSync(join(publicDir, file)))} />;
+  const index = searchIndex(siteContent(), (file) => existsSync(join(publicDir, file)));
+  // The found builds' PlayStyle+ badges open what each does (D-121 (4)).
+  return (
+    <PlayStyleInfoProvider infos={infosFor(siteContent().playStyles, plusUses(index.builds))}>
+      <SearchView index={index} />
+    </PlayStyleInfoProvider>
+  );
 }
