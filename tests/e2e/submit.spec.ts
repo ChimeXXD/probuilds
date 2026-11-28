@@ -7,7 +7,7 @@ test.skip(process.env.PROBUILDS_DRAFTS !== "1", "preview page");
 
 const next = (page: Page) => page.getByTestId("submit-next");
 
-test("start: Figma's sample, the level fills in its AP, and the nav gives way to the actions bar (400:3219)", async ({ page }) => {
+test("start: Figma's sample, the level fills in its AP, and the actions bar sits above the nav (400:3219, D-125 (2))", async ({ page }) => {
   await page.goto("/submit");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Your build");
   await expect(page.getByText("1 of 4")).toBeVisible();
@@ -30,7 +30,7 @@ test("start: Figma's sample, the level fills in its AP, and the nav gives way to
   await page.getByRole("button", { name: "Height up" }).click();
   await expect(body).toContainText("6'1\"186 cm");
   await expect(page.getByTestId("body-changes")).toHaveCount(0);
-  await expect(page.getByTestId("bottom-nav")).toBeHidden();
+  await expect(page.getByTestId("bottom-nav")).toBeVisible();
   await expect(next(page)).toHaveText("Attributes");
 });
 

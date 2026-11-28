@@ -32,6 +32,13 @@
   --color-hover-fill-page: color-mix(in srgb, var(--color-bg-page), var(--color-text-primary) 1%);
 }
 
+/* The room the floating bottom nav takes at the foot of a phone screen, for what must stay clear of it (the page's
+   last lines, Submit's actions bar): 24 px under it, 60 px of nav, 12 px over it, plus the home indicator.
+   As utilities: h-nav-clear, pb-nav-clear. */
+@theme {
+  --spacing-nav-clear: calc(96px + env(safe-area-inset-bottom, 0px));
+}
+
 /* A one-colour SVG from public/icons used as a mask, so it takes the text colour of its parent (currentColor).
    The file's shape is untouched; its own fill is ignored. Set the file with style --icon: url(...). */
 @utility icon-mask {

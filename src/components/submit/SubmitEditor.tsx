@@ -19,9 +19,8 @@ import { StepNameShare } from "./StepNameShare";
 import { StepPlayStyles } from "./StepPlayStyles";
 import { StepStart } from "./StepStart";
 
-// Submit a build (D-85 to D-90, D-99, D-100): four steps and "Sent for listing", all on /submit. Phone hides the
-// bottom nav on steps 1 to 3 (Figma draws them with a sticky actions bar instead) and shows it, on Submit, from
-// step 4. On the preview, ?state= opens each state Figma draws (start, attributes, attributes-error, playstyles,
+// Submit a build (D-85 to D-90, D-99, D-100): four steps and "Sent for listing", all on /submit. On a phone the bottom
+// nav stays on every step; steps 1 to 3 dock their actions bar just above it (D-125 (2), ActionsBar). On the preview, ?state= opens each state Figma draws (start, attributes, attributes-error, playstyles,
 // name, share, sent, send-failed), and ?send=fail / ?share=fail make the stand-in fail (src/lib/submit/send.ts).
 type Step = 1 | 2 | 3 | 4 | "sent";
 const FAILED = "Couldn't send. Check your connection and try again.";
@@ -212,8 +211,6 @@ export function SubmitEditor({ file, initial, preview }: { file: ArchetypeFile; 
   const wide = step === 2 || step === 3;
   return (
     <main ref={main} data-testid="submit" data-step={step} className="flex flex-col">
-      {/* Steps 1 to 3 have their own actions bar where the bottom nav sits on phone (Figma hides the nav there). */}
-      {typeof step === "number" && step < 4 && <style>{"[data-testid=bottom-nav],[data-testid=bottom-nav-space]{display:none}"}</style>}
       <div
         className={`flex flex-col px-5 tablet:px-10 desktop:mx-auto desktop:w-full desktop:max-w-(--layout-content-max) desktop:px-0 ${
           step === "sent"
@@ -249,7 +246,9 @@ export function SubmitEditor({ file, initial, preview }: { file: ArchetypeFile; 
         </StepFrom.Provider>
       </div>
       {typeof step === "number" && step < 4 && (
-        <div className="tablet:px-10 tablet:pb-30 desktop:mx-auto desktop:w-full desktop:max-w-(--layout-content-max) desktop:px-0">
+        // Sticky on the wrapper, a child of the whole step (main), so it can stick: on the bar itself, inside a box
+        // only as tall as the bar, it never did.
+        <div className="sticky bottom-0 z-10 tablet:static tablet:px-10 tablet:pb-30 desktop:mx-auto desktop:w-full desktop:max-w-(--layout-content-max) desktop:px-0">
           {step === 1 && <ActionsBar next={{ label: "Attributes", onPress: (e) => go(2, e) }} nextWidth="tablet:w-70 desktop:w-80" gap="tablet:pt-8 desktop:pt-10" />}
           {step === 2 && <ActionsBar back={(e) => go(1, e)} next={{ label: "PlayStyles", onPress: (e) => go(3, e), disabled: hasAttributeError(draft) }} />}
           {step === 3 && <ActionsBar back={(e) => go(2, e)} next={{ label: "Review", onPress: (e) => go(4, e) }} />}

@@ -79,8 +79,11 @@ export function RoundButton({
 }
 
 /**
- * The step's actions. Phone: a bar stuck to the bottom (bg/page, a divider above, 12 / 20 / 28 px in), Back 117 px
- * and the next step filling the rest. Tablet and desktop: under the content, on the right (Back 140, next 280).
+ * The step's actions. Phone: a bar docked at the foot of the screen (bg/page, a divider above, 12 / 20 px in), Back
+ * 117 px and the next step filling the rest, directly above the bottom nav: its surface runs on down behind the nav
+ * (pb-nav-clear), so the nav floats on it and the page never shows between the two (D-125 (2); Figma 400:3219 drew the
+ * bar in the nav's place, which read as the nav vanishing). The caller makes it sticky. Tablet and desktop: under the
+ * content, on the right (Back 140, next 280).
  */
 export function ActionsBar({
   back,
@@ -96,7 +99,7 @@ export function ActionsBar({
   return (
     <div
       data-testid="submit-actions"
-      className={`sticky bottom-0 z-10 flex gap-3 border-t border-system-divider bg-bg-page px-5 pt-3 pb-[calc(28px+env(safe-area-inset-bottom))] tablet:static tablet:justify-end tablet:border-0 tablet:px-0 tablet:pb-0 ${gap}`}
+      className={`flex gap-3 border-t border-system-divider bg-bg-page px-5 pt-3 pb-nav-clear tablet:justify-end tablet:border-0 tablet:px-0 tablet:pb-0 ${gap}`}
     >
       {back && (
         <button type="button" onClick={back} className={buttonClass("secondary", "w-29.25 shrink-0 tablet:w-35")}>

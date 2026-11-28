@@ -25,7 +25,7 @@ export function SiteFooter() {
           </p>
         </div>
       </footer>
-      <div aria-hidden="true" data-testid="bottom-nav-space" className="h-[calc(96px+env(safe-area-inset-bottom))] tablet:hidden" />
+      <div aria-hidden="true" data-testid="bottom-nav-space" className="h-nav-clear tablet:hidden" />
     </>
   );
 }
