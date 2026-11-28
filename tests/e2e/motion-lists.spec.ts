@@ -28,16 +28,16 @@ test("Faces search: typing glides the cards that stay, fades the ones that drop 
   expect(out).toContain("translate");
   await settle(page);
   await page.getByTestId("search-input").fill("");
-  expect(await moving(results)).toContain("opacity,scale"); // the four coming back fade in
+  expect(await moving(results)).toContain("opacity,scale"); // the six coming back fade in
   await settle(page);
-  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(5);
+  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(7);
   // The copies are gone once they have faded: nothing extra is left on the page.
   expect(await results.locator("[aria-hidden=true] [data-flip]").count()).toBe(0);
 });
 
 test("Faces search that finds nothing: the cards fade where they were while the no-results card fades in", async ({ page }) => {
   await page.goto("/faces");
-  await page.getByTestId("search-input").fill("Zidane");
+  await page.getByTestId("search-input").fill("Mbappe");
   expect(await moving(page.locator("main"))).toContain("opacity,scale");
   await expect(page.getByTestId("faces-empty")).toBeVisible();
 });

@@ -70,7 +70,7 @@ describe("faces library data", () => {
     expect(faceCardView(withoutSample(draft), inPublic).sample).toBe(false);
   });
 
-  it("lists Figma's sample faces as the library draws them: titles, kinds, order, each with its picture (D-107, D-108)", () => {
+  it("lists the sample faces as the library draws them: titles, kinds, order, each with its picture (D-107, D-108, D-123)", () => {
     const list = faceCards(content.faces, inPublic);
     expect(list.map((c) => [c.title, c.kindLabel])).toEqual([
       ["2008 Ronaldo", "Footballer"],
@@ -78,9 +78,11 @@ describe("faces library data", () => {
       ["Lamine Yamal", "Footballer"],
       ["LeBron James", "Athlete"],
       ["Michael Jackson", "Musician"],
+      ["Zinedine Zidane", "Footballer"],
+      ["Michael Olise", "Footballer"],
     ]);
     expect(list.every((c) => c.sample && c.draft && c.picture?.src.startsWith("/sample/faces/"))).toBe(true);
-    expect(filterCounts(list, "")).toEqual({ all: 5, footballer: 3, athlete: 1, musician: 1 });
+    expect(filterCounts(list, "")).toEqual({ all: 7, footballer: 5, athlete: 1, musician: 1 });
   });
 
   it("puts samples first by their place, then other faces in the content's order", () => {

@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "id": "michael-olise",
+  "slug": "michael-olise",
+  "status": "draft",
+  "_example": "A sample face added for its creator's turn (D-123), not drawn in Figma: title and kind from D-123, picture = frame 1 of the turn, a frame from the credited creator's YouTube tutorial, shown on the preview only. The recipe and limit are Figma's sample recipe and limit, as on the other sample faces (D-107). Nothing of the recipe is recorded: every PLACEHOLDER is unknown, and no value here may be published.",
+  "sample": {
+    "place": 7,
+    "recipe": {
+      "sections": [
+        {
+          "name": "Preset",
+          "values": 1,
+          "screens": 1
+        },
+        {
+          "name": "Skin",
+          "values": 4,
+          "screens": 1
+        },
+        {
+          "name": "Head",
+          "values": 3,
+          "screens": 1
+        },
+        {
+          "name": "Face",
+          "values": 2,
+          "screens": 1
+        },
+        {
+          "name": "Hair",
+          "values": 4,
+          "screens": 1
+        },
+        {
+          "name": "Sculpt",
+          "values": 24,
+          "screens": 12
+        },
+        {
+          "name": "Visual Age",
+          "values": 1,
+          "screens": 1
+        }
+      ],
+      "screens": [
+        {
+          "step": 1,
+          "where": "Head › Presets",
+          "title": "Pick the preset",
+          "values": [
+            {
+              "label": "Preset",
+              "value": "147"
+            }
+          ],
+          "hint": "Count photo presets only: left to right, top to bottom. Skip your own saved heads.",
+          "next": "Customize › Skin · 4 values"
+        },
+        {
+          "step": 2,
+          "where": "Customize › Skin",
+          "title": "Skin",
+          "values": [
+            {
+              "label": "Complexion",
+              "value": "8"
+            },
+            {
+              "label": "Skin Surface",
+              "value": "33"
+            },
+            {
+              "label": "Scarring",
+              "value": "None"
+            },
+            {
+              "label": "Lip Makeup",
+              "value": "54"
+            }
+          ],
+          "hint": "Set them top to bottom, as the game lists them.",
+          "next": "Customize › Head · 3 values"
+        },
+        {
+          "step": 9,
+          "where": "Sculpt › Shape › Skeletal",
+          "title": "Eyes · Eyelid Upper",
+          "values": [
+            {
+              "label": "Down ← → Up",
+              "value": "62"
+            },
+            {
+              "label": "Narrow ← → Widen",
+              "value": "48"
+            }
+          ],
+          "hint": "Symmetry on. Each slider runs 0 to 100.",
+          "next": "Sculpt › Chin · Chin · 1 slider"
+        }
+      ]
+    }
+  },
+  "subject": {
+    "name": "Michael Olise",
+    "kind": "footballer",
+    "living": true
+  },
+  "era": {
+    "label": "PLACEHOLDER",
+    "note": "PLACEHOLDER"
+  },
+  "title": "Michael Olise",
+  "target": {
+    "look": "matchday"
+  },
+  "timeMinutes": "PLACEHOLDER",
+  "preset": {
+    "number": "PLACEHOLDER"
+  },
+  "parts": [],
+  "sculpt": null,
+  "visualAge": null,
+  "limits": [
+    "the hairline sits a little higher than the real one."
+  ],
+  "pairedBuild": "meta-finisher",
+  "screenshots": [
+    {
+      "file": "sample/faces/michael-olise.webp",
+      "alt": "Stand-in from CodeName Max's YouTube tutorial: Michael Olise, front view",
+      "by": "CodeName Max"
+    }
+  ],
+  "turn": {
+    "folder": "sample/faces/michael-olise/turn",
+    "frames": 36,
+    "by": "CodeName Max",
+    "source": {
+      "url": "https://www.youtube.com/watch?v=s1KBQuNvRJc",
+      "title": "How to Make MICHAEL OLISE in EA FC 27",
+      "channel": "CodeName Max"
+    }
+  },
+  "embeds": [
+    {
+      "provider": "youtube",
+      "videoId": "s1KBQuNvRJc",
+      "title": "How to Make MICHAEL OLISE in EA FC 27",
+      "channel": "CodeName Max",
+      "creatorId": null
+    }
+  ],
+  "version": 1,
+  "versionTag": {
+    "game": "fc27",
+    "season": 2,
+    "verifiedOn": null,
+    "verifiedBy": null,
+    "platform": null
+  },
+  "credits": [
+    {
+      "role": "made-by",
+      "name": "— (sample)",
+      "url": null,
+      "creatorId": null
+    },
+    {
+      "role": "tutorial",
+      "name": "CodeName Max",
+      "url": "https://www.youtube.com/watch?v=s1KBQuNvRJc",
+      "creatorId": null
+    }
+  ],
+  "history": [
+    {
+      "version": 1,
+      "date": "2026-11-28",
+      "note": "Sample face for Sharon's turn from the creator's tutorial (D-123): Figma's sample recipe and limit, frame 1 of the turn as its picture. The video title is YouTube's own."
+    }
+  ],
+  "createdAt": "2026-11-28",
+  "updatedAt": "2026-11-28"
+}

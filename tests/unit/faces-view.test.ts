@@ -9,7 +9,7 @@ import { faceCards, type FaceCardView } from "@/lib/faces";
 
 // The Faces library as the static export renders it (Figma 333:1139 / 345:1310 / 345:1391, no results 372:1853 /
 // 427:9875 / 427:9960), from the real content with drafts on (the preview): Figma's five sample faces with their
-// stand-in pictures (D-107, D-108).
+// stand-in pictures (D-107, D-108), then Zidane and Olise, sample faces added for their creators' turns (D-123).
 const content = loadContent(join(process.cwd(), "content"), { includeDrafts: true });
 const cards = faceCards(content.faces, (file) => existsSync(join(process.cwd(), "public", file)));
 const DEMO_NOTE = "Demo: stand-in faces from Xaiiros&#x27;s and CodeName Max&#x27;s YouTube tutorials. Each real card shows our own in-game recreation.";
@@ -40,19 +40,21 @@ describe("FacesView", () => {
   it("has the four kind chips with counts, All pressed (D-68)", () => {
     const chip = (n: number, label: string, count: number, pressed: boolean) =>
       new RegExp(`<button[^>]*data-testid="filter-chip-${n}"[^>]*aria-pressed="${pressed}"[^>]*>.*?${label}.*?>${count}<`);
-    expect(html).toMatch(chip(1, "All", 5, true));
-    expect(html).toMatch(chip(2, "Footballers", 3, false));
+    expect(html).toMatch(chip(1, "All", 7, true));
+    expect(html).toMatch(chip(2, "Footballers", 5, false));
     expect(html).toMatch(chip(3, "Athletes", 1, false));
     expect(html).toMatch(chip(4, "Musicians", 1, false));
   });
 
-  it("shows Figma's five sample faces in its order: kind, plain title, page, stand-in picture, no Draft tag", () => {
+  it("shows the seven sample faces in their order: kind, plain title, page, stand-in picture, no Draft tag", () => {
     const drawn = [
       ["cristiano-ronaldo-2008", "Footballer", "2008 Ronaldo"],
       ["neymar-jr-mohawk", "Footballer", "Neymar Jr (Mohawk)"],
       ["lamine-yamal", "Footballer", "Lamine Yamal"],
       ["lebron-james", "Athlete", "LeBron James"],
       ["michael-jackson", "Musician", "Michael Jackson"],
+      ["zinedine-zidane", "Footballer", "Zinedine Zidane"],
+      ["michael-olise", "Footballer", "Michael Olise"],
     ];
     drawn.forEach(([slug, kind, title], i) => {
       const card = html.match(new RegExp(`<a[^>]*data-testid="face-card-${i + 1}"[^>]*>.*?</a>`))?.[0] ?? "";

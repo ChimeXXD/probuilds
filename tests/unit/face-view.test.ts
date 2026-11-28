@@ -38,6 +38,8 @@ describe("facePageView", () => {
       ["lamine-yamal", "How to Make LAMINE YAMAL (New Look) in EA FC 27"],
       ["lebron-james", "How to Make LEBRON JAMES in EA FC 27"],
       ["michael-jackson", "How to Make MICHAEL JACKSON in EA FC 27"],
+      ["zinedine-zidane", "How to Make ZINEDINE ZIDANE in EA FC 27"],
+      ["michael-olise", "How to Make MICHAEL OLISE in EA FC 27"],
     ]) {
       const view = facePageView(face(id), always);
       expect(view.embed?.title).toBe(title);
@@ -56,6 +58,60 @@ describe("facePageView", () => {
     expect(view.versionTag).toBe("FC 27 · Season 3 · verified 4 Dec 2026");
     expect(view.madeBy).toBe("Made by Chime in game");
     expect(view.limits).toEqual(["The game can't do this exactly: Test limit."]);
+  });
+});
+
+// Creators' turn frames (D-123): five sample faces turn with frames cut from a creator's tutorial, each credited and
+// linked as "360° turn from <channel>'s video" beside the other credits (rule 5).
+describe("facePageView turntables (D-123)", () => {
+  const video = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+  it("turns the five faces with frames, crediting each turn's own video", () => {
+    for (const [id, channel, videoId] of <[string, string, string][]>[
+      ["neymar-jr-mohawk", "CodeName Max", "UOrV95yMy50"],
+      ["lebron-james", "JaxStash", "aJez-2ttA3I"],
+      ["lamine-yamal", "CodeName Max", "IYBrT2yBauQ"],
+      ["zinedine-zidane", "CodeName Max", "LlCyI-Fqpr0"],
+      ["michael-olise", "CodeName Max", "s1KBQuNvRJc"],
+    ]) {
+      const view = facePageView(face(id), always);
+      expect(view.turn).toEqual({ folder: `sample/faces/${id}/turn`, frames: 36 });
+      expect(view.turnCredit).toEqual({ label: `360° turn from ${channel}'s video`, url: video(videoId) });
+      expect(view.rotate).toBe(true);
+    }
+  });
+
+  it("keeps LeBron's picture and tutorial CodeName Max's while his turn is JaxStash's, each credited for what it is", () => {
+    const view = facePageView(face("lebron-james"), always);
+    expect(view.picture?.src).toBe("/sample/faces/lebron-james.webp");
+    expect(view.tutorial).toEqual({ label: "Tutorial by CodeName Max", url: video("eV2G-DOTAQI") });
+    expect(view.turnCredit?.label).toBe("360° turn from JaxStash's video");
+  });
+
+  it("words the two new sample faces: Footballers, plain titles, frame 1 as the picture", () => {
+    for (const [id, title] of <[string, string][]>[
+      ["zinedine-zidane", "Zinedine Zidane"],
+      ["michael-olise", "Michael Olise"],
+    ]) {
+      const view = facePageView(face(id), always);
+      expect(view).toMatchObject({ title, kindLabel: "Footballer", madeBy: null, picture: { src: `/sample/faces/${id}.webp` } });
+      expect(view.sampleNote).toBe("Sample recipe: values are placeholders until Chime records this face.");
+    }
+  });
+
+  it("has no turn and no turn credit where there are no frames, or where the frames are missing", () => {
+    for (const id of ["cristiano-ronaldo-2008", "michael-jackson"]) {
+      expect(facePageView(face(id), always)).toMatchObject({ turn: null, turnCredit: null });
+    }
+    const missing = facePageView(face("neymar-jr-mohawk"), (file) => !file.includes("/turn/"));
+    expect(missing).toMatchObject({ turn: null, turnCredit: null, picture: { src: "/sample/faces/neymar-jr-mohawk.webp" } });
+    const noPicture = facePageView(face("neymar-jr-mohawk"), (file) => file.includes("/turn/"));
+    expect(noPicture).toMatchObject({ picture: null, turn: null, turnCredit: null });
+  });
+
+  it("credits no video for Chime's own turn: the maker line already says who made it", () => {
+    const own = { ...face("cristiano-ronaldo-2008"), turn: { folder: "faces/cristiano-ronaldo-2008/turn", frames: 36, by: "Chime" } };
+    expect(facePageView(own, always)).toMatchObject({ turn: { folder: "faces/cristiano-ronaldo-2008/turn", frames: 36 }, turnCredit: null });
   });
 });
 

@@ -67,7 +67,7 @@ function FaceTitle({ view }: { view: View }) {
         {view.versionTag}
       </p>
       {view.olderSeason && <p className="type-caption text-status-warning">{view.olderSeason}</p>}
-      {(view.madeBy || view.tutorial) && (
+      {(view.madeBy || view.tutorial || view.turnCredit) && (
         <p data-testid="credit-line" className="type-caption flex flex-wrap items-center gap-x-2">
           {view.madeBy && <span className="text-text-secondary">{view.madeBy}</span>}
           {view.tutorial && (
@@ -77,18 +77,31 @@ function FaceTitle({ view }: { view: View }) {
                   ·
                 </span>
               )}
-              {view.tutorial.url ? (
-                <a href={view.tutorial.url} target="_blank" rel="noopener noreferrer" className="tap-target text-text-primary underline hover:decoration-2">
-                  {view.tutorial.label}
-                </a>
-              ) : (
-                <span className="text-text-primary">{view.tutorial.label}</span>
-              )}
+              <CreditLink credit={view.tutorial} testId="tutorial-credit" />
             </>
+          )}
+          {/* The turn's video gets a row of its own, so no separator dot is left hanging where the line wraps (D-123). */}
+          {view.turnCredit && (
+            <span className="basis-full">
+              <CreditLink credit={view.turnCredit} testId="turn-credit" />
+            </span>
           )}
         </p>
       )}
       {view.sampleNote && <p className="type-caption text-text-muted">{view.sampleNote}</p>}
     </div>
+  );
+}
+
+/** One credit in the line: the creator's video, linked (rule 5); the underline thickens on hover (D-121 (1)). */
+function CreditLink({ credit, testId }: { credit: { label: string; url: string | null }; testId: string }) {
+  return credit.url ? (
+    <a data-testid={testId} href={credit.url} target="_blank" rel="noopener noreferrer" className="tap-target text-text-primary underline hover:decoration-2">
+      {credit.label}
+    </a>
+  ) : (
+    <span data-testid={testId} className="text-text-primary">
+      {credit.label}
+    </span>
   );
 }

@@ -143,6 +143,17 @@ export interface Turn {
   folder: string;
   frames: number;
   by: string;
+  /**
+   * The creator's video the frames were cut from (D-123): a sample face's stand-in turn, under sample/faces/, which
+   * the face page credits and links. Absent or null for Chime's own clip.
+   */
+  source?: TurnSource | null;
+}
+
+export interface TurnSource {
+  url: string;
+  title: string;
+  channel: string;
 }
 
 export interface Face<P = never> extends Versioned {

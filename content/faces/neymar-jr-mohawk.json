@@ -135,7 +135,16 @@
       "by": "CodeName Max"
     }
   ],
-  "turn": null,
+  "turn": {
+    "folder": "sample/faces/neymar-jr-mohawk/turn",
+    "frames": 36,
+    "by": "CodeName Max",
+    "source": {
+      "url": "https://www.youtube.com/watch?v=UOrV95yMy50",
+      "title": "How to Make SANTOS NEYMAR JR in EA FC 27 (MOHAWK)",
+      "channel": "CodeName Max"
+    }
+  },
   "embeds": [
     {
       "provider": "youtube",
@@ -182,8 +191,13 @@
       "version": 1,
       "date": "2026-11-27",
       "note": "Figma's face of the week on Home (364:2141, D-107)."
+    },
+    {
+      "version": 1,
+      "date": "2026-11-28",
+      "note": "360° turn from CodeName Max's video, cut by Sharon from the tutorial and kept under sample/faces/ (D-123); preview only."
     }
   ],
   "createdAt": "2026-11-26",
-  "updatedAt": "2026-11-27"
+  "updatedAt": "2026-11-28"
 }

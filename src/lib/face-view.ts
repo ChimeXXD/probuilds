@@ -18,8 +18,10 @@ export interface FacePageView {
   title: string;
   kindLabel: string;
   picture: { src: string; alt: string } | null;
-  /** The turntable's frames (D-35), or null. */
+  /** The turntable's frames (D-35), or null; null too when its first frame or the front picture isn't there. */
   turn: { folder: string; frames: number } | null;
+  /** "360° turn from <channel>'s video", linking the video a creator's turn was cut from (D-123, rule 5); else null. */
+  turnCredit: { label: string; url: string } | null;
   /** The "360°" badge: on a face you can turn, and on Figma's samples, which draw it. */
   rotate: boolean;
   versionTag: string;
@@ -45,13 +47,18 @@ export function facePageView(face: LoadedFace, pictureExists: (file: string) => 
   const realMakers = makers.filter((name) => !isSampleMaker(name));
   const tutorial = face.credits.find((c) => c.role === "tutorial");
   const embed = face.embeds[0];
+  const picture = shot && pictureExists(shot.file) ? { src: `/${shot.file}`, alt: shot.alt } : null;
+  // The turntable draws over the front picture, so with no picture or no first frame nothing turns: no turn, no turn
+  // credit and no badge claiming one.
+  const turn = picture && face.turn && pictureExists(`${face.turn.folder}/01.webp`) ? face.turn : null;
   return {
     slug: face.slug,
     title: face.title,
     kindLabel: KIND_LABEL[face.subject.kind],
-    picture: shot && pictureExists(shot.file) ? { src: `/${shot.file}`, alt: shot.alt } : null,
-    turn: face.turn ? { folder: face.turn.folder, frames: face.turn.frames } : null,
-    rotate: face.turn !== null || sample,
+    picture,
+    turn: turn && { folder: turn.folder, frames: turn.frames },
+    turnCredit: turn?.source ? { label: `360° turn from ${turn.source.channel}'s video`, url: turn.source.url } : null,
+    rotate: turn !== null || sample,
     versionTag: version.tag,
     checked: version.checked,
     olderSeason: version.olderSeason,

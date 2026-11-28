@@ -2,17 +2,20 @@ import { expect, type Page, test } from "@playwright/test";
 
 // The Faces library (Figma 333:1139 / 345:1310 / 345:1391; no results 372:1853 / 427:9875 / 427:9960; D-68, D-70,
 // D-97 (5)). Preview only (D-105): the faces are Figma's five sample faces, drafts with its stand-in pictures (D-107,
-// D-108), marked by the demo note instead of the Draft tag.
+// D-108), then Zidane and Olise, sample faces added for their creators' turns (D-123); the demo note marks them all
+// instead of the Draft tag.
 test.skip(process.env.PROBUILDS_DRAFTS !== "1", "preview page");
 
 const DEMO_NOTE = "Demo: stand-in faces from Xaiiros's and CodeName Max's YouTube tutorials. Each real card shows our own in-game recreation.";
-/** Figma's five sample faces, in the order the library draws them: slug, kind, title. */
+/** The seven sample faces, in the order the library draws them: slug, kind, title. */
 const DRAWN = [
   ["cristiano-ronaldo-2008", "Footballer", "2008 Ronaldo"],
   ["neymar-jr-mohawk", "Footballer", "Neymar Jr (Mohawk)"],
   ["lamine-yamal", "Footballer", "Lamine Yamal"],
   ["lebron-james", "Athlete", "LeBron James"],
   ["michael-jackson", "Musician", "Michael Jackson"],
+  ["zinedine-zidane", "Footballer", "Zinedine Zidane"],
+  ["michael-olise", "Footballer", "Michael Olise"],
 ] as const;
 
 const chip = (page: Page, n: number) => page.getByTestId(`filter-chip-${n}`);
@@ -20,12 +23,12 @@ const counts = async (page: Page) => Promise.all([1, 2, 3, 4].map((n) => chip(pa
 const columns = (page: Page) =>
   page.getByTestId("face-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length);
 
-test("faces: Figma's five sample faces, each with its kind, name, page and stand-in picture; Faces is the current section", async ({ page }) => {
+test("faces: the seven sample faces, each with its kind, name, page and stand-in picture; Faces is the current section", async ({ page }) => {
   await page.goto("/faces");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Faces");
   await expect(page.getByText(DEMO_NOTE)).toBeVisible();
   await expect(page.getByTestId("bottom-nav").getByRole("link", { name: "Faces" })).toHaveAttribute("aria-current", "page");
-  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(5);
+  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(7);
   for (const [i, [slug, kind, title]] of DRAWN.entries()) {
     const card = page.getByTestId(`face-card-${i + 1}`);
     await expect(card).toHaveAttribute("href", `/faces/${slug}`);
@@ -80,7 +83,7 @@ const shownCards = (page: Page) => page.locator('[data-testid^="face-card-"]').e
 
 test("faces: chips show Figma's counts and filter by kind", async ({ page }) => {
   await page.goto("/faces");
-  expect(await counts(page)).toEqual(["5", "3", "1", "1"]);
+  expect(await counts(page)).toEqual(["7", "5", "1", "1"]);
   await expect(chip(page, 1)).toHaveAttribute("aria-pressed", "true");
   await chip(page, 3).click();
   await expect(chip(page, 3)).toHaveAttribute("aria-pressed", "true");
@@ -89,10 +92,10 @@ test("faces: chips show Figma's counts and filter by kind", async ({ page }) => 
   await chip(page, 4).click();
   expect(await shownCards(page)).toEqual(["face-card-5"]);
   await chip(page, 2).click();
-  expect(await shownCards(page)).toEqual(["face-card-1", "face-card-2", "face-card-3"]);
+  expect(await shownCards(page)).toEqual(["face-card-1", "face-card-2", "face-card-3", "face-card-6", "face-card-7"]);
   await expect(page.getByTestId("missing-face-tile")).toBeVisible();
   await chip(page, 1).click();
-  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(5);
+  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(7);
 });
 
 test("faces: search filters by name, the chips count what it leaves, and Clear brings everything back", async ({ page }) => {
@@ -102,7 +105,7 @@ test("faces: search filters by name, the chips count what it leaves, and Clear b
   await search.fill("ronaldo");
   expect(await shownCards(page)).toEqual(["face-card-1"]);
   expect(await counts(page)).toEqual(["1", "1", "0", "0"]);
-  await search.fill("Zidane");
+  await search.fill("Mbappe");
   await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(0);
   // Figma's no-results state (372:1853 / 427:9875 / 427:9960): every chip at 0, the card, no grid, tile or panel.
   const emptyState = page.getByTestId("faces-empty");
@@ -117,8 +120,8 @@ test("faces: search filters by name, the chips count what it leaves, and Clear b
   await page.getByRole("button", { name: "Clear search" }).click();
   await expect(search).toHaveValue("");
   await expect(search).toBeFocused();
-  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(5);
-  expect(await counts(page)).toEqual(["5", "3", "1", "1"]);
+  await expect(page.locator('[data-testid^="face-card-"]')).toHaveCount(7);
+  expect(await counts(page)).toEqual(["7", "5", "1", "1"]);
 });
 
 test("faces: Missing a face and the request panel's Request a face open Submit's Request tab (D-121 (5))", async ({ page }) => {
@@ -127,8 +130,8 @@ test("faces: Missing a face and the request panel's Request a face open Submit's
   await expect(tile).toHaveAttribute("href", "/submit/request");
   await expect(tile.getByText("Missing a face?")).toBeVisible();
   await expect(tile.getByText("Suggest one on Submit")).toBeVisible();
-  // The tile is the picture's size, beside the last card (Michael Jackson).
-  const slot = await page.getByTestId("face-card-5").getByTestId("face-picture").boundingBox();
+  // The tile is the picture's size, beside the last card (Michael Olise).
+  const slot = await page.getByTestId("face-card-7").getByTestId("face-picture").boundingBox();
   const box = await tile.boundingBox();
   expect(slot && box && Math.round(box.height)).toBe(Math.round(slot?.height ?? 0));
   expect(slot && box && Math.round(box.x - (slot.x + slot.width))).toBe(12);
@@ -143,7 +146,7 @@ test("faces on tablet: three columns, 24 px apart, chips and a 300 px search on 
   await page.setViewportSize({ width: 834, height: 1100 });
   await page.goto("/faces");
   expect(await columns(page)).toBe(3);
-  const card = await page.getByTestId("face-card-5").boundingBox();
+  const card = await page.getByTestId("face-card-7").boundingBox();
   const tile = await page.getByTestId("missing-face-tile").boundingBox();
   expect(card && Math.round(card.width)).toBe(235);
   expect(card && tile && Math.round(tile.x - (card.x + card.width))).toBe(24);

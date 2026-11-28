@@ -134,7 +134,16 @@
       "by": "CodeName Max"
     }
   ],
-  "turn": null,
+  "turn": {
+    "folder": "sample/faces/lebron-james/turn",
+    "frames": 36,
+    "by": "JaxStash",
+    "source": {
+      "url": "https://www.youtube.com/watch?v=aJez-2ttA3I",
+      "title": "EA FC27 | LEBRON JAMES Face Tutorial | Pro Clubs & Career Mode Face Creation",
+      "channel": "JaxStash"
+    }
+  },
   "embeds": [
     {
       "provider": "youtube",
@@ -176,8 +185,13 @@
       "version": 1,
       "date": "2026-11-27",
       "note": "Figma's sample recipe, limit and tutorial from the face page frames (353:1410, 353:1524, 353:1648; D-107). The video title is YouTube's own."
+    },
+    {
+      "version": 1,
+      "date": "2026-11-28",
+      "note": "360° turn from JaxStash's video, cut by Sharon from the tutorial and kept under sample/faces/ (D-123); preview only."
     }
   ],
   "createdAt": "2026-11-26",
-  "updatedAt": "2026-11-27"
+  "updatedAt": "2026-11-28"
 }

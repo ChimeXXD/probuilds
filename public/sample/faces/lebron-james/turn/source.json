@@ -1,0 +1,25 @@
+{
+  "face": "LeBron James",
+  "slug": "lebron-james",
+  "status": "preview stand-in (O-23)",
+  "video": {
+    "url": "https://www.youtube.com/watch?v=aJez-2ttA3I",
+    "id": "aJez-2ttA3I",
+    "title": "EA FC27 | LEBRON JAMES Face Tutorial | Pro Clubs & Career Mode Face Creation",
+    "channel": "JaxStash",
+    "game": "FC 27"
+  },
+  "turn": {
+    "start": "0:13.0",
+    "end": "0:16.7",
+    "startSeconds": 13.0,
+    "endSeconds": 16.7,
+    "frames": 36,
+    "degreesPerFrame": 10,
+    "files": "01.webp to 36.webp, 640 x 800, front first"
+  },
+  "capturedOn": "2026-11-26",
+  "capturedBy": "Claude, in Sharon's Chrome, by stepping the paused video (no download)",
+  "recipe": "Not recorded. Read the recipe from this same video so the values match these frames. Never invent values (CLAUDE.md).",
+  "note": "Not the video the draft face file credits (CodeName Max, eV2G-DOTAQI). Recipe values must come from this JaxStash video so they match these frames."
+}

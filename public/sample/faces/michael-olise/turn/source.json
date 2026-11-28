@@ -1,0 +1,25 @@
+{
+  "face": "Michael Olise",
+  "slug": "michael-olise",
+  "status": "preview stand-in (O-23)",
+  "video": {
+    "url": "https://www.youtube.com/watch?v=s1KBQuNvRJc",
+    "id": "s1KBQuNvRJc",
+    "title": "How to Make MICHAEL OLISE in EA FC 27",
+    "channel": "CodeName Max",
+    "game": "FC 27"
+  },
+  "turn": {
+    "start": "11:14.6",
+    "end": "11:18.2",
+    "startSeconds": 674.6,
+    "endSeconds": 678.2,
+    "frames": 36,
+    "degreesPerFrame": 10,
+    "files": "01.webp to 36.webp, 640 x 800, front first"
+  },
+  "capturedOn": "2026-11-26",
+  "capturedBy": "Claude, in Sharon's Chrome, by stepping the paused video (no download)",
+  "recipe": "Not recorded. Read the recipe from this same video so the values match these frames. Never invent values (CLAUDE.md).",
+  "note": "The ponytail runs past the frame edge on the side views."
+}

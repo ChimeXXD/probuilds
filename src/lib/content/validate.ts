@@ -193,11 +193,34 @@ export function validateFace(file: string, data: unknown, ctx: Context): Problem
       if (c.obj(p, shot)) checkPicture(c, p, shot, ...folders);
     });
   }
-  // The turntable's frames, cut from the maker's own in-game turn clip (D-35).
+  // The turntable's frames, cut from the maker's own in-game turn clip (D-35), or on a sample face a creator's turn
+  // from their tutorial (D-123), kept under sample/faces/ like the stand-in pictures and naming the video it came from.
   if (c.obj("turn", d.turn, { nullable: true })) {
-    if (!isUnder(d.turn.folder, "faces/")) c.add("turn.folder", 'must be a folder under "faces/"');
-    c.int("turn.frames", d.turn.frames, { min: 12, max: 72 });
-    c.str("turn.by", d.turn.by);
+    const turn = d.turn;
+    if (!folders.some((folder) => isUnder(turn.folder, folder))) {
+      c.add("turn.folder", `must be a folder under ${folders.map((folder) => `"${folder}"`).join(" or ")}`);
+    }
+    c.int("turn.frames", turn.frames, { min: 12, max: 72 });
+    c.str("turn.by", turn.by);
+    const fromVideo = isUnder(turn.folder, "sample/faces/");
+    // Chime's own clip names no video (docs/FORMAT.md): a creator's frames belong under sample/faces/, which a build
+    // without drafts deletes, never under faces/.
+    if (isUnder(turn.folder, "faces/") && turn.source !== undefined && turn.source !== null) {
+      c.add("turn.source", 'only a creator\'s turn under "sample/faces/" names a video (D-123)');
+    } else if (fromVideo && typeof d.slug === "string" && !isUnder(turn.folder, `sample/faces/${d.slug}/`)) {
+      // A creator's frames sit beside the face's own stand-in, so one face can't turn with another person's head.
+      c.add("turn.folder", `must be a folder under "sample/faces/${d.slug}/"`);
+    }
+    if (fromVideo && c.obj("turn.source", turn.source)) {
+      const source = turn.source;
+      c.url("turn.source.url", source.url);
+      c.str("turn.source.title", source.title);
+      c.str("turn.source.channel", source.channel);
+      // The frames are the channel's, so they are credited to it (rule 5).
+      if (typeof source.channel === "string" && typeof turn.by === "string" && turn.by !== source.channel) {
+        c.add("turn.by", `must be the video's channel, ${JSON.stringify(source.channel)} (D-123)`);
+      }
+    }
   }
 
   if (c.arr("embeds", d.embeds)) {

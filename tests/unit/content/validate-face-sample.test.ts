@@ -68,3 +68,64 @@ describe("validateFace sample faces (D-107, D-108)", () => {
     }
   });
 });
+
+// Creators' turn frames (D-123): a sample face may turn with frames cut from a creator's FC 27 tutorial, kept under
+// sample/faces/ beside its picture. Each names the video it came from, which the face page credits and links (rule 5).
+// Chime's own clips stay under faces/ and need no video.
+describe("validateFace creators' turn frames (D-123)", () => {
+  const SOURCE = { url: "https://www.youtube.com/watch?v=abc123", title: "How to Make a Test Face in EA FC 27", channel: "Test Channel" };
+  const STAND_IN_TURN = { folder: "sample/faces/test-footballer-2010/turn", frames: 36, by: "Test Channel", source: { ...SOURCE } };
+  const turning = (change: (turn: any) => void = () => {}) => // eslint-disable-line @typescript-eslint/no-explicit-any
+    sampled((f) => {
+      f.turn = structuredClone(STAND_IN_TURN);
+      change(f.turn);
+    });
+
+  it("passes a sample face turning with a creator's frames under sample/faces/, with the video they came from", () => {
+    expect(problems(turning())).toEqual([]);
+  });
+
+  it("still passes Chime's own turn under faces/ with no video, on a sample or not", () => {
+    const own = { folder: "faces/test-footballer-2010/turn", frames: 36, by: "Chime" };
+    expect(problems(sampled((f) => (f.turn = { ...own })))).toEqual([]);
+    expect(problems(changed(faceGood, (f) => (f.turn = { ...own, source: null })))).toEqual([]);
+  });
+
+  it("fails a video named on Chime's own turn under faces/", () => {
+    const own = { folder: "faces/test-footballer-2010/turn", frames: 36, by: "Test Channel", source: { ...SOURCE } };
+    expect(problems(sampled((f) => (f.turn = own)))).toEqual([["turn.source", 'only a creator\'s turn under "sample/faces/" names a video (D-123)']]);
+  });
+
+  it("fails a creator's frames on a face that isn't a sample", () => {
+    const bad = changed(faceGood, (f) => {
+      f.status = "draft";
+      f.turn = structuredClone(STAND_IN_TURN);
+    });
+    expect(problems(bad)).toEqual([["turn.folder", 'must be a folder under "faces/"']]);
+  });
+
+  it("keeps the folder rule for a sample's turn: no other folder, no climbing out", () => {
+    for (const folder of ["builds/x/turn", "sample/faces/../../x", "sample/x/turn"]) {
+      expect(problems(turning((t) => (t.folder = folder)))).toEqual([["turn.folder", 'must be a folder under "faces/" or "sample/faces/"']]);
+    }
+  });
+
+  it("fails a creator's frames from another face's folder: no face turns with someone else's head", () => {
+    expect(problems(turning((t) => (t.folder = "sample/faces/donald-trump/turn")))).toEqual([
+      ["turn.folder", 'must be a folder under "sample/faces/test-footballer-2010/"'],
+    ]);
+  });
+
+  it("fails a creator's frames with no video to credit", () => {
+    for (const source of [undefined, null, "https://www.youtube.com/watch?v=abc123"]) {
+      expect(problems(turning((t) => (t.source = source)))).toEqual([["turn.source", "must be an object"]]);
+    }
+  });
+
+  it("checks the video: a web link, its title, its channel, and the frames credited to that channel", () => {
+    expect(problems(turning((t) => (t.source.url = "youtube.com/watch?v=abc123")))).toEqual([["turn.source.url", "must be a web link starting with https://"]]);
+    expect(problems(turning((t) => (t.source.title = "")))).toEqual([["turn.source.title", "must be text"]]);
+    expect(problems(turning((t) => (t.source.channel = 3))).map(([path]) => path)).toContain("turn.source.channel");
+    expect(problems(turning((t) => (t.by = "Chime")))).toEqual([["turn.by", 'must be the video\'s channel, "Test Channel" (D-123)']]);
+  });
+});
