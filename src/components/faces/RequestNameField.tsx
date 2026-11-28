@@ -38,7 +38,10 @@ export function RequestNameField({ value, suggestion, onChange }: { value: strin
   return (
     // The input is one 26 px line in the middle of the 52 px box: a tap anywhere on the box (the icon, the padding, the
     // drawn placeholder) puts the caret in it, so the whole field is the target (D-125 (2)). Keys reach the input itself.
+    // While the input has focus, a press elsewhere on the box keeps it there (no blur and refocus, which would drop and
+    // reopen the phone's keyboard).
     <div
+      onMouseDown={(e) => e.target !== input.current && document.activeElement === input.current && e.preventDefault()}
       onClick={(e) => e.target !== input.current && input.current?.focus()}
       className="relative flex h-13 cursor-text items-center gap-2.5 rounded-md border border-input-border bg-input-bg px-4 hover:border-input-border-hovered focus-within:border-2 focus-within:border-input-border-focused focus-within:px-[15px]">
       <span className="flex shrink-0 text-text-muted">

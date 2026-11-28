@@ -20,8 +20,9 @@ import { StepPlayStyles } from "./StepPlayStyles";
 import { StepStart } from "./StepStart";
 
 // Submit a build (D-85 to D-90, D-99, D-100): four steps and "Sent for listing", all on /submit. On a phone the bottom
-// nav stays on every step; steps 1 to 3 dock their actions bar just above it (D-125 (2), ActionsBar). On the preview, ?state= opens each state Figma draws (start, attributes, attributes-error, playstyles,
-// name, share, sent, send-failed), and ?send=fail / ?share=fail make the stand-in fail (src/lib/submit/send.ts).
+// nav stays on every step; steps 1 to 3 dock their actions bar just above it (D-125 (2), ActionsBar). On the preview,
+// ?state= opens each state Figma draws (start, attributes, attributes-error, playstyles, name, share, sent,
+// send-failed), and ?send=fail / ?share=fail make the stand-in fail (src/lib/submit/send.ts).
 type Step = 1 | 2 | 3 | 4 | "sent";
 const FAILED = "Couldn't send. Check your connection and try again.";
 const TOAST_MS = 4000;

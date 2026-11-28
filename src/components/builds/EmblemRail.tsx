@@ -54,7 +54,7 @@ export function EmblemRail({
   return (
     <div
       ref={rail}
-      className="relative overflow-x-auto pt-2 pb-2.5 rail tablet:overflow-visible tablet:px-10 tablet:pb-4 desktop:mx-auto desktop:max-w-(--layout-content-max) desktop:px-0 [&::-webkit-scrollbar]:hidden"
+      className="relative overflow-x-auto pt-2 pb-2.5 rail tablet:overflow-visible tablet:px-10 tablet:pb-4 desktop:mx-auto desktop:max-w-(--layout-content-max) desktop:px-0"
     >
       <div ref={row} className="group/rail relative flex w-max gap-7 px-[calc(50%-28px)] tablet:w-full tablet:justify-between tablet:gap-0 tablet:px-0">
         <RubberDock rail={row} selector={`[data-testid="emblem-${selectedId}"]`} still={still} />

@@ -36,6 +36,8 @@ const inTransition = (page: Page) => page.evaluate(() => !!(document as Document
 
 async function sampleNav(page: Page, from: string, tab: string, how: "tap" | "click" = "tap") {
   await page.goto(from);
+  // The samples are taken while a View Transition runs, which only a browser that names it can say.
+  test.skip(!(await page.evaluate(() => "activeViewTransition" in document)), "no document.activeViewTransition");
   // What covered the nav was whatever the page had at its height (a face grid, a build card): here the page is painted
   // solid and a screen tall, so every change tests the same thing, whatever the page holds there.
   await page.addStyleTag({ content: "[data-testid=page]{background:#c00;min-height:100vh}" });

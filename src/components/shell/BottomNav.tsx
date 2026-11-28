@@ -22,7 +22,7 @@ import { Icon } from "./Icon";
 // Through a page change (a View Transition, D-121 (2)) the nav is its own group, bottom-nav, painted above the page
 // group and shown live, so the incoming page never covers it (D-125 (2); globals.css).
 const ITEM =
-  "flex h-12 items-center rounded-full [-webkit-tap-highlight-color:transparent] touch-manipulation select-none transition-colors duration-(--dur-fast) ease-(--ease-out)";
+  "flex h-12 items-center rounded-full select-none transition-colors duration-(--dur-fast) ease-(--ease-out)";
 const PICKED_GEOMETRY = "gap-1.5 pr-[18px] pl-3.5";
 
 export function BottomNav() {

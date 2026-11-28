@@ -40,6 +40,11 @@
    In the base layer, so a rail's utility below still hides its bar. */
 @layer base {
   @media (hover: hover) and (pointer: fine) {
+    /* A styled bar is a classic one that takes 10 px of width (not an overlay), so the gutter is kept on every page:
+       a page that fits the screen and one that scrolls are the same width, and centred content doesn't jump 5 px. */
+    html {
+      scrollbar-gutter: stable;
+    }
     ::-webkit-scrollbar {
       width: 10px;
       height: 10px;
